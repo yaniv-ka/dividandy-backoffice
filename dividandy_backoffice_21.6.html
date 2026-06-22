@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -539,6 +540,10 @@ input[readonly]{background:#f9fafb;color:#6b7280}
 .gs-inp{width:80px;padding:5px 8px;border:1px solid #e5e7eb;border-radius:6px;font-size:12.5px;text-align:center;outline:none}
 .gs-inp:focus{border-color:#7c3aed}
 
+
+/* Manual Send */
+.gs-grid{grid-template-columns:repeat(2,1fr)}
+#ms-modal-overlay{display:none}
 </style>
 </head>
 <body>
@@ -2036,6 +2041,7 @@ input[readonly]{background:#f9fafb;color:#6b7280}
   <div class="ntf-tabs">
     <div class="ntf-tab active" onclick="switchNtfTab('catalog')">Notification Catalog</div>
     <div class="ntf-tab" onclick="switchNtfTab('global')">Global Settings</div>
+    <div class="ntf-tab" onclick="switchNtfTab('manual')">Manual Send</div>
   </div>
   <div class="ntf-panel active" id="ntf-panel-catalog">
     <div class="tb2" style="flex-shrink:0">
@@ -2076,6 +2082,86 @@ input[readonly]{background:#f9fafb;color:#6b7280}
         </div>
       </div>
     </div>
+  <!-- MANUAL SEND PANEL -->
+  <div class="ntf-panel" id="ntf-panel-manual">
+    <div style="padding:24px;max-width:760px;display:flex;flex-direction:column;gap:16px">
+      <div class="csec2">
+        <div class="csec2-h"><span class="csec2-t">Step 1 — Compose</span></div>
+        <div style="display:flex;gap:10px;margin-bottom:12px">
+          <button class="btn2 bp" id="ms-mode-free" onclick="setMsMode('free')" style="font-size:12px;padding:6px 14px">Write free text</button>
+          <button class="btn2 bo" id="ms-mode-template" onclick="setMsMode('template')" style="font-size:12px;padding:6px 14px">Use catalog template</button>
+        </div>
+        <div id="ms-template-picker" style="display:none;margin-bottom:12px">
+          <label style="font-size:10.5px;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:4px">Select notification type</label>
+          <select class="fsel2" style="width:100%;max-width:400px" id="ms-template-select" onchange="loadMsTemplate()"><option value="">Select from catalog</option></select>
+        </div>
+        <div class="fg2" style="margin-bottom:10px">
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:10.5px;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:.4px">Push / In-App Title</label>
+            <input type="text" class="finp2" id="ms-title" placeholder="Notification title...">
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:10.5px;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:.4px">CTA Text</label>
+            <input type="text" class="finp2" id="ms-cta" placeholder="Button label...">
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:3px">
+          <label style="font-size:10.5px;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:.4px">Body</label>
+          <textarea class="ta2" id="ms-body" style="min-height:80px" placeholder="Notification body text..."></textarea>
+        </div>
+      </div>
+      <div class="csec2">
+        <div class="csec2-h"><span class="csec2-t">Step 2 — Channel selection</span></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <label style="display:flex;align-items:center;gap:7px;padding:8px 14px;border:1px solid #e5e7eb;border-radius:7px;cursor:pointer;font-size:12.5px"><input type="checkbox" id="ms-ch-push" checked><span style="display:flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:#3b82f6;display:inline-block"></span>Push</span></label>
+          <label style="display:flex;align-items:center;gap:7px;padding:8px 14px;border:1px solid #e5e7eb;border-radius:7px;cursor:pointer;font-size:12.5px"><input type="checkbox" id="ms-ch-inapp" checked><span style="display:flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:#10b981;display:inline-block"></span>In-App</span></label>
+          <label style="display:flex;align-items:center;gap:7px;padding:8px 14px;border:1px solid #e5e7eb;border-radius:7px;cursor:pointer;font-size:12.5px"><input type="checkbox" id="ms-ch-email" onchange="toggleMsEmail()"><span style="display:flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:#f59e0b;display:inline-block"></span>Email</span></label>
+          <label style="display:flex;align-items:center;gap:7px;padding:8px 14px;border:1px solid #e5e7eb;border-radius:7px;cursor:pointer;font-size:12.5px"><input type="checkbox" id="ms-ch-sms"><span style="display:flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:#ef4444;display:inline-block"></span>SMS</span></label>
+        </div>
+        <div id="ms-email-section" style="display:none;margin-top:12px;padding:12px;background:#fff;border:1px solid #fcd34d;border-radius:8px">
+          <label style="font-size:10.5px;font-weight:600;color:#92400e;text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:4px">SendGrid Template ID (required)</label>
+          <input type="text" class="finp2" id="ms-sg-id" placeholder="d-xxxxxxxxxxxxxxxxxxxx" style="font-family:monospace;max-width:320px">
+          <div style="font-size:11px;color:#9ca3af;margin-top:4px">Dynamic fields at send time: <code>{TournamentName}</code> <code>{DeepLink}</code></div>
+        </div>
+      </div>
+      <div class="csec2">
+        <div class="csec2-h"><span class="csec2-t">Step 3 — Audience (CSV upload)</span></div>
+        <div style="border:2px dashed #e5e7eb;border-radius:8px;padding:24px;text-align:center;background:#fafafa;cursor:pointer" onclick="document.getElementById('ms-csv-input').click()">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.5" style="margin-bottom:8px"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          <div id="ms-drop-label" style="font-size:13px;font-weight:500;color:#374151">Drop CSV file here or click to browse</div>
+          <div style="font-size:11px;color:#9ca3af;margin-top:4px">CSV must contain a column named <code>user_id</code></div>
+          <input type="file" id="ms-csv-input" accept=".csv" style="display:none" onchange="handleMsCsv(this)">
+        </div>
+        <div id="ms-csv-summary" style="display:none;margin-top:12px;padding:14px;background:#fff;border:1px solid #e8e8ec;border-radius:8px">
+          <div style="display:flex;gap:24px;flex-wrap:wrap">
+            <div style="text-align:center"><div style="font-size:20px;font-weight:800;color:#10b981" id="ms-valid-count">0</div><div style="font-size:11px;color:#9ca3af">Valid users</div></div>
+            <div style="text-align:center"><div style="font-size:20px;font-weight:800;color:#ef4444" id="ms-invalid-count">0</div><div style="font-size:11px;color:#9ca3af">Invalid IDs</div></div>
+            <div style="text-align:center"><div style="font-size:20px;font-weight:800;color:#f59e0b" id="ms-dup-count">0</div><div style="font-size:11px;color:#9ca3af">Duplicates removed</div></div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center">
+        <button class="btn2 bp" onclick="openMsConfirm()" style="padding:9px 20px">
+          <svg viewBox="0 0 24 24"><path d="M22 2L11 13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          Review &amp; Send
+        </button>
+        <span style="font-size:12px;color:#9ca3af">Bypasses rate limiting and quiet hours</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirm Modal -->
+  <div id="ms-modal-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:300;align-items:center;justify-content:center">
+    <div style="background:#fff;border-radius:12px;padding:24px;width:480px;max-width:90vw;box-shadow:0 20px 60px rgba(0,0,0,.2)">
+      <div style="font-size:16px;font-weight:700;color:#1a1a2e;margin-bottom:16px">Confirm Manual Send</div>
+      <div id="ms-confirm-body" style="font-size:13px;color:#374151;line-height:1.7;margin-bottom:20px"></div>
+      <div style="background:#fef3c7;border:1px solid #fcd34d;border-radius:8px;padding:10px 12px;margin-bottom:20px;font-size:12px;color:#92400e">This action cannot be undone. Verify recipient list and content before sending.</div>
+      <div style="display:flex;justify-content:flex-end;gap:8px">
+        <button class="btn2 bo" onclick="closeMsConfirm()">Cancel</button>
+        <button class="btn2 bp" onclick="dispatchManualSend()">Confirm &amp; Send</button>
+      </div>
+    </div>
+  </div>
     <div style="padding:0 24px"><button class="btn2 bp" onclick="showToast2('Global settings saved')"><svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/></svg>Save global settings</button></div>
   </div>
 </div>
@@ -3258,7 +3344,7 @@ const NOTIF_DATA = [
     "id": "NTF-IN-001",
     "section": "In-Tournament",
     "category": "Game Events",
-    "priority": "High",
+    "priority": 1,
     "quietHours": "Allowed",
     "critical": true,
     "channels": [
@@ -3273,29 +3359,23 @@ const NOTIF_DATA = [
       "push_body": "The {TournamentName} arena opens soon. Check your strategy and get ready to trade.",
       "inapp_title": "5 Mins to Launch!",
       "inapp_body": "Your seat for {TournamentName} is secured. \nLock in your opening strategy.",
-      "cta": "Join Now",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
+      "cta": "Join Now"
     },
     "es": {
       "push_title": "¡5 Minutos para el Inicio!",
       "push_body": "La arena de {TournamentName} abre pronto. Revisa tu estrategia y prepárate para operar.",
       "inapp_title": "¡5 Minutos para el Inicio!",
       "inapp_body": "Tu lugar en {TournamentName} está asegurado. Confirma tu estrategia inicial.",
-      "cta": "Únete Ahora",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
-    }
+      "cta": "Únete Ahora"
+    },
+    "audience": "Registered players",
+    "alwaysSend": false
   },
   {
     "id": "NTF-WAL-007",
     "section": "Wallet",
     "category": "Game Events",
-    "priority": "High",
+    "priority": 1,
     "quietHours": "Allowed",
     "critical": true,
     "channels": [
@@ -3310,29 +3390,23 @@ const NOTIF_DATA = [
       "push_body": "Your entry fee has been refunded to your balance.",
       "inapp_title": "{TournamentName} Cancelled",
       "inapp_body": "Your entry fee has been refunded to your balance.",
-      "cta": "Explore Tournaments",
-      "email_subject": "Refunded: {TournamentName} Cancelled",
-      "email_header": "TOURNAMENT CANCELLED",
-      "email_body": "We are reaching out to inform you that {TournamentName} has been cancelled.\n\nDon't worry, your full entry fee has already been automatically refunded and is fully available in your account balance.\n\nThe Arena never sleeps. Head back to the lobby to lock in your seat for the next live market block.",
-      "email_cta": "See Available Tournaments"
+      "cta": "Explore Tournaments"
     },
     "es": {
       "push_title": "{TournamentName} Cancelado",
       "push_body": "Tu cuota de entrada ha sido reembolsada a tu saldo.",
       "inapp_title": "{TournamentName} Cancelado",
       "inapp_body": "Tu cuota de entrada ha sido reembolsada a tu saldo.",
-      "cta": "Explorar Torneos",
-      "email_subject": "Reembolso: {TournamentName} Cancelado",
-      "email_header": "TORNEO CANCELADO",
-      "email_body": "Te informamos que {TournamentName} ha sido cancelado. Tu cuota de entrada ha sido reembolsada automáticamente y está disponible en tu saldo.",
-      "email_cta": "Ver Torneos Disponibles"
-    }
+      "cta": "Explorar Torneos"
+    },
+    "audience": "All registered players of cancelled tournament",
+    "alwaysSend": false
   },
   {
     "id": "NTF-IN-009",
     "section": "In-Tournament",
     "category": "Game Events",
-    "priority": "High",
+    "priority": 2,
     "quietHours": "Allowed",
     "critical": false,
     "channels": [
@@ -3347,29 +3421,23 @@ const NOTIF_DATA = [
       "push_body": "Only minutes left on the match clock. Make your final moves now!",
       "inapp_title": "Tournament Ending",
       "inapp_body": "{TournamentName} is entering its final minutes.",
-      "cta": "Make Final Play",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
+      "cta": "Make Final Play"
     },
     "es": {
       "push_title": "Campana de Cierre: {TournamentName}",
       "push_body": "¡Solo quedan minutos en el reloj! Haz tus jugadas finales ahora.",
       "inapp_title": "Torneo Terminando",
       "inapp_body": "{TournamentName} está entrando en sus minutos finales.",
-      "cta": "Hacer Jugada Final",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
-    }
+      "cta": "Hacer Jugada Final"
+    },
+    "audience": "Registered players",
+    "alwaysSend": false
   },
   {
     "id": "NTF-POST-001",
     "section": "Post-Tournament",
     "category": "Tournament Results",
-    "priority": "Medium",
+    "priority": 1,
     "quietHours": "Respect",
     "critical": true,
     "channels": [
@@ -3385,29 +3453,24 @@ const NOTIF_DATA = [
       "push_body": "The Arena has settled. Let’s see where you landed.",
       "inapp_title": "Results Verified: {TournamentName}",
       "inapp_body": "Check your final rank and see if you hit the Cashline!",
-      "cta": "View Standing",
-      "email_subject": "Results Are In: Did you hit the Cashline?",
-      "email_header": "TOURNEY RESULTS VERIFIED",
-      "email_body": "The battle for {TournamentName} has concluded and the scoreboard is officially locked.\n\nYour final rank, performance stats, and rewards are ready for review. Log back into the Arena to see exactly how your strategy stacked up against the field.",
-      "email_cta": "Enter the Arena"
+      "cta": "View Standing"
     },
     "es": {
       "push_title": "¡Resultados Disponibles!",
       "push_body": "La Arena ha definido. Veamos dónde quedaste.",
       "inapp_title": "Resultados Verificados: {TournamentName}",
       "inapp_body": "¡Revisa tu posición final y ve si llegaste a la Cashline!",
-      "cta": "Ver Posición",
-      "email_subject": "Resultados: ¿Llegaste a la Cashline?",
-      "email_header": "RESULTADOS DEL TORNEO VERIFICADOS",
-      "email_body": "La batalla por {TournamentName} ha concluido. Tu posición final, estadísticas y recompensas están listas para revisar.",
-      "email_cta": "Entrar a la Arena"
-    }
+      "cta": "Ver Posición"
+    },
+    "audience": "All participating players",
+    "alwaysSend": false,
+    "sendgridTemplateId": ""
   },
   {
     "id": "NTF-IN-020",
     "section": "In-Tournament",
     "category": "Game Events",
-    "priority": "High",
+    "priority": 2,
     "quietHours": "Allowed",
     "critical": false,
     "channels": [
@@ -3422,29 +3485,23 @@ const NOTIF_DATA = [
       "push_body": "Climb back into the money before the cutoff. The edge is getting thin.",
       "inapp_title": "DANGER ZONE",
       "inapp_body": "Climb back into the money before the cutoff in {TournamentName}!",
-      "cta": "Salvage Position",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
+      "cta": "Salvage Position"
     },
     "es": {
       "push_title": "ZONA DE PELIGRO",
       "push_body": "Sube al dinero antes del corte. El margen es cada vez menor.",
       "inapp_title": "ZONA DE PELIGRO",
       "inapp_body": "¡Vuelve al dinero antes del corte en {TournamentName}!",
-      "cta": "Salvar Posición",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
-    }
+      "cta": "Salvar Posición"
+    },
+    "audience": "Registered players",
+    "alwaysSend": false
   },
   {
     "id": "NTF-IN-038",
     "section": "In-Tournament",
     "category": "In-Tournament",
-    "priority": "Medium",
+    "priority": 2,
     "quietHours": "Allowed",
     "critical": false,
     "channels": [
@@ -3459,29 +3516,23 @@ const NOTIF_DATA = [
       "push_body": "Great trades! You're back above the Deathline. Keep climbing to safety.",
       "inapp_title": "Still Alive!",
       "inapp_body": "You escaped the danger zone. Keep the momentum going!",
-      "cta": "Keep Climbing",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
+      "cta": "Keep Climbing"
     },
     "es": {
       "push_title": "¡Lo lograste!",
       "push_body": "¡Excelentes operaciones! Estás de vuelta sobre la Deathline. Sigue subiendo.",
       "inapp_title": "¡Sigues Vivo!",
       "inapp_body": "Escapaste de la zona de peligro. ¡Mantén el impulso!",
-      "cta": "Seguir Subiendo",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
-    }
+      "cta": "Seguir Subiendo"
+    },
+    "audience": "Registered players",
+    "alwaysSend": false
   },
   {
     "id": "NTF-IN-035",
     "section": "In-Tournament",
     "category": "In-Tournament",
-    "priority": "Medium",
+    "priority": 2,
     "quietHours": "Allowed",
     "critical": false,
     "channels": [
@@ -3496,29 +3547,23 @@ const NOTIF_DATA = [
       "push_body": "You are just a few spots away from the prize zone in {tournament_name}. Jump in and make your move!",
       "inapp_title": "Striking Distance!",
       "inapp_body": "You are just a few spots away from the Cashline in {tournament_name}.",
-      "cta": "Break Through!",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
+      "cta": "Break Through!"
     },
     "es": {
       "push_title": "¡Tan cerca de la Cashline!",
       "push_body": "Estás a solo unos puestos de la zona de premios en {tournament_name}. ¡Entra y haz tu jugada!",
       "inapp_title": "¡A Tiro de Piedra!",
       "inapp_body": "Estás a pocos puestos de la Cashline en {tournament_name}.",
-      "cta": "¡Rompe la Barrera!",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
-    }
+      "cta": "¡Rompe la Barrera!"
+    },
+    "audience": "Registered players",
+    "alwaysSend": false
   },
   {
     "id": "NTF-IN-019",
     "section": "In-Tournament",
     "category": "Game Events",
-    "priority": "High",
+    "priority": 2,
     "quietHours": "Allowed",
     "critical": false,
     "channels": [
@@ -3533,29 +3578,23 @@ const NOTIF_DATA = [
       "push_body": "You've crossed the Cashline!  Hold your ground & guard your rank in {TournamentName}.",
       "inapp_title": "In the Money!",
       "inapp_body": "Hold your ground & guard your rank in {TournamentName}!",
-      "cta": "Defend Rank",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
+      "cta": "Defend Rank"
     },
     "es": {
       "push_title": "¡En el Dinero!",
       "push_body": "¡Cruzaste la Cashline! Mantén tu posición y defiende tu lugar en {TournamentName}.",
       "inapp_title": "¡En el Dinero!",
       "inapp_body": "¡Mantén tu posición y defiende tu lugar en {TournamentName}!",
-      "cta": "Defender Posición",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
-    }
+      "cta": "Defender Posición"
+    },
+    "audience": "Registered players",
+    "alwaysSend": false
   },
   {
     "id": "NTF-IN-036",
     "section": "In-Tournament",
     "category": "In-Tournament",
-    "priority": "Medium",
+    "priority": 2,
     "quietHours": "Allowed",
     "critical": false,
     "channels": [
@@ -3570,29 +3609,23 @@ const NOTIF_DATA = [
       "push_body": "The competition is closing in on your cash position. Make a move to secure your spot!",
       "inapp_title": "Cashline Danger!",
       "inapp_body": "You're about to slip!",
-      "cta": "Defend Rank",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
+      "cta": "Defend Rank"
     },
     "es": {
       "push_title": "¡Mantén la línea!",
       "push_body": "La competencia se acerca a tu posición de cash. ¡Haz una jugada para asegurar tu lugar!",
       "inapp_title": "¡Peligro en la Cashline!",
       "inapp_body": "¡Estás a punto de caer!",
-      "cta": "Defender Posición",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
-    }
+      "cta": "Defender Posición"
+    },
+    "audience": "Registered players",
+    "alwaysSend": false
   },
   {
     "id": "NTF-IN-037",
     "section": "In-Tournament",
     "category": "In-Tournament",
-    "priority": "Medium",
+    "priority": 2,
     "quietHours": "Allowed",
     "critical": false,
     "channels": [
@@ -3607,29 +3640,23 @@ const NOTIF_DATA = [
       "push_body": "Other traders pushed you out of the paying ranks. Adjust your portfolio to climb back!",
       "inapp_title": "Cashline Lost!",
       "inapp_body": "You are below the line. Make your next move now!",
-      "cta": "Reclaim Rank",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
+      "cta": "Reclaim Rank"
     },
     "es": {
       "push_title": "¡Perdiste la Cashline!",
       "push_body": "Otros traders te sacaron de los puestos pagados. ¡Ajusta tu cartera para recuperarte!",
       "inapp_title": "¡Cashline Perdida!",
       "inapp_body": "Estás por debajo de la línea. ¡Haz tu próxima jugada ahora!",
-      "cta": "Recuperar Posición",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
-    }
+      "cta": "Recuperar Posición"
+    },
+    "audience": "Registered players",
+    "alwaysSend": false
   },
   {
     "id": "NTF-IN-008",
     "section": "In-Tournament",
     "category": "Game Events",
-    "priority": "Low",
+    "priority": 2,
     "quietHours": "Allowed",
     "critical": false,
     "channels": [
@@ -3644,29 +3671,23 @@ const NOTIF_DATA = [
       "push_body": "You just leaped up the leaderboard in {tournament_name}. Tap to see your new position!",
       "inapp_title": "On the Move!",
       "inapp_body": "You just bypassed a chunk of the competition",
-      "cta": "View Leaderboard",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
+      "cta": "View Leaderboard"
     },
     "es": {
       "push_title": "¡Estás escalando posiciones!",
       "push_body": "Acabas de subir en el marcador de {tournament_name}. ¡Toca para ver tu nueva posición!",
       "inapp_title": "¡En Movimiento!",
       "inapp_body": "Acabas de superar a un grupo de competidores.",
-      "cta": "Ver Clasificación",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
-    }
+      "cta": "Ver Clasificación"
+    },
+    "audience": "Registered players",
+    "alwaysSend": false
   },
   {
     "id": "NTF-IN-007",
     "section": "In-Tournament",
     "category": "Game Events",
-    "priority": "Medium",
+    "priority": 2,
     "quietHours": "Allowed",
     "critical": false,
     "channels": [
@@ -3681,29 +3702,23 @@ const NOTIF_DATA = [
       "push_body": "The leaderboard just shifted, and you've slipped back! Make your next move to fight your way up!",
       "inapp_title": "Rank Drop!",
       "inapp_body": "You slipped back. Protect your spot!",
-      "cta": "Fix Portfolio",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
+      "cta": "Fix Portfolio"
     },
     "es": {
       "push_title": "Alerta: Bajada en el Marcador",
       "push_body": "¡El marcador cambió y has bajado! Haz tu próximo movimiento para recuperarte.",
       "inapp_title": "¡Bajaste de Posición!",
       "inapp_body": "Resbalaste. ¡Protege tu lugar!",
-      "cta": "Corregir Cartera",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
-    }
+      "cta": "Corregir Cartera"
+    },
+    "audience": "Registered players",
+    "alwaysSend": false
   },
   {
     "id": "NTF-IN-003",
     "section": "In-Tournament",
     "category": "Game Events",
-    "priority": "Medium",
+    "priority": 2,
     "quietHours": "Allowed",
     "critical": true,
     "channels": [
@@ -3718,29 +3733,23 @@ const NOTIF_DATA = [
       "push_body": "The action has already started and positions are locking in. Jump in now to secure your starting rank!",
       "inapp_title": "ZERO Trades Placed",
       "inapp_body": "Lock in your first asset to start scoring!",
-      "cta": "Start Trading",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
+      "cta": "Start Trading"
     },
     "es": {
       "push_title": "¡{tournament_name} se mueve rápido!",
       "push_body": "La acción ya comenzó y las posiciones se están cerrando. ¡Únete ahora para asegurar tu lugar!",
       "inapp_title": "CERO Operaciones Realizadas",
       "inapp_body": "¡Asegura tu primer activo para empezar a puntuar!",
-      "cta": "Comenzar a Operar",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
-    }
+      "cta": "Comenzar a Operar"
+    },
+    "audience": "Registered players",
+    "alwaysSend": false
   },
   {
     "id": "NTF-IN-021",
     "section": "In-Tournament",
     "category": "Game Events",
-    "priority": "High",
+    "priority": 2,
     "quietHours": "Allowed",
     "critical": false,
     "channels": [
@@ -3755,29 +3764,23 @@ const NOTIF_DATA = [
       "push_body": "You have {X} mandatory plays left. Complete them now to secure your spot on the leaderboard and qualify for a prize.",
       "inapp_title": "{X} Actions Remaining",
       "inapp_body": "Complete your remaining tournament actions to qualify for the prize pool!",
-      "cta": "Complete Now",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
+      "cta": "Complete Now"
     },
     "es": {
       "push_title": "Acción Requerida: {TournamentName}",
       "push_body": "Te quedan {X} jugadas obligatorias. Complétalas ahora para asegurar tu lugar en el marcador.",
       "inapp_title": "{X} Acciones Restantes",
       "inapp_body": "¡Completa tus acciones restantes para calificar al premio!",
-      "cta": "Completar Ahora",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
-    }
+      "cta": "Completar Ahora"
+    },
+    "audience": "Registered players",
+    "alwaysSend": false
   },
   {
     "id": "NTF-IN-010",
     "section": "In-Tournament",
     "category": "Re-Engagement",
-    "priority": "Medium",
+    "priority": 2,
     "quietHours": "Allowed",
     "critical": false,
     "channels": [
@@ -3792,29 +3795,23 @@ const NOTIF_DATA = [
       "push_body": "You're sitting at 0 trades. Jump in now to avoid a zero-score finish!",
       "inapp_title": "Portfolio Wake Up Call!",
       "inapp_body": "{tournament_name} is partially over & your portfolio is empty.",
-      "cta": "Trade Now",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
+      "cta": "Trade Now"
     },
     "es": {
       "push_title": "¡Alerta de Cartera Inactiva!",
       "push_body": "Tienes 0 operaciones. ¡Entra ahora para evitar un puntaje de cero!",
       "inapp_title": "¡Alerta de Cartera Inactiva!",
       "inapp_body": "{tournament_name} lleva un tiempo y tu cartera está vacía.",
-      "cta": "Operar Ahora",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
-    }
+      "cta": "Operar Ahora"
+    },
+    "audience": "Registered players",
+    "alwaysSend": false
   },
   {
     "id": "NTF-IN-005",
     "section": "In-Tournament",
     "category": "Market Alerts",
-    "priority": "Medium",
+    "priority": 2,
     "quietHours": "Allowed",
     "critical": false,
     "channels": [
@@ -3829,29 +3826,23 @@ const NOTIF_DATA = [
       "push_body": "Tap to view the chart and adjust your position!",
       "inapp_title": "Volatility Alert: {asset_symbol}",
       "inapp_body": "High price movement detected! {asset_symbol} has experienced a {current_5m_change}% shift in the last 5 minutes. The market is moving—are you buying the dip or riding the wave?",
-      "cta": "Trade Now",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
+      "cta": "Trade Now"
     },
     "es": {
       "push_title": "¡{Asset_symbol} se mueve rápido!",
       "push_body": "¡Toca para ver el gráfico y ajustar tu posición!",
       "inapp_title": "Alerta de Volatilidad: {asset_symbol}",
       "inapp_body": "¡Alto movimiento de precio! {asset_symbol} tuvo un cambio de {current_5m_change}% en los últimos 5 minutos.",
-      "cta": "Operar Ahora",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
-    }
+      "cta": "Operar Ahora"
+    },
+    "audience": "Registered players",
+    "alwaysSend": false
   },
   {
     "id": "NTF-IN-033",
     "section": "In-Tournament",
     "category": "Market",
-    "priority": "Medium",
+    "priority": 2,
     "quietHours": "Allowed",
     "critical": false,
     "channels": [
@@ -3865,29 +3856,23 @@ const NOTIF_DATA = [
       "push_body": "Trading is officially ON. Deploy your strategy, make your moves, and climb the leaderboard!",
       "inapp_title": "{MarketType} is Live!",
       "inapp_body": "Trading is ON. Go make your moves.",
-      "cta": "Trade Now",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
+      "cta": "Trade Now"
     },
     "es": {
       "push_title": "¡{MarketType} está en Vivo!",
       "push_body": "El trading está oficialmente ABIERTO. ¡Despliega tu estrategia y sube en el marcador!",
       "inapp_title": "¡{MarketType} está en Vivo!",
       "inapp_body": "El trading está ABIERTO. Ve a hacer tus jugadas.",
-      "cta": "Operar Ahora",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
-    }
+      "cta": "Operar Ahora"
+    },
+    "audience": "Registered players",
+    "alwaysSend": false
   },
   {
     "id": "NTF-IN-034",
     "section": "In-Tournament",
     "category": "Market",
-    "priority": "Medium",
+    "priority": 2,
     "quietHours": "Allowed",
     "critical": false,
     "channels": [
@@ -3901,29 +3886,23 @@ const NOTIF_DATA = [
       "push_body": "The floor is closed. See how your Asset performance moved you on the Leaderboard!",
       "inapp_title": "Market Closed: {MarketType}",
       "inapp_body": "Positions are locked. Check your rank and prep your next play!",
-      "cta": "View Leaderboard",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
+      "cta": "View Leaderboard"
     },
     "es": {
       "push_title": "¡Cierre de {MarketType}!",
       "push_body": "El mercado está cerrado. ¡Mira cómo tu desempeño te movió en el marcador!",
       "inapp_title": "Mercado Cerrado: {MarketType}",
       "inapp_body": "Las posiciones están bloqueadas. ¡Revisa tu posición y prepara tu próxima jugada!",
-      "cta": "Ver Clasificación",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
-    }
+      "cta": "Ver Clasificación"
+    },
+    "audience": "Registered players",
+    "alwaysSend": false
   },
   {
     "id": "NTF-IN-039",
     "section": "In-Tournament",
     "category": "In-Tournament",
-    "priority": "Medium",
+    "priority": 2,
     "quietHours": "Respect",
     "critical": false,
     "channels": [
@@ -3938,29 +3917,23 @@ const NOTIF_DATA = [
       "push_body": "Movement detected! Your watched asset {asset_symbol} is moving fast.",
       "inapp_title": "Watchlist Move!",
       "inapp_body": "{asset_symbol} just shifted {current_5m_change}%. Make your move!",
-      "cta": "View Asset",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
+      "cta": "View Asset"
     },
     "es": {
       "push_title": "Alerta Watchlist: {asset_symbol}",
       "push_body": "¡Movimiento detectado! Tu activo {asset_symbol} se está moviendo rápido.",
       "inapp_title": "¡Movimiento en Watchlist!",
       "inapp_body": "{asset_symbol} acaba de cambiar {current_5m_change}%. ¡Haz tu jugada!",
-      "cta": "Ver Activo",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
-    }
+      "cta": "Ver Activo"
+    },
+    "audience": "Players with asset in watchlist",
+    "alwaysSend": false
   },
   {
     "id": "NTF-IN-040",
     "section": "In-Tournament",
     "category": "In-Tournament",
-    "priority": "Medium",
+    "priority": 3,
     "quietHours": "Respect",
     "critical": false,
     "channels": [
@@ -3974,29 +3947,23 @@ const NOTIF_DATA = [
       "push_body": "Leaderboard Shake-Up: 5 players just entered the Cashline.",
       "inapp_title": "",
       "inapp_body": "",
-      "cta": "",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
+      "cta": ""
     },
     "es": {
       "push_title": "",
       "push_body": "Revuelta en el Marcador: 5 jugadores acaban de entrar a la Cashline.",
       "inapp_title": "",
       "inapp_body": "",
-      "cta": "",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
-    }
+      "cta": ""
+    },
+    "audience": "All tournament players",
+    "alwaysSend": false
   },
   {
     "id": "NTF-IN-041",
     "section": "In-Tournament",
     "category": "In-Tournament",
-    "priority": "Medium",
+    "priority": 3,
     "quietHours": "Respect",
     "critical": false,
     "channels": [
@@ -4010,29 +3977,23 @@ const NOTIF_DATA = [
       "push_body": "[PlayerName] is climbing fast. +5 ranks on the leaderboard",
       "inapp_title": "",
       "inapp_body": "",
-      "cta": "",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
+      "cta": ""
     },
     "es": {
       "push_title": "",
       "push_body": "[PlayerName] está subiendo rápido. +5 posiciones en el marcador.",
       "inapp_title": "",
       "inapp_body": "",
-      "cta": "",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
-    }
+      "cta": ""
+    },
+    "audience": "All tournament players",
+    "alwaysSend": false
   },
   {
     "id": "NTF-IN-042",
     "section": "In-Tournament",
     "category": "In-Tournament",
-    "priority": "Medium",
+    "priority": 3,
     "quietHours": "Respect",
     "critical": false,
     "channels": [
@@ -4046,29 +4007,23 @@ const NOTIF_DATA = [
       "push_body": "[PlayerName you follow] is dropping fast. Down [x] positions on the leaderboard.",
       "inapp_title": "",
       "inapp_body": "",
-      "cta": "",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
+      "cta": ""
     },
     "es": {
       "push_title": "",
       "push_body": "[PlayerName que sigues] está bajando rápido. Bajó [x] posiciones.",
       "inapp_title": "",
       "inapp_body": "",
-      "cta": "",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
-    }
+      "cta": ""
+    },
+    "audience": "All tournament players",
+    "alwaysSend": false
   },
   {
     "id": "NTF-IN-043",
     "section": "In-Tournament",
     "category": "In-Tournament",
-    "priority": "Medium",
+    "priority": 3,
     "quietHours": "Respect",
     "critical": false,
     "channels": [
@@ -4082,29 +4037,23 @@ const NOTIF_DATA = [
       "push_body": "Similar strategies detected. [Number] players mirror your portfolio",
       "inapp_title": "",
       "inapp_body": "",
-      "cta": "",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
+      "cta": ""
     },
     "es": {
       "push_title": "",
       "push_body": "Estrategias similares detectadas. [Número] jugadores copian tu cartera.",
       "inapp_title": "",
       "inapp_body": "",
-      "cta": "",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
-    }
+      "cta": ""
+    },
+    "audience": "All tournament players",
+    "alwaysSend": false
   },
   {
     "id": "NTF-IN-044",
     "section": "In-Tournament",
     "category": "In-Tournament",
-    "priority": "Medium",
+    "priority": 3,
     "quietHours": "Respect",
     "critical": false,
     "channels": [
@@ -4118,29 +4067,23 @@ const NOTIF_DATA = [
       "push_body": "You’ve been spotted. [PlayerName] is tracking your portfolio",
       "inapp_title": "",
       "inapp_body": "",
-      "cta": "",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
+      "cta": ""
     },
     "es": {
       "push_title": "",
       "push_body": "Te han visto. [PlayerName] está rastreando tu cartera.",
       "inapp_title": "",
       "inapp_body": "",
-      "cta": "",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
-    }
+      "cta": ""
+    },
+    "audience": "All tournament players",
+    "alwaysSend": false
   },
   {
     "id": "NTF-IN-045",
     "section": "In-Tournament",
     "category": "In-Tournament",
-    "priority": "Medium",
+    "priority": 3,
     "quietHours": "Respect",
     "critical": false,
     "channels": [
@@ -4154,29 +4097,23 @@ const NOTIF_DATA = [
       "push_body": "[Name] surged up the leaderboard. +[x] ranks in 1 hour",
       "inapp_title": "",
       "inapp_body": "",
-      "cta": "",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
+      "cta": ""
     },
     "es": {
       "push_title": "",
       "push_body": "[Nombre] subió en el marcador. +[x] posiciones en 1 hora.",
       "inapp_title": "",
       "inapp_body": "",
-      "cta": "",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
-    }
+      "cta": ""
+    },
+    "audience": "All tournament players",
+    "alwaysSend": false
   },
   {
     "id": "NTF-ONB-001",
     "section": "Onboarding",
     "category": "Onboarding",
-    "priority": "Critical",
+    "priority": 1,
     "quietHours": "Allowed",
     "critical": true,
     "channels": [
@@ -4190,29 +4127,23 @@ const NOTIF_DATA = [
       "push_body": "Welcome to DiviDandy! Verify your code.",
       "inapp_title": "",
       "inapp_body": "Start your verification to complete signup.",
-      "cta": "Verify Now",
-      "email_subject": "Welcome to DiviDandy! Your verification code is {OTP}.",
-      "email_header": "Verify Your Account",
-      "email_body": "Welcome to DiviDandy! Your verification code is {OTP}.",
-      "email_cta": ""
+      "cta": "Verify Now"
     },
     "es": {
       "push_title": "",
       "push_body": "¡Bienvenido a DiviDandy! Verifica tu código.",
       "inapp_title": "",
       "inapp_body": "Inicia tu verificación para completar el registro.",
-      "cta": "Verificar Ahora",
-      "email_subject": "¡Bienvenido a DiviDandy! Tu código de verificación es {OTP}.",
-      "email_header": "Verifica Tu Cuenta",
-      "email_body": "¡Bienvenido a DiviDandy! Tu código de verificación es {OTP}.",
-      "email_cta": "Verificar"
-    }
+      "cta": "Verificar Ahora"
+    },
+    "audience": "Specific user (per-user)",
+    "alwaysSend": false
   },
   {
     "id": "NTF-ONB-010",
     "section": "Onboarding",
     "category": "Security",
-    "priority": "Critical",
+    "priority": 1,
     "quietHours": "Allowed",
     "critical": true,
     "channels": [
@@ -4226,29 +4157,24 @@ const NOTIF_DATA = [
       "push_body": "",
       "inapp_title": "",
       "inapp_body": "Reset your DiviDandy password",
-      "cta": "Reset Password",
-      "email_subject": "",
-      "email_header": "Password Reset",
-      "email_body": "Click below to reset your DiviDandy password. Link expires in 30 minutes.",
-      "email_cta": ""
+      "cta": "Reset Password"
     },
     "es": {
       "push_title": "",
       "push_body": "",
       "inapp_title": "",
       "inapp_body": "Restablece tu contraseña de DiviDandy.",
-      "cta": "Restablecer Contraseña",
-      "email_subject": "",
-      "email_header": "Restablecimiento de Contraseña",
-      "email_body": "Haz clic abajo para restablecer tu contraseña de DiviDandy. El enlace expira en 30 minutos.",
-      "email_cta": "Restablecer Contraseña"
-    }
+      "cta": "Restablecer Contraseña"
+    },
+    "audience": "Specific user (per-user)",
+    "alwaysSend": false,
+    "sendgridTemplateId": ""
   },
   {
     "id": "NTF-ONB-004",
     "section": "Onboarding",
     "category": "System",
-    "priority": "High",
+    "priority": 2,
     "quietHours": "Respect",
     "critical": false,
     "channels": [
@@ -4262,29 +4188,24 @@ const NOTIF_DATA = [
       "push_body": "",
       "inapp_title": "",
       "inapp_body": "",
-      "cta": "Verify Email",
-      "email_subject": "",
-      "email_header": "Verify your email address",
-      "email_body": "Please verify your email address to secure your account and enable full access to all features. Click the button below to complete the verification process",
-      "email_cta": ""
+      "cta": "Verify Email"
     },
     "es": {
       "push_title": "",
       "push_body": "",
       "inapp_title": "",
       "inapp_body": "",
-      "cta": "Verificar Email",
-      "email_subject": "",
-      "email_header": "Verifica tu dirección de email",
-      "email_body": "Por favor verifica tu dirección de email para asegurar tu cuenta y habilitar el acceso completo.",
-      "email_cta": "Verificar Email"
-    }
+      "cta": "Verificar Email"
+    },
+    "audience": "Specific user (per-user)",
+    "alwaysSend": false,
+    "sendgridTemplateId": ""
   },
   {
     "id": "NTF-PRO-010",
     "section": "Profile",
     "category": "Security",
-    "priority": "High",
+    "priority": 2,
     "quietHours": "Respect",
     "critical": false,
     "channels": [
@@ -4299,29 +4220,24 @@ const NOTIF_DATA = [
       "push_body": "Verify your email.",
       "inapp_title": "",
       "inapp_body": "Please verify your email to secure your account.",
-      "cta": "Verify Email",
-      "email_subject": "Verify Your Email",
-      "email_header": "Verification Required",
-      "email_body": "Hi {PlayerName}, please verify your email to fully secure your profile and wallet.",
-      "email_cta": ""
+      "cta": "Verify Email"
     },
     "es": {
       "push_title": "Verifica tu email.",
       "push_body": "Por favor verifica tu email para asegurar tu cuenta.",
       "inapp_title": "",
       "inapp_body": "Por favor verifica tu email para asegurar tu cuenta.",
-      "cta": "Verificar Email",
-      "email_subject": "Verifica Tu Email",
-      "email_header": "Verificación Requerida",
-      "email_body": "Hola {PlayerName}, por favor verifica tu email para asegurar completamente tu perfil y billetera.",
-      "email_cta": "Verificar Email"
-    }
+      "cta": "Verificar Email"
+    },
+    "audience": "Specific user (per-user)",
+    "alwaysSend": false,
+    "sendgridTemplateId": ""
   },
   {
     "id": "NTF-SNG-001",
     "section": "Sit & Go",
     "category": "Sit & Go",
-    "priority": "Medium",
+    "priority": 2,
     "quietHours": "Allowed",
     "critical": false,
     "channels": [
@@ -4335,29 +4251,23 @@ const NOTIF_DATA = [
       "push_body": "You just seized 1st place in {TournamentName}. Go check the board!",
       "inapp_title": "You're Rank #1!",
       "inapp_body": "You just seized 1st place in {TournamentName}.",
-      "cta": "Check Board",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
+      "cta": "Check Board"
     },
     "es": {
       "push_title": "¡Eres el #1!",
       "push_body": "Acabas de tomar el primer lugar en {TournamentName}. ¡Ve a revisar el marcador!",
       "inapp_title": "¡Eres el #1!",
       "inapp_body": "Acabas de tomar el primer lugar en {TournamentName}.",
-      "cta": "Ver Marcador",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
-    }
+      "cta": "Ver Marcador"
+    },
+    "audience": "Specific player (rank #1 only)",
+    "alwaysSend": false
   },
   {
     "id": "NTF-SOC-001",
     "section": "Social & Rival",
     "category": "Social & Rival",
-    "priority": "Medium",
+    "priority": 2,
     "quietHours": "Respect",
     "critical": false,
     "channels": [
@@ -4372,29 +4282,23 @@ const NOTIF_DATA = [
       "push_body": "{X} players you follow joined {TournamentName}. Your seat is still open!",
       "inapp_title": "Rivals Arrived!",
       "inapp_body": "{X} players you follow just entered {TournamentName}.",
-      "cta": "Join Them",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
+      "cta": "Join Them"
     },
     "es": {
       "push_title": "¡Rivales Llegaron!",
       "push_body": "{X} jugadores que sigues se unieron a {TournamentName}. ¡Tu lugar aún está disponible!",
       "inapp_title": "¡Rivales Llegaron!",
       "inapp_body": "{X} jugadores que sigues acaban de entrar a {TournamentName}.",
-      "cta": "Únete a Ellos",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
-    }
+      "cta": "Únete a Ellos"
+    },
+    "audience": "Users who follow the joining players",
+    "alwaysSend": false
   },
   {
     "id": "NTF-SOC-002",
     "section": "Social & Rival",
     "category": "Social & Rival",
-    "priority": "Medium",
+    "priority": 2,
     "quietHours": "Respect",
     "critical": false,
     "channels": [
@@ -4409,29 +4313,23 @@ const NOTIF_DATA = [
       "push_body": "{PlayerName} just joined {TournamentName}. You know what to do!",
       "inapp_title": "Rival Alert!",
       "inapp_body": "{PlayerName} beat you last time & just entered {TournamentName}.",
-      "cta": "Take Your Seat",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
+      "cta": "Take Your Seat"
     },
     "es": {
       "push_title": "¿Revancha?",
       "push_body": "{PlayerName} acaba de unirse a {TournamentName}. ¡Ya sabes qué hacer!",
       "inapp_title": "¡Alerta de Rival!",
       "inapp_body": "{PlayerName} te ganó la última vez y acaba de entrar a {TournamentName}.",
-      "cta": "Tomar Tu Lugar",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
-    }
+      "cta": "Tomar Tu Lugar"
+    },
+    "audience": "Users who previously competed against joining player",
+    "alwaysSend": false
   },
   {
     "id": "NTF-SOC-003",
     "section": "Social & Rival",
     "category": "Social & Rival",
-    "priority": "Medium",
+    "priority": 3,
     "quietHours": "Respect",
     "critical": false,
     "channels": [
@@ -4446,29 +4344,23 @@ const NOTIF_DATA = [
       "push_body": "{PlayerName} followed you. Looks like your moves got their attention.",
       "inapp_title": "You got noticed!",
       "inapp_body": "{PlayerName}, a top player, just followed you.",
-      "cta": "View Profile",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
+      "cta": "View Profile"
     },
     "es": {
       "push_title": "¡Te espió un Pro!",
       "push_body": "{PlayerName} te siguió. Parece que tus jugadas llamaron su atención.",
       "inapp_title": "¡Te notaron!",
       "inapp_body": "{PlayerName}, un jugador top, acaba de seguirte.",
-      "cta": "Ver Perfil",
-      "email_subject": "",
-      "email_header": "",
-      "email_body": "",
-      "email_cta": ""
-    }
+      "cta": "Ver Perfil"
+    },
+    "audience": "Specific user (who was followed)",
+    "alwaysSend": false
   },
   {
     "id": "NTF-WAL-001",
     "section": "Wallet",
     "category": "Transactional",
-    "priority": "High",
+    "priority": 1,
     "quietHours": "Allowed",
     "critical": false,
     "channels": [
@@ -4482,29 +4374,24 @@ const NOTIF_DATA = [
       "push_body": "Your purchase was successful!",
       "inapp_title": "",
       "inapp_body": "Your purchase of {Dcoins} is now available.",
-      "cta": "Your purchase of {Dcoins} has been added to your DiviDandy wallet.",
-      "email_subject": "",
-      "email_header": "purchase Confirmed",
-      "email_body": "Funds Added",
-      "email_cta": ""
+      "cta": "Your purchase of {Dcoins} has been added to your DiviDandy wallet."
     },
     "es": {
       "push_title": "¡Tu compra fue exitosa!",
       "push_body": "",
       "inapp_title": "",
       "inapp_body": "Tu compra de {Dcoins} ya está disponible.",
-      "cta": "Tu compra de {Dcoins} ha sido agregada a tu billetera de DiviDandy.",
-      "email_subject": "",
-      "email_header": "Compra Confirmada",
-      "email_body": "Fondos Agregados",
-      "email_cta": "Ver Billetera"
-    }
+      "cta": "Tu compra de {Dcoins} ha sido agregada a tu billetera de DiviDandy."
+    },
+    "audience": "Specific user (purchaser only)",
+    "alwaysSend": false,
+    "sendgridTemplateId": ""
   },
   {
     "id": "NTF-PRO-008",
     "section": "Profile",
     "category": "Rewards",
-    "priority": "Medium",
+    "priority": 2,
     "quietHours": "Respect",
     "critical": false,
     "channels": [
@@ -4519,23 +4406,17 @@ const NOTIF_DATA = [
       "push_body": "You earned a referral reward!",
       "inapp_title": "",
       "inapp_body": "A referral reward was added to your account.",
-      "cta": "View Rewards",
-      "email_subject": "Referral Reward",
-      "email_header": "Reward Granted",
-      "email_body": "You earned a referral reward for inviting a friend. Enjoy your bonus!",
-      "email_cta": ""
+      "cta": "View Rewards"
     },
     "es": {
       "push_title": "",
       "push_body": "¡Ganaste una recompensa de referido!",
       "inapp_title": "",
       "inapp_body": "Se agregó una recompensa de referido a tu cuenta.",
-      "cta": "Ver Recompensas",
-      "email_subject": "Recompensa de Referido",
-      "email_header": "Recompensa Otorgada",
-      "email_body": "Ganaste una recompensa de referido por invitar a un amigo. ¡Disfruta tu bono!",
-      "email_cta": "Ver Recompensas"
-    }
+      "cta": "Ver Recompensas"
+    },
+    "audience": "Specific user (referral maker)",
+    "alwaysSend": false
   }
 ];
 const SECTION_META = {
@@ -4585,7 +4466,7 @@ function renderAccordion(data) {
         + '<div style="flex:1;min-width:0"><div class="ntf-name">' + esc(title) + '</div>'
         + '<div class="ntf-name-sub">' + esc(sub) + (sub?'...':'') + '</div></div>'
         + '<div class="ch-pills">' + chHtml + '</div>'
-        + crit + qh
+        + crit + audBadge + qh
         + '<label class="tgl2" onclick="event.stopPropagation()">'
         + '<input type="checkbox" ' + (n.enabled?'checked':'') + ' data-id="' + n.id + '" onchange="toggleNtf(this.dataset.id,this)">'
         + '<span class="tgl2-sl"></span></label>'
@@ -4609,7 +4490,7 @@ function renderAccordion(data) {
   if (cnt) cnt.textContent = total + ' notifications';
 }
 
-function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/[\x22]/g,'&quot;'); }
 
 function toggleAcc(hdr) {
   const body = hdr.nextElementSibling;
@@ -4648,11 +4529,17 @@ function openEditDrw(id) {
   document.getElementById('edrw-name').textContent = n.en.push_title || n.en.inapp_title || n.id;
   document.getElementById('edrw-meta').textContent = n.section + ' - ' + n.channels.join(', ');
   document.getElementById('edrw-enabled').checked = n.enabled;
-  document.getElementById('edrw-priority').value = n.priority || 'Medium';
+  var priSel = document.getElementById('edrw-priority-num');
+  if (priSel) priSel.value = String(n.priority || 2);
   document.getElementById('edrw-qh-sel').value = n.quietHours || 'Respect';
   document.getElementById('edrw-rl').value = CRIT_IDS.has(n.id) ? 'exempt' : 'standard';
   document.getElementById('edrw-target').value = n.target || '';
   document.getElementById('edrw-tokens').textContent = n.tokens || 'None';
+  document.getElementById('edrw-audience').textContent = n.audience || '—';
+  var as = document.getElementById('edrw-always-send');
+  if (as) { as.checked = n.alwaysSend || false; }
+  var sgId = document.getElementById('edrw-sg-id');
+  if (sgId) { sgId.value = n.sendgridTemplateId || ''; sgId.style.display = n.channels.indexOf('Email')!==-1 ? '' : 'none'; sgId.previousElementSibling && (sgId.previousElementSibling.style.display = n.channels.indexOf('Email')!==-1 ? '' : 'none'); }
   document.getElementById('edrw-lastsaved').textContent = 'Unsaved';
   document.getElementById('edrw-critical').innerHTML = CRIT_IDS.has(n.id) ? '<span class="crit-badge">CRITICAL</span>' : '';
   document.getElementById('edrw-qh-badge').innerHTML = '<span class="qh-badge ' + (n.quietHours==='Allowed'?'qh-allowed':'qh-respect') + '">' + n.quietHours + '</span>';
@@ -4720,12 +4607,15 @@ function buildContentPanel(lang, n) {
       + '<div class="field-row"><label>CTA Text</label><input type="text" id="f-'+lang+'-cta" value="'+esc(d.cta||'')+'"></div>'
       + '</div>';
   }
-  if (hasEmail) {
-    html += '<div class="content-block"><div class="content-block-hdr"><div class="content-block-icon" style="background:#fef3c7">E</div><span class="content-block-title">Email</span></div>'
-      + '<div class="field-row"><label>Subject</label><input type="text" id="f-'+lang+'-email-subject" value="'+esc(d.email_subject||'')+'"></div>'
-      + '<div class="field-row"><label>Header</label><input type="text" id="f-'+lang+'-email-header" value="'+esc(d.email_header||'')+'"></div>'
-      + '<div class="field-row"><label>Body</label><textarea style="min-height:90px" id="f-'+lang+'-email-body">'+esc(d.email_body||'')+'</textarea></div>'
-      + '<div class="field-row"><label>CTA</label><input type="text" id="f-'+lang+'-email-cta" value="'+esc(d.email_cta||'')+'"></div>'
+  if (hasEmail && lang === 'en') {
+    html += '<div class="content-block"><div class="content-block-hdr"><div class="content-block-icon" style="background:#fef3c7">E</div><span class="content-block-title">Email (SendGrid)</span></div>'
+      + '<div style="font-size:11.5px;color:#6b7280;margin-bottom:10px;padding:8px 10px;background:#fff;border:1px solid #e8e8ec;border-radius:6px">Email content is managed directly in SendGrid. Set the Template ID below to link this notification to the correct SendGrid template.</div>'
+      + '<div class="field-row"><label>SendGrid Template ID</label><input type="text" id="f-en-sg-template-id" value="'+esc(n.sendgridTemplateId||'')+'" placeholder="d-xxxxxxxxxxxxxxxxxxxx" style="font-family:monospace"></div>'
+      + '<div style="font-size:11px;color:#9ca3af;margin-top:4px">Dynamic fields populated from DB at send time: <code>{TournamentName}</code> <code>{DeepLink}</code></div>'
+      + '</div>';
+  } else if (hasEmail && lang !== 'en') {
+    html += '<div class="content-block"><div class="content-block-hdr"><div class="content-block-icon" style="background:#fef3c7">E</div><span class="content-block-title">Email (SendGrid)</span></div>'
+      + '<div style="font-size:11.5px;color:#9ca3af;padding:8px 0">Email template ID is set in the EN tab. No per-language email configuration required.</div>'
       + '</div>';
   }
   if (!html) html = '<div style="font-size:12px;color:#9ca3af;padding:12px 0">No content for this channel configuration.</div>';
@@ -4770,6 +4660,12 @@ function saveEditDrw() {
   n.quietHours = rd('edrw-qh-sel') || n.quietHours;
   n.target     = rd('edrw-target');
   n.critical   = rd('edrw-rl') === 'exempt';
+  var as2 = document.getElementById('edrw-always-send');
+  if (as2) n.alwaysSend = as2.checked;
+  var sg = document.getElementById('edrw-sg-id');
+  if (sg) n.sendgridTemplateId = sg.value;
+  var pri = document.getElementById('edrw-priority-num');
+  if (pri) n.priority = parseInt(pri.value) || n.priority;
   var now = new Date().toLocaleString('en-GB',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
   document.getElementById('edrw-lastsaved').textContent = 'Saved ' + now + ' by Admin';
   showToast2(_editId + ' saved');
@@ -4783,7 +4679,7 @@ function closeEditDrw() {
 
 function switchNtfTab(name) {
   document.querySelectorAll('.ntf-tab').forEach(function(t,i){
-    var tabs=['catalog','global'];t.classList.toggle('active',tabs[i]===name);
+    var tabs=['catalog','global','manual'];t.classList.toggle('active',tabs[i]===name);
   });
   document.querySelectorAll('.ntf-panel').forEach(function(p){
     p.classList.toggle('active',p.id==='ntf-panel-'+name);
@@ -4796,6 +4692,134 @@ function initNotifications() {
   }
 }
 
+
+// ═══════════════════════════════════════════
+// MANUAL SEND
+// ═══════════════════════════════════════════
+var _msMode = 'free';
+var _msCsvUsers = [];
+
+function setMsMode(mode) {
+  _msMode = mode;
+  var freeBtn = document.getElementById('ms-mode-free');
+  var tplBtn  = document.getElementById('ms-mode-template');
+  var picker  = document.getElementById('ms-template-picker');
+  if (!freeBtn) return;
+  freeBtn.className = mode==='free' ? 'btn2 bp' : 'btn2 bo';
+  tplBtn.className  = mode==='template' ? 'btn2 bp' : 'btn2 bo';
+  if (picker) picker.style.display = mode==='template' ? '' : 'none';
+  if (mode==='template' && document.getElementById('ms-template-select').options.length <= 1) {
+    populateMsTemplates();
+  }
+}
+
+function populateMsTemplates() {
+  var sel = document.getElementById('ms-template-select');
+  if (!sel) return;
+  NOTIF_DATA.forEach(function(n) {
+    var opt = document.createElement('option');
+    opt.value = n.id;
+    opt.textContent = n.id + ' — ' + (n.en.push_title || n.en.inapp_title || n.id);
+    sel.appendChild(opt);
+  });
+}
+
+function loadMsTemplate() {
+  var sel = document.getElementById('ms-template-select');
+  if (!sel || !sel.value) return;
+  var n = NOTIF_DATA.find(function(x){return x.id===sel.value;});
+  if (!n) return;
+  var t = document.getElementById('ms-title');
+  var b = document.getElementById('ms-body');
+  var c = document.getElementById('ms-cta');
+  if (t) t.value = n.en.push_title || n.en.inapp_title || '';
+  if (b) b.value = n.en.push_body || n.en.inapp_body || '';
+  if (c) c.value = n.en.cta || '';
+  if (n.sendgridTemplateId) {
+    var sg = document.getElementById('ms-sg-id');
+    if (sg) sg.value = n.sendgridTemplateId;
+  }
+}
+
+function toggleMsEmail() {
+  var cb = document.getElementById('ms-ch-email');
+  var sec = document.getElementById('ms-email-section');
+  if (sec) sec.style.display = cb && cb.checked ? '' : 'none';
+}
+
+function handleMsCsv(input) {
+  var file = input.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var lines = e.target.result.split(/\r?\n/).filter(Boolean);
+    if (!lines.length) return;
+    var header = lines[0].toLowerCase().split(',').map(function(h){return h.trim();});
+    var uidCol = header.indexOf('user_id');
+    if (uidCol === -1) uidCol = 0;
+    var seen = {};
+    var valid = 0, invalid = 0, dups = 0;
+    _msCsvUsers = [];
+    lines.slice(1).forEach(function(line) {
+      var cols = line.split(',');
+      var uid = cols[uidCol] ? cols[uidCol].trim() : '';
+      if (!uid) { invalid++; return; }
+      if (seen[uid]) { dups++; return; }
+      seen[uid] = true;
+      // Basic validation: starts with USR- or is numeric
+      if (!/^(USR-|[0-9])/.test(uid)) { invalid++; return; }
+      valid++;
+      _msCsvUsers.push(uid);
+    });
+    document.getElementById('ms-valid-count').textContent = valid;
+    document.getElementById('ms-invalid-count').textContent = invalid;
+    document.getElementById('ms-dup-count').textContent = dups;
+    document.getElementById('ms-csv-summary').style.display = '';
+    document.getElementById('ms-drop-zone').querySelector('div').textContent = file.name + ' loaded';
+  };
+  reader.readAsText(file);
+}
+
+function openMsConfirm() {
+  var title = (document.getElementById('ms-title')||{}).value || '';
+  var channels = [];
+  ['push','inapp','email','sms'].forEach(function(ch) {
+    var cb = document.getElementById('ms-ch-'+ch);
+    if (cb && cb.checked) channels.push(ch==='inapp'?'In-App':ch.charAt(0).toUpperCase()+ch.slice(1));
+  });
+  if (!title) { showToast2('Please enter a notification title'); return; }
+  if (!channels.length) { showToast2('Please select at least one channel'); return; }
+  if (document.getElementById('ms-ch-email').checked && !document.getElementById('ms-sg-id').value) {
+    showToast2('SendGrid Template ID required for Email channel'); return;
+  }
+  if (!_msCsvUsers.length) { showToast2('Please upload a valid CSV with User IDs'); return; }
+
+  var body = '<strong>Title:</strong> ' + esc(title) + '<br>'
+    + '<strong>Channels:</strong> ' + channels.join(', ') + '<br>'
+    + '<strong>Recipients:</strong> ' + _msCsvUsers.length + ' valid users<br>'
+    + (document.getElementById('ms-ch-email').checked ? '<strong>SendGrid Template:</strong> ' + esc(document.getElementById('ms-sg-id').value) + '<br>' : '');
+
+  document.getElementById('ms-confirm-body').innerHTML = body;
+  var overlay = document.getElementById('ms-modal-overlay');
+  if (overlay) { overlay.style.display = 'flex'; }
+}
+
+function closeMsConfirm() {
+  var overlay = document.getElementById('ms-modal-overlay');
+  if (overlay) overlay.style.display = 'none';
+}
+
+function dispatchManualSend() {
+  closeMsConfirm();
+  showToast2('Manual notification dispatched to ' + _msCsvUsers.length + ' users');
+  // Reset form
+  ['ms-title','ms-body','ms-cta','ms-sg-id'].forEach(function(id) {
+    var el = document.getElementById(id); if (el) el.value = '';
+  });
+  _msCsvUsers = [];
+  document.getElementById('ms-csv-summary').style.display = 'none';
+  document.getElementById('ms-drop-zone').querySelector('div').textContent = 'Drop CSV file here or click to browse';
+}
 </script>
 
 <div class="drw2-ov" id="edit-drw-ov" onclick="closeEditDrw()"></div>
@@ -4833,10 +4857,26 @@ function initNotifications() {
         <div class="trig-grid" id="edrw-triggers"></div>
       </div>
       <div class="ctrl-grid">
-        <div class="ctrl-card"><div class="ctrl-card-title">Priority</div><select class="fsel2" id="edrw-priority"><option>Critical</option><option>High</option><option>Medium</option><option>Low</option></select></div>
-        <div class="ctrl-card"><div class="ctrl-card-title">Quiet Hours</div><select class="fsel2" id="edrw-qh-sel"><option value="Allowed">Allowed (sends during quiet hours)</option><option value="Respect">Respect (queued until 08:00)</option></select></div>
-        <div class="ctrl-card"><div class="ctrl-card-title">Rate Limiting</div><select class="fsel2" id="edrw-rl"><option value="standard">Standard (counts toward cap)</option><option value="exempt">Exempt (Critical - bypasses cap)</option></select></div>
-        <div class="ctrl-card"><div class="ctrl-card-title">Tokens</div><div style="font-size:11.5px;color:#6b7280;line-height:1.6" id="edrw-tokens"></div></div>
+        <div class="ctrl-card"><div class="ctrl-card-title">Priority Level</div>
+          <select class="fsel2" id="edrw-priority-num">
+            <option value="1">1 — Critical (always delivered)</option>
+            <option value="2">2 — Medium (standard rate limit)</option>
+            <option value="3">3 — Low (dropped first under load)</option>
+          </select>
+        </div>
+        <div class="ctrl-card"><div class="ctrl-card-title">Quiet Hours</div><select class="fsel2" id="edrw-qh-sel"><option value="Allowed">Allowed — sends during quiet hours</option><option value="Respect">Respect — queued until 08:00</option></select></div>
+        <div class="ctrl-card"><div class="ctrl-card-title">Rate Limiting</div><select class="fsel2" id="edrw-rl"><option value="standard">Standard (counts toward cap)</option><option value="exempt">Exempt (Priority 1 — bypasses cap)</option></select></div>
+        <div class="ctrl-card"><div class="ctrl-card-title">Consecutive Deduplication</div>
+          <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
+            <label class="tgl2"><input type="checkbox" id="edrw-always-send"><span class="tgl2-sl"></span></label>
+            <span style="font-size:12px;color:#374151">Always Send</span>
+          </div>
+          <div style="font-size:10.5px;color:#9ca3af;margin-top:6px">When ON: sends even if a higher-priority notification in the same sequence was already sent</div>
+        </div>
+      </div>
+      <div class="ctrl-grid" style="margin-top:0">
+        <div class="ctrl-card"><div class="ctrl-card-title">Target Audience</div><div style="font-size:12.5px;color:#374151;font-weight:500" id="edrw-audience">—</div></div>
+        <div class="ctrl-card"><div class="ctrl-card-title">Tokens available</div><div style="font-size:11.5px;color:#6b7280;line-height:1.6" id="edrw-tokens"></div></div>
       </div>
       <div class="content-block">
         <div class="content-block-hdr"><div class="content-block-icon" style="background:#fef3c7">&#128279;</div><span class="content-block-title">Target screen / deep link</span></div>
