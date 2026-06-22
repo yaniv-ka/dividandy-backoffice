@@ -585,6 +585,9 @@ input[readonly]{background:#f9fafb;color:#6b7280}
 .seg-inactive{background:#f3f4f6;color:#6b7280;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600}
 .seg-draft{background:#fef3c7;color:#92400e;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600}
 
+
+.rule-tw{padding:4px 7px;border:1px solid #e5e7eb;border-radius:6px;font-size:11.5px;color:#374151;background:#fff;outline:none;flex-shrink:0}
+.rule-tw:focus{border-color:#7c3aed}
 </style>
 </head>
 <body>
@@ -2258,20 +2261,17 @@ input[readonly]{background:#f9fafb;color:#6b7280}
     </div>
   </div>
 
-  <!-- Use case tabs -->
-  <div class="ntf-tabs">
-    <div class="ntf-tab active" onclick="filterSegByUse('all')">All</div>
-    <div class="ntf-tab" onclick="filterSegByUse('Tournament')">Tournament</div>
-    <div class="ntf-tab" onclick="filterSegByUse('Store')">Store</div>
-    <div class="ntf-tab" onclick="filterSegByUse('Offers')">Offers</div>
-    <div class="ntf-tab" onclick="filterSegByUse('Quest')">Quest</div>
-  </div>
+
 
   <div class="tb2">
     <div class="sw2">
       <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       <input class="si2" type="text" placeholder="Search segments..." id="seg-search" oninput="renderSegTable()">
     </div>
+    <select class="fs2" id="seg-use-f" onchange="renderSegTable()">
+      <option value="">All use cases</option>
+      <option>Tournament</option><option>Store</option><option>Offers</option><option>Quest</option>
+    </select>
     <select class="fs2" id="seg-status-f" onchange="renderSegTable()">
       <option value="">All statuses</option>
       <option>Active</option>
@@ -5069,7 +5069,7 @@ var SEG_DATA = [
 var _segEditId = null;
 var _segRuleCount = 0;
 var _segActiveTwPreset = 'today';
-var _segActiveUseFilter = 'all';
+
 
 function segUseBadge(use) {
   var cls = {Tournament:'seg-tournament',Store:'seg-store',Offers:'seg-offers',Quest:'seg-quest'};
@@ -5081,18 +5081,25 @@ function segStatusBadge(s) {
 }
 function rulesLabel(seg) {
   if (seg.allPlayers) return '<span style="font-size:12px;color:#374151">ALL PLAYERS</span>';
-  return seg.rules.map(function(r){
-    return '<span style="font-size:11px;background:#f3f4f6;padding:2px 7px;border-radius:4px;color:#374151">' + r.param + ' ' + r.op + ' ' + r.val + '</span>';
-  }).join(' <span style="font-size:10px;color:#9ca3af">AND</span> ');
+  var twMap = {today:'Today',yesterday:'Yesterday',last7:'7d',last30:'30d',alltime:'',custom:'custom'};
+  return seg.rules.map(function(r, i) {
+    var twLabel = r.tw && r.tw !== 'alltime' ? (r.tw==='custom' ? r.twCustom+'d' : twMap[r.tw]||r.tw) : '';
+    var twBadge = twLabel ? ' <span style="font-size:10px;color:#7c3aed;background:#f3f0ff;padding:1px 5px;border-radius:3px">' + twLabel + '</span>' : '';
+    var pill = '<span style="font-size:11px;background:#f3f4f6;padding:2px 7px;border-radius:4px;color:#374151">' + esc(r.param) + ' ' + r.op + ' ' + esc(r.val) + twBadge + '</span>';
+    if (i === 0) return pill;
+    var conn = r.connector || 'AND';
+    return '<span style="font-size:10px;color:' + (conn==='OR'?'#5b21b6':'#9ca3af') + ';font-weight:600"> ' + conn + ' </span>' + pill;
+  }).join('');
 }
 
 function renderSegTable() {
-  var q = (document.getElementById('seg-search')||{}).value||'';
+  var q  = (document.getElementById('seg-search')||{}).value||'';
   var sf = (document.getElementById('seg-status-f')||{}).value||'';
+  var uf = (document.getElementById('seg-use-f')||{}).value||'';
   var filtered = SEG_DATA.filter(function(s) {
-    var mq = !q || s.name.toLowerCase().includes(q.toLowerCase()) || s.id.toLowerCase().includes(q.toLowerCase());
+    var mq = !q  || s.name.toLowerCase().includes(q.toLowerCase()) || s.id.toLowerCase().includes(q.toLowerCase());
     var ms = !sf || s.status === sf;
-    var mu = _segActiveUseFilter === 'all' || s.use === _segActiveUseFilter;
+    var mu = !uf  || s.use === uf;
     return mq && ms && mu;
   });
   var tbody = document.getElementById('seg-tbody');
@@ -5117,14 +5124,7 @@ function renderSegTable() {
   if (cnt) cnt.textContent = filtered.length + ' segment' + (filtered.length===1?'':'s');
 }
 
-function filterSegByUse(use) {
-  _segActiveUseFilter = use;
-  document.querySelectorAll('#screen-segments .ntf-tab').forEach(function(t,i) {
-    var uses = ['all','Tournament','Store','Offers','Quest'];
-    t.classList.toggle('active', uses[i]===use);
-  });
-  renderSegTable();
-}
+// filterSegByUse removed
 
 // Drawer
 function openSegDrw(id) {
@@ -5187,10 +5187,42 @@ function closeSegDrw() {
 }
 
 function switchSegTab(name) {
-  var tabs = ['definition','timewindow','preview'];
+  var tabs = ['definition','preview'];
   document.querySelectorAll('#seg-drw .drw2-tab').forEach(function(t,i){t.classList.toggle('active',tabs[i]===name);});
   tabs.forEach(function(t){var p=document.getElementById('seg-tab-'+t);if(p)p.classList.toggle('active',t===name);});
   if (name==='preview') updateSegPreview(null);
+}
+
+
+function buildValInput(ruleId, param, val) {
+  if (param && param.values) {
+    return '<select class="rule-val" id="' + ruleId + '-val">'
+      + param.values.map(function(v){return '<option value="' + v + '"' + (val===v?' selected':'') + '>' + v + '</option>';}).join('')
+      + '</select>';
+  }
+  return '<input type="text" class="rule-val" id="' + ruleId + '-val" placeholder="value" value="' + (val||'') + '">';
+}
+
+function buildTwInput(ruleId, param, twVal, twCustomVal) {
+  if (!param || !param.timeWindow) return '<div style="width:1px"></div>';
+  twVal = twVal || 'alltime';
+  var presets = [{v:'today',l:'Today'},{v:'yesterday',l:'Yesterday'},{v:'last7',l:'Last 7d'},{v:'last30',l:'Last 30d'},{v:'alltime',l:'All time'},{v:'custom',l:'Custom'}];
+  var selOpts = presets.map(function(p){return '<option value="' + p.v + '"' + (twVal===p.v?' selected':'') + '>' + p.l + '</option>';}).join('');
+  var customStyle = twVal==='custom' ? 'display:flex' : 'display:none';
+  return '<div style="display:flex;align-items:center;gap:4px;flex-shrink:0">'
+    + '<select class="rule-tw" id="' + ruleId + '-tw" data-rid="' + ruleId + '" onchange="onTwChange(this)" style="padding:4px 7px;border:1px solid #e5e7eb;border-radius:6px;font-size:11.5px;color:#374151;background:#fff;outline:none">'
+    + selOpts + '</select>'
+    + '<div id="' + ruleId + '-tw-custom" style="' + customStyle + ';align-items:center;gap:3px">'
+    + '<span style="font-size:11px;color:#9ca3af">Last</span>'
+    + '<input type="number" id="' + ruleId + '-tw-days" value="' + (twCustomVal||'30') + '" min="1" max="365" style="width:50px;padding:4px 6px;border:1px solid #e5e7eb;border-radius:6px;font-size:11.5px;text-align:center;outline:none">'
+    + '<span style="font-size:11px;color:#9ca3af">days</span>'
+    + '</div></div>';
+}
+
+function onTwChange(sel) {
+  var ruleId = sel.dataset.rid;
+  var customDiv = document.getElementById(ruleId + '-tw-custom');
+  if (customDiv) customDiv.style.display = sel.value==='custom' ? 'flex' : 'none';
 }
 
 function addSegRule(existing, index) {
@@ -5198,11 +5230,12 @@ function addSegRule(existing, index) {
   if (!rb) return;
   var ruleId = 'rule-' + (_segRuleCount++);
 
-  // AND connector (not for first rule)
-  if (index > 0 || rb.children.length > 0) {
+  // AND/OR connector (not for first rule)
+  if (rb.children.length > 0) {
     var conn = document.createElement('div');
     conn.className = 'rule-connector';
-    conn.innerHTML = '<select><option>AND</option></select>';
+    var connVal = (existing && existing.connector) ? existing.connector : 'AND';
+    conn.innerHTML = '<select id="' + ruleId + '-conn" style="padding:3px 10px;border:1px solid #c4b5fd;border-radius:20px;font-size:11.5px;font-weight:600;color:#7c3aed;background:#f3f0ff;outline:none;cursor:pointer"><option value="AND"' + (connVal==='AND'?' selected':'') + '>AND</option><option value="OR"' + (connVal==='OR'?' selected':'') + '>OR</option></select>';
     rb.appendChild(conn);
   }
 
@@ -5230,10 +5263,12 @@ function addSegRule(existing, index) {
     valInput = '<input type="text" class="rule-val" id="' + ruleId + '-val" placeholder="value" value="' + (existing?existing.val:'') + '">';
   }
 
+  var twHtml = buildTwInput(ruleId, selParam, existing ? existing.tw : 'alltime', existing ? existing.twCustom : '');
   row.innerHTML = '<select class="rule-param" id="' + ruleId + '-param" data-rid="' + ruleId + '" onchange="onSegParamChange(this.dataset.rid)">' + paramOpts + '</select>'
     + '<select class="rule-op" id="' + ruleId + '-op">' + opOpts + '</select>'
     + valInput
-    + '<div class="rule-remove" onclick="removeSegRule(this.closest(\'.rule-row\').id)" title="Remove">&#215;</div>';
+    + twHtml
+    + '<div class="rule-remove" onclick="removeSegRule(this.closest(\'.rule-row\').id)" title="Remove">&#215;</div>';;
 
   rb.appendChild(row);
 }
@@ -5249,20 +5284,17 @@ function onSegParamChange(ruleId) {
   // Update value input
   var valEl = document.getElementById(ruleId + '-val');
   if (valEl) {
-    if (p.values) {
-      var newSel = document.createElement('select');
-      newSel.className = 'rule-val';
-      newSel.id = ruleId + '-val';
-      newSel.innerHTML = p.values.map(function(v){return '<option>' + v + '</option>';}).join('');
-      valEl.parentNode.replaceChild(newSel, valEl);
-    } else {
-      var newInp = document.createElement('input');
-      newInp.type = 'text';
-      newInp.className = 'rule-val';
-      newInp.id = ruleId + '-val';
-      newInp.placeholder = 'value';
-      valEl.parentNode.replaceChild(newInp, valEl);
-    }
+    var newValDiv = document.createElement('div');
+    newValDiv.innerHTML = buildValInput(ruleId, p, '');
+    valEl.parentNode.replaceChild(newValDiv.firstChild, valEl);
+  }
+  // Update time window
+  var oldTw = document.getElementById(ruleId + '-tw');
+  if (oldTw) {
+    var oldTwWrap = oldTw.parentNode;
+    var newTwDiv = document.createElement('div');
+    newTwDiv.innerHTML = buildTwInput(ruleId, p, 'alltime', '');
+    oldTwWrap.parentNode.replaceChild(newTwDiv.firstChild, oldTwWrap);
   }
 }
 
@@ -5299,14 +5331,24 @@ function saveSegDrw(status) {
   if (!useEl) { showToast2('Please select a use case'); return; }
 
   var rules = [];
-  document.querySelectorAll('#seg-rule-builder .rule-row').forEach(function(row) {
-    var pEl = row.querySelector('.rule-param');
-    var oEl = row.querySelector('.rule-op');
-    var vEl = row.querySelector('.rule-val');
-    if (pEl && oEl && vEl) {
-      rules.push({param:pEl.value, op:oEl.value, val:vEl.value});
-    }
-  });
+  var rb2 = document.getElementById('seg-rule-builder');
+  if (rb2) {
+    rb2.querySelectorAll('.rule-row').forEach(function(row) {
+      var pEl = row.querySelector('.rule-param');
+      var oEl = row.querySelector('.rule-op');
+      var vEl = row.querySelector('.rule-val');
+      var twEl = row.querySelector('.rule-tw');
+      var twDays = row.querySelector('[id$="-tw-days"]');
+      var prev = row.previousElementSibling;
+      var connEl = prev && prev.classList.contains('rule-connector') ? prev.querySelector('select') : null;
+      if (pEl && oEl && vEl) {
+        rules.push({param:pEl.value, op:oEl.value, val:vEl.value,
+          tw: twEl ? twEl.value : 'alltime',
+          twCustom: twDays ? twDays.value : '',
+          connector: connEl ? connEl.value : 'AND'});
+      }
+    });
+  }
 
   var apCb = document.getElementById('seg-all-players');
   var allPlayers = apCb && apCb.checked;
@@ -5474,7 +5516,7 @@ function initSegments() {
 
   <div class="drw2-tabs">
     <div class="drw2-tab active" onclick="switchSegTab('definition')">Definition</div>
-    <div class="drw2-tab" onclick="switchSegTab('timewindow')">Time Window</div>
+
     <div class="drw2-tab" onclick="switchSegTab('preview')">Preview &amp; Lookup</div>
   </div>
 
