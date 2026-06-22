@@ -2053,20 +2053,45 @@ input[readonly]{background:#f9fafb;color:#6b7280}
     </div>
     <div id="ntf-accordion" style="padding:16px 0;overflow:auto;flex:1"></div>
   </div>
-  <div class="ntf-panel" id="ntf-panel-global">
+    <div class="ntf-panel" id="ntf-panel-global">
     <div class="gs-grid">
-      <div class="gs-card"><div class="gs-card-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>Rate Limiting</div>
-        <div class="gs-row"><span class="gs-lbl">Max per hour (per user)</span><input class="gs-inp" type="number" value="3" min="1"></div>
-        <div class="gs-row"><span class="gs-lbl">Max per day (per user)</span><input class="gs-inp" type="number" value="10" min="1"></div>
-        <div style="font-size:11px;color:#9ca3af;margin-top:4px">Critical notifications always exempt</div>
+      <!-- Rate Limiting -->
+      <div class="gs-card" style="grid-column:span 2">
+        <div class="gs-card-title">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+          Rate Limiting &mdash; Per Category &times; Priority
+        </div>
+        <div style="font-size:11.5px;color:#6b7280;margin-bottom:14px">Define the maximum number of notifications per priority level, per category, within a chosen time window. Priority 1 is always exempt.</div>
+        <div id="rl-table-wrap">
+          <div style="display:grid;grid-template-columns:170px 1fr 1fr 1fr;gap:6px;margin-bottom:6px">
+            <div></div>
+            <div style="text-align:center;padding:5px 8px;background:#fee2e2;border-radius:6px;font-size:10.5px;font-weight:700;color:#991b1b">P1 &mdash; Critical<br><span style="font-weight:400;font-size:10px">Always exempt</span></div>
+            <div style="text-align:center;padding:5px 8px;background:#fef3c7;border-radius:6px;font-size:10.5px;font-weight:700;color:#92400e">P2 &mdash; Medium</div>
+            <div style="text-align:center;padding:5px 8px;background:#f3f4f6;border-radius:6px;font-size:10.5px;font-weight:700;color:#6b7280">P3 &mdash; Low</div>
+          </div>
+          <div id="rl-rows"></div>
+        </div>
+        <div style="margin-top:14px;padding-top:12px;border-top:1px solid #e8e8ec;display:flex;gap:16px;align-items:center;flex-wrap:wrap">
+          <span style="font-size:11.5px;color:#6b7280;font-weight:500">Global default cap (when no category cap is set):</span>
+          <div style="display:flex;align-items:center;gap:6px">
+            <span style="font-size:11.5px;color:#374151">Max</span>
+            <input class="gs-inp" type="number" value="3" min="1" style="width:55px">
+            <span style="font-size:11.5px;color:#374151">per</span>
+            <select class="fs2" style="padding:5px 8px;font-size:11.5px"><option>hour</option><option selected>day</option><option>week</option></select>
+          </div>
+        </div>
       </div>
-      <div class="gs-card"><div class="gs-card-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Quiet Hours</div>
+      <!-- Quiet Hours -->
+      <div class="gs-card">
+        <div class="gs-card-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Quiet Hours</div>
         <div class="gs-row"><span class="gs-lbl">Window start</span><input class="gs-inp" type="time" value="00:00"></div>
         <div class="gs-row"><span class="gs-lbl">Window end</span><input class="gs-inp" type="time" value="08:00"></div>
         <div class="gs-row"><span class="gs-lbl">Timezone</span><select class="fs2" style="width:140px"><option>User local time</option><option>UTC</option></select></div>
         <div style="font-size:11px;color:#9ca3af;margin-top:4px">Allowed notifications bypass this window</div>
       </div>
-      <div class="gs-card"><div class="gs-card-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg>Channels</div>
+      <!-- Channels -->
+      <div class="gs-card">
+        <div class="gs-card-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>Channels</div>
         <div style="display:flex;flex-direction:column;gap:8px">
           <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 12px;background:#fff;border:1px solid #e8e8ec;border-radius:7px"><span style="display:flex;align-items:center;gap:7px;font-size:12.5px"><span style="width:10px;height:10px;border-radius:50%;background:#3b82f6;display:inline-block"></span>Firebase Push</span><label class="tgl2"><input type="checkbox" checked><span class="tgl2-sl"></span></label></div>
           <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 12px;background:#fff;border:1px solid #e8e8ec;border-radius:7px"><span style="display:flex;align-items:center;gap:7px;font-size:12.5px"><span style="width:10px;height:10px;border-radius:50%;background:#10b981;display:inline-block"></span>Firebase In-App</span><label class="tgl2"><input type="checkbox" checked><span class="tgl2-sl"></span></label></div>
@@ -2074,7 +2099,9 @@ input[readonly]{background:#f9fafb;color:#6b7280}
           <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 12px;background:#fff;border:1px solid #e8e8ec;border-radius:7px"><span style="display:flex;align-items:center;gap:7px;font-size:12.5px"><span style="width:10px;height:10px;border-radius:50%;background:#ef4444;display:inline-block"></span>Amazon SNS (SMS)</span><label class="tgl2"><input type="checkbox" checked><span class="tgl2-sl"></span></label></div>
         </div>
       </div>
-      <div class="gs-card"><div class="gs-card-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2"><circle cx="12" cy="12" r="3"/></svg>Languages</div>
+      <!-- Languages -->
+      <div class="gs-card">
+        <div class="gs-card-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2"><circle cx="12" cy="12" r="3"/></svg>Languages</div>
         <div style="display:flex;flex-direction:column;gap:8px">
           <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 12px;background:#fff;border:1px solid #e8e8ec;border-radius:7px"><span style="font-size:12.5px">English (EN)</span><label class="tgl2"><input type="checkbox" checked><span class="tgl2-sl"></span></label></div>
           <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 12px;background:#fff;border:1px solid #e8e8ec;border-radius:7px"><span style="font-size:12.5px">Spanish (ES)</span><label class="tgl2"><input type="checkbox" checked><span class="tgl2-sl"></span></label></div>
@@ -2082,11 +2109,17 @@ input[readonly]{background:#f9fafb;color:#6b7280}
         </div>
       </div>
     </div>
-  <!-- MANUAL SEND PANEL -->
+    <div style="padding:0 24px;margin-top:16px">
+      <button class="btn2 bp" onclick="showToast2('Global settings saved')">
+        <svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/></svg>
+        Save global settings
+      </button>
+    </div>
+  </div>
   <div class="ntf-panel" id="ntf-panel-manual">
     <div style="padding:24px;max-width:760px;display:flex;flex-direction:column;gap:16px">
       <div class="csec2">
-        <div class="csec2-h"><span class="csec2-t">Step 1 — Compose</span></div>
+        <div class="csec2-h"><span class="csec2-t">Step 1 &mdash; Compose</span></div>
         <div style="display:flex;gap:10px;margin-bottom:12px">
           <button class="btn2 bp" id="ms-mode-free" onclick="setMsMode('free')" style="font-size:12px;padding:6px 14px">Write free text</button>
           <button class="btn2 bo" id="ms-mode-template" onclick="setMsMode('template')" style="font-size:12px;padding:6px 14px">Use catalog template</button>
@@ -2111,7 +2144,7 @@ input[readonly]{background:#f9fafb;color:#6b7280}
         </div>
       </div>
       <div class="csec2">
-        <div class="csec2-h"><span class="csec2-t">Step 2 — Channel selection</span></div>
+        <div class="csec2-h"><span class="csec2-t">Step 2 &mdash; Channel selection</span></div>
         <div style="display:flex;gap:10px;flex-wrap:wrap">
           <label style="display:flex;align-items:center;gap:7px;padding:8px 14px;border:1px solid #e5e7eb;border-radius:7px;cursor:pointer;font-size:12.5px"><input type="checkbox" id="ms-ch-push" checked><span style="display:flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:#3b82f6;display:inline-block"></span>Push</span></label>
           <label style="display:flex;align-items:center;gap:7px;padding:8px 14px;border:1px solid #e5e7eb;border-radius:7px;cursor:pointer;font-size:12.5px"><input type="checkbox" id="ms-ch-inapp" checked><span style="display:flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:#10b981;display:inline-block"></span>In-App</span></label>
@@ -2121,11 +2154,11 @@ input[readonly]{background:#f9fafb;color:#6b7280}
         <div id="ms-email-section" style="display:none;margin-top:12px;padding:12px;background:#fff;border:1px solid #fcd34d;border-radius:8px">
           <label style="font-size:10.5px;font-weight:600;color:#92400e;text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:4px">SendGrid Template ID (required)</label>
           <input type="text" class="finp2" id="ms-sg-id" placeholder="d-xxxxxxxxxxxxxxxxxxxx" style="font-family:monospace;max-width:320px">
-          <div style="font-size:11px;color:#9ca3af;margin-top:4px">Dynamic fields at send time: <code>{TournamentName}</code> <code>{DeepLink}</code></div>
+          <div style="font-size:11px;color:#9ca3af;margin-top:4px">Dynamic fields: <code>{TournamentName}</code> <code>{DeepLink}</code></div>
         </div>
       </div>
       <div class="csec2">
-        <div class="csec2-h"><span class="csec2-t">Step 3 — Audience (CSV upload)</span></div>
+        <div class="csec2-h"><span class="csec2-t">Step 3 &mdash; Audience (CSV upload)</span></div>
         <div style="border:2px dashed #e5e7eb;border-radius:8px;padding:24px;text-align:center;background:#fafafa;cursor:pointer" onclick="document.getElementById('ms-csv-input').click()">
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.5" style="margin-bottom:8px"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
           <div id="ms-drop-label" style="font-size:13px;font-weight:500;color:#374151">Drop CSV file here or click to browse</div>
@@ -2149,8 +2182,6 @@ input[readonly]{background:#f9fafb;color:#6b7280}
       </div>
     </div>
   </div>
-
-  <!-- Confirm Modal -->
   <div id="ms-modal-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:300;align-items:center;justify-content:center">
     <div style="background:#fff;border-radius:12px;padding:24px;width:480px;max-width:90vw;box-shadow:0 20px 60px rgba(0,0,0,.2)">
       <div style="font-size:16px;font-weight:700;color:#1a1a2e;margin-bottom:16px">Confirm Manual Send</div>
@@ -2161,8 +2192,6 @@ input[readonly]{background:#f9fafb;color:#6b7280}
         <button class="btn2 bp" onclick="dispatchManualSend()">Confirm &amp; Send</button>
       </div>
     </div>
-  </div>
-    <div style="padding:0 24px"><button class="btn2 bp" onclick="showToast2('Global settings saved')"><svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/></svg>Save global settings</button></div>
   </div>
 </div>
 </div><!-- /main -->
@@ -4460,7 +4489,11 @@ function renderAccordion(data) {
       const title = n.en.push_title || n.en.inapp_title || n.id;
       const sub = (n.en.push_body || n.en.inapp_body || '').substring(0,80);
       const chHtml = n.channels.map(function(c){return chPill(c,n.enabled);}).join('');
-      const crit = CRIT_IDS.has(n.id) ? '<span class="crit-badge">CRIT</span>' : '';
+      var priColors = {1:'#fee2e2|#991b1b',2:'#fef3c7|#92400e',3:'#f3f4f6|#6b7280'};
+      var priParts = (priColors[n.priority]||'#f3f4f6|#6b7280').split('|');
+      var priBadge = '<span style="display:inline-flex;align-items:center;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;background:'+priParts[0]+';color:'+priParts[1]+';flex-shrink:0">P'+(n.priority||2)+'</span>';
+      var audBadge = n.audience ? '<span style="font-size:10px;color:#9ca3af;flex-shrink:0;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="'+esc(n.audience)+'">' + esc(n.audience.substring(0,28)) + '</span>' : '';
+      const crit = CRIT_IDS.has(n.id) ? priBadge : priBadge;
       const qh = '<span class="qh-badge ' + (n.quietHours==='Allowed'?'qh-allowed':'qh-respect') + '">' + n.quietHours + '</span>';
       return '<div class="ntf-row"><span class="ntf-id">' + n.id + '</span>'
         + '<div style="flex:1;min-width:0"><div class="ntf-name">' + esc(title) + '</div>'
@@ -4607,16 +4640,18 @@ function buildContentPanel(lang, n) {
       + '<div class="field-row"><label>CTA Text</label><input type="text" id="f-'+lang+'-cta" value="'+esc(d.cta||'')+'"></div>'
       + '</div>';
   }
-  if (hasEmail && lang === 'en') {
-    html += '<div class="content-block"><div class="content-block-hdr"><div class="content-block-icon" style="background:#fef3c7">E</div><span class="content-block-title">Email (SendGrid)</span></div>'
-      + '<div style="font-size:11.5px;color:#6b7280;margin-bottom:10px;padding:8px 10px;background:#fff;border:1px solid #e8e8ec;border-radius:6px">Email content is managed directly in SendGrid. Set the Template ID below to link this notification to the correct SendGrid template.</div>'
-      + '<div class="field-row"><label>SendGrid Template ID</label><input type="text" id="f-en-sg-template-id" value="'+esc(n.sendgridTemplateId||'')+'" placeholder="d-xxxxxxxxxxxxxxxxxxxx" style="font-family:monospace"></div>'
-      + '<div style="font-size:11px;color:#9ca3af;margin-top:4px">Dynamic fields populated from DB at send time: <code>{TournamentName}</code> <code>{DeepLink}</code></div>'
-      + '</div>';
-  } else if (hasEmail && lang !== 'en') {
-    html += '<div class="content-block"><div class="content-block-hdr"><div class="content-block-icon" style="background:#fef3c7">E</div><span class="content-block-title">Email (SendGrid)</span></div>'
-      + '<div style="font-size:11.5px;color:#9ca3af;padding:8px 0">Email template ID is set in the EN tab. No per-language email configuration required.</div>'
-      + '</div>';
+  if (hasEmail) {
+    html += '<div class="content-block"><div class="content-block-hdr"><div class="content-block-icon" style="background:#fef3c7">&#10003;</div><span class="content-block-title">Email (SendGrid)</span></div>'
+      + '<div style="font-size:12px;color:#6b7280;margin-bottom:12px;padding:9px 12px;background:#fff;border:1px solid #e8e8ec;border-radius:7px;display:flex;align-items:flex-start;gap:8px">'
+      + '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" style="flex-shrink:0;margin-top:1px"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 .18h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.37 7.8a16 16 0 006.17 6.17l.88-.88a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>'
+      + '<span>Email content is managed in <strong>SendGrid</strong>. Link this notification to the correct template using the Template ID below.</span></div>'
+      + '<div class="field-row" id="sg-id-row-'+lang+'"><label>SendGrid Template ID</label>'
+      + '<input type="text" id="f-'+lang+'-sg-template-id" value="'+esc(n.sendgridTemplateId||'')+'" placeholder="d-xxxxxxxxxxxxxxxxxxxx" style="font-family:monospace;max-width:340px"></div>'
+      + '<div style="font-size:11px;color:#9ca3af;margin-top:6px;display:flex;gap:12px">'
+      + '<span>Dynamic fields from DB at send time:</span>'
+      + '<code style="background:#f3f4f6;padding:1px 5px;border-radius:3px">{TournamentName}</code>'
+      + '<code style="background:#f3f4f6;padding:1px 5px;border-radius:3px">{DeepLink}</code>'
+      + '</div></div>';
   }
   if (!html) html = '<div style="font-size:12px;color:#9ca3af;padding:12px 0">No content for this channel configuration.</div>';
   document.getElementById('edrw-'+lang+'-body').innerHTML = html;
@@ -4662,7 +4697,7 @@ function saveEditDrw() {
   n.critical   = rd('edrw-rl') === 'exempt';
   var as2 = document.getElementById('edrw-always-send');
   if (as2) n.alwaysSend = as2.checked;
-  var sg = document.getElementById('edrw-sg-id');
+  var sg = document.getElementById('f-en-sg-template-id');
   if (sg) n.sendgridTemplateId = sg.value;
   var pri = document.getElementById('edrw-priority-num');
   if (pri) n.priority = parseInt(pri.value) || n.priority;
@@ -4684,6 +4719,7 @@ function switchNtfTab(name) {
   document.querySelectorAll('.ntf-panel').forEach(function(p){
     p.classList.toggle('active',p.id==='ntf-panel-'+name);
   });
+  if (name==='global') initRLTable();
 }
 
 function initNotifications() {
@@ -4691,6 +4727,57 @@ function initNotifications() {
     renderAccordion(NOTIF_DATA);
   }
 }
+// ═══════════════════════════════════════════
+// RATE LIMITING TABLE
+// ═══════════════════════════════════════════
+var RL_CATEGORIES = ['In-Tournament','Post-Tournament','Onboarding','Wallet','Social & Rival','Sit & Go','Profile'];
+var RL_WINDOWS = ['per hour','per day','per week'];
+
+// Default values [max, window_index]
+var RL_DEFAULTS = {
+  'In-Tournament':   {p2:[5,'per hour'], p3:[3,'per hour']},
+  'Post-Tournament': {p2:[10,'per day'], p3:[5,'per day']},
+  'Onboarding':      {p2:[3,'per hour'], p3:[2,'per hour']},
+  'Wallet':          {p2:[5,'per day'],  p3:[3,'per day']},
+  'Social & Rival':  {p2:[5,'per day'],  p3:[3,'per day']},
+  'Sit & Go':        {p2:[5,'per hour'], p3:[3,'per hour']},
+  'Profile':         {p2:[3,'per day'],  p3:[2,'per day']},
+};
+
+function renderRLTable() {
+  var wrap = document.getElementById('rl-rows');
+  if (!wrap) return;
+  wrap.innerHTML = RL_CATEGORIES.map(function(cat) {
+    var d = RL_DEFAULTS[cat] || {p2:[3,'per day'],p3:[2,'per day']};
+    var catId = cat.replace(/[^a-z0-9]/gi,'-');
+    return '<div style="display:grid;grid-template-columns:170px 1fr 1fr 1fr;gap:6px;margin-bottom:6px;align-items:center">'
+      + '<div style="font-size:12.5px;color:#374151;font-weight:500">' + cat + '</div>'
+      + '<div style="text-align:center;padding:6px;background:#fff8f8;border:1px dashed #fecaca;border-radius:6px;font-size:11px;color:#9ca3af">Exempt — always sent</div>'
+      + rlCell(catId,'p2',d.p2[0],d.p2[1])
+      + rlCell(catId,'p3',d.p3[0],d.p3[1])
+      + '</div>';
+  }).join('');
+}
+
+function rlCell(catId, pri, defVal, defWin) {
+  var winOpts = RL_WINDOWS.map(function(w) {
+    return '<option' + (w===defWin?' selected':'') + '>' + w + '</option>';
+  }).join('');
+  return '<div style="display:flex;align-items:center;gap:5px;padding:6px 8px;background:#fff;border:1px solid #e8e8ec;border-radius:7px">'
+    + '<span style="font-size:11px;color:#9ca3af">Max</span>'
+    + '<input type="number" value="' + defVal + '" min="1" style="width:50px;padding:4px 6px;border:1px solid #e5e7eb;border-radius:5px;font-size:12px;text-align:center;outline:none" id="rl-' + catId + '-' + pri + '-val">'
+    + '<select style="padding:4px 6px;border:1px solid #e5e7eb;border-radius:5px;font-size:11.5px;color:#374151;background:#fff;outline:none" id="rl-' + catId + '-' + pri + '-win">'
+    + winOpts
+    + '</select>'
+    + '</div>';
+}
+
+function initRLTable() {
+  if (document.getElementById('rl-rows') && !document.getElementById('rl-rows').innerHTML) {
+    renderRLTable();
+  }
+}
+
 
 
 // ═══════════════════════════════════════════
