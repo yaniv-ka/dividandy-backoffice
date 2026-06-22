@@ -544,6 +544,48 @@ input[readonly]{background:#f9fafb;color:#6b7280}
 /* Manual Send */
 .gs-grid{grid-template-columns:repeat(2,1fr)}
 #ms-modal-overlay{display:none}
+
+/* ═══ SEGMENTS SCREEN ═══ */
+.seg-use-badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:4px;font-size:10.5px;font-weight:600}
+.seg-tournament{background:#dbeafe;color:#1e40af}
+.seg-store{background:#d1fae5;color:#065f46}
+.seg-offers{background:#ede9fe;color:#5b21b6}
+.seg-quest{background:#fef3c7;color:#92400e}
+.seg-all{background:#f3f4f6;color:#374151}
+
+/* Rule builder */
+.rule-builder{display:flex;flex-direction:column;gap:10px}
+.rule-row{display:flex;align-items:center;gap:8px;padding:10px 12px;background:#fff;border:1px solid #e8e8ec;border-radius:8px;flex-wrap:wrap}
+.rule-connector{display:flex;align-items:center;justify-content:center;padding:4px 0}
+.rule-connector select{padding:3px 10px;border:1px solid #e5e7eb;border-radius:20px;font-size:11.5px;font-weight:600;color:#7c3aed;background:#f3f0ff;outline:none;cursor:pointer}
+.rule-param{padding:6px 10px;border:1px solid #e5e7eb;border-radius:6px;font-size:12px;color:#374151;background:#fff;outline:none;min-width:160px}
+.rule-op{padding:6px 8px;border:1px solid #e5e7eb;border-radius:6px;font-size:12px;color:#374151;background:#fff;outline:none;width:80px}
+.rule-val{padding:6px 10px;border:1px solid #e5e7eb;border-radius:6px;font-size:12px;color:#374151;background:#fff;outline:none;width:100px}
+.rule-remove{width:26px;height:26px;border-radius:6px;background:#fff8f8;border:1px solid #fecaca;color:#ef4444;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;line-height:1;flex-shrink:0}
+.rule-remove:hover{background:#fee2e2}
+.add-rule-btn{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border:1px dashed #c4b5fd;border-radius:7px;font-size:12px;color:#7c3aed;background:#f9f8ff;cursor:pointer;transition:all .12s}
+.add-rule-btn:hover{background:#f3f0ff;border-color:#7c3aed}
+
+/* Time window */
+.time-window-card{background:#fff;border:1px solid #e8e8ec;border-radius:8px;padding:14px;margin-top:4px}
+.tw-presets{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.tw-preset{padding:5px 12px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid #e5e7eb;background:#fff;color:#6b7280;transition:all .12s}
+.tw-preset.active{background:#7c3aed;color:#fff;border-color:#7c3aed}
+.tw-custom{display:none;gap:10px;align-items:center;flex-wrap:wrap}
+.tw-custom.visible{display:flex}
+.tw-date-input{padding:6px 10px;border:1px solid #e5e7eb;border-radius:6px;font-size:12px;color:#374151;outline:none}
+.tw-date-input:focus{border-color:#7c3aed}
+
+/* Audience preview */
+.aud-preview{display:flex;align-items:center;gap:10px;padding:10px 14px;background:#f3f0ff;border:1px solid #c4b5fd;border-radius:8px;margin-top:12px}
+.aud-num{font-size:18px;font-weight:800;color:#7c3aed}
+.aud-lbl{font-size:12px;color:#5b21b6}
+
+/* Segment status */
+.seg-active{background:#d1fae5;color:#065f46;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600}
+.seg-inactive{background:#f3f4f6;color:#6b7280;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600}
+.seg-draft{background:#fef3c7;color:#92400e;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600}
+
 </style>
 </head>
 <body>
@@ -629,6 +671,7 @@ input[readonly]{background:#f9fafb;color:#6b7280}
         </div>
         <div id="nav-players" style="display:block">
           <a class="nav-item-new" id="ni-users" onclick="navigateNew('users')"><i class="ti ti-user-circle"></i>User Management</a>
+          <a class="nav-item-new" id="ni-segments" onclick="navigateNew('segments');initSegments()"><i class="ti ti-filter"></i>Segments</a>
           <a class="nav-item-new" id="ni-geo" onclick="navigateNew('geo')"><i class="ti ti-shield-check"></i>Geo &amp; Session</a>
         </div>
       </div>
@@ -2194,6 +2237,66 @@ input[readonly]{background:#f9fafb;color:#6b7280}
     </div>
   </div>
 </div>
+
+<div class="screen" id="screen-segments">
+  <div class="page-hdr">
+    <div class="page-hdr-top">
+      <div>
+        <div class="page-title2">Segments</div>
+        <div class="page-sub">Define player segments for Tournaments, Store, Offers and Quests. Default: All Players when no segment is assigned.</div>
+      </div>
+      <div class="hdr-actions">
+        <button class="btn2 bo" onclick="showToast2('Exported')">
+          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          Export
+        </button>
+        <button class="btn2 bp" onclick="openSegDrw(null)">
+          <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          New Segment
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Use case tabs -->
+  <div class="ntf-tabs">
+    <div class="ntf-tab active" onclick="filterSegByUse('all')">All</div>
+    <div class="ntf-tab" onclick="filterSegByUse('Tournament')">Tournament</div>
+    <div class="ntf-tab" onclick="filterSegByUse('Store')">Store</div>
+    <div class="ntf-tab" onclick="filterSegByUse('Offers')">Offers</div>
+    <div class="ntf-tab" onclick="filterSegByUse('Quest')">Quest</div>
+  </div>
+
+  <div class="tb2">
+    <div class="sw2">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input class="si2" type="text" placeholder="Search segments..." id="seg-search" oninput="renderSegTable()">
+    </div>
+    <select class="fs2" id="seg-status-f" onchange="renderSegTable()">
+      <option value="">All statuses</option>
+      <option>Active</option>
+      <option>Inactive</option>
+      <option>Draft</option>
+    </select>
+    <span class="rl2" id="seg-count">0 segments</span>
+  </div>
+
+  <div style="flex:1;overflow:auto">
+    <table class="tbl2" id="seg-table">
+      <thead><tr>
+        <th>Name</th>
+        <th>Use Case</th>
+        <th>Rules</th>
+        <th>Time Window</th>
+        <th>Status</th>
+        <th>Last updated</th>
+        <th></th>
+      </tr></thead>
+      <tbody id="seg-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
 </div><!-- /main -->
   </div><!-- /layout -->
 </div><!-- /app -->
@@ -3164,7 +3267,7 @@ function calcRegHint(prefix){
 // NEW SCREENS: NAVIGATION
 // ═══════════════════════════════════════════
 const newScreenMap = {
-  'users':'ni-users','store-settings':'ni-store-settings','notifications':'ni-notifications',
+  'users':'ni-users','segments':'ni-segments','store-settings':'ni-store-settings','notifications':'ni-notifications',
   'offers':'ni-offers','geo':'ni-geo'
 };
 
@@ -4907,6 +5010,368 @@ function dispatchManualSend() {
   document.getElementById('ms-csv-summary').style.display = 'none';
   document.getElementById('ms-drop-zone').querySelector('div').textContent = 'Drop CSV file here or click to browse';
 }
+
+// ═══════════════════════════════════════════
+// SEGMENTS
+// ═══════════════════════════════════════════
+
+// Segment parameters from the Sheet "New"
+const SEG_PARAMS = [
+  {id:'user_level_group', label:'user_level_group', type:'string', timeWindow:false,
+   ops:['=','!='], values:['Newborn','Starter','Talent','Pro Investor','Master','Fox']},
+  {id:'user_level', label:'user_level', type:'num', timeWindow:false,
+   ops:['=','<','<=','>','>=','!=']},
+  {id:'deposits_count', label:'deposits_count', type:'num', timeWindow:true,
+   ops:['=','<','<=','>','>=','!=']},
+  {id:'tournaments_played_count', label:'tournaments_played_count', type:'num', timeWindow:true,
+   ops:['=','<','<=','>','>=','!=']},
+  {id:'wager_fee_sum', label:'wager_fee_sum', type:'num', timeWindow:true,
+   ops:['<','<=','>','>=']},
+  {id:'deposit_sum', label:'deposit_sum', type:'num', timeWindow:true,
+   ops:['<','<=','>','>=']},
+  {id:'AVG_x_deposits_value', label:'AVG_x_deposits_value', type:'num', timeWindow:true,
+   ops:['<','<=','>','>=']},
+  {id:'wins_count', label:'wins_count', type:'num', timeWindow:true,
+   ops:['=','<','<=','>','>=']},
+  {id:'Country', label:'Country', type:'string', timeWindow:false,
+   ops:['=','!=','IN','NOT IN']},
+  {id:'Is_tester', label:'Is_tester', type:'bool', timeWindow:false,
+   ops:['='], values:['TRUE','FALSE']},
+];
+
+// Sample data
+var SEG_DATA = [
+  {id:'SEG-001', name:'High Value Payers', use:'Tournament', desc:'Players with deposits > 100',
+   rules:[{param:'deposits_count',op:'>',val:'3'}], timeWindow:'Last 30 days', twType:'last30',
+   status:'Active', updatedBy:'Admin YK', updatedAt:'22 Jun 2026', allPlayers:false},
+  {id:'SEG-002', name:'New Players', use:'Quest', desc:'Registered in last 7 days',
+   rules:[{param:'user_level_group',op:'=',val:'Newborn'}], timeWindow:'All time', twType:'alltime',
+   status:'Active', updatedBy:'Admin YK', updatedAt:'22 Jun 2026', allPlayers:false},
+  {id:'SEG-003', name:'FTD Players', use:'Store', desc:'First time depositors',
+   rules:[{param:'deposits_count',op:'=',val:'1'}], timeWindow:'All time', twType:'alltime',
+   status:'Active', updatedBy:'Admin MB', updatedAt:'21 Jun 2026', allPlayers:false},
+  {id:'SEG-004', name:'Active Traders', use:'Offers', desc:'High wager last week',
+   rules:[{param:'wager_fee_sum',op:'>=',val:'50'},{param:'tournaments_played_count',op:'>=',val:'3'}],
+   timeWindow:'Last 7 days', twType:'last7',
+   status:'Draft', updatedBy:'Admin YK', updatedAt:'20 Jun 2026', allPlayers:false},
+  {id:'SEG-005', name:'Test Users', use:'Tournament', desc:'QA testers only',
+   rules:[{param:'Is_tester',op:'=',val:'TRUE'}], timeWindow:'All time', twType:'alltime',
+   status:'Inactive', updatedBy:'Admin MB', updatedAt:'18 Jun 2026', allPlayers:false},
+  {id:'SEG-006', name:'Argentina Players', use:'Store', desc:'Country = Argentina',
+   rules:[{param:'Country',op:'=',val:'Argentina'}], timeWindow:'All time', twType:'alltime',
+   status:'Active', updatedBy:'Admin YK', updatedAt:'18 Jun 2026', allPlayers:false},
+];
+
+var _segEditId = null;
+var _segRuleCount = 0;
+var _segActiveTwPreset = 'today';
+var _segActiveUseFilter = 'all';
+
+function segUseBadge(use) {
+  var cls = {Tournament:'seg-tournament',Store:'seg-store',Offers:'seg-offers',Quest:'seg-quest'};
+  return '<span class="seg-use-badge ' + (cls[use]||'seg-all') + '">' + use + '</span>';
+}
+function segStatusBadge(s) {
+  var cls = {Active:'seg-active',Inactive:'seg-inactive',Draft:'seg-draft'};
+  return '<span class="' + (cls[s]||'seg-inactive') + '">' + s + '</span>';
+}
+function rulesLabel(seg) {
+  if (seg.allPlayers) return '<span style="font-size:12px;color:#374151">ALL PLAYERS</span>';
+  return seg.rules.map(function(r){
+    return '<span style="font-size:11px;background:#f3f4f6;padding:2px 7px;border-radius:4px;color:#374151">' + r.param + ' ' + r.op + ' ' + r.val + '</span>';
+  }).join(' <span style="font-size:10px;color:#9ca3af">AND</span> ');
+}
+
+function renderSegTable() {
+  var q = (document.getElementById('seg-search')||{}).value||'';
+  var sf = (document.getElementById('seg-status-f')||{}).value||'';
+  var filtered = SEG_DATA.filter(function(s) {
+    var mq = !q || s.name.toLowerCase().includes(q.toLowerCase()) || s.id.toLowerCase().includes(q.toLowerCase());
+    var ms = !sf || s.status === sf;
+    var mu = _segActiveUseFilter === 'all' || s.use === _segActiveUseFilter;
+    return mq && ms && mu;
+  });
+  var tbody = document.getElementById('seg-tbody');
+  if (!tbody) return;
+  tbody.innerHTML = filtered.map(function(s) {
+    var sid = s.id;
+    return '<tr data-sid="' + sid + '" onclick="openSegDrw(this.dataset.sid)">'
+      + '<td><div style="font-weight:600;font-size:12.5px;color:#1a1a2e">' + s.name + '</div>'
+      + '<div style="font-size:11px;color:#9ca3af;font-family:monospace">' + sid + '</div></td>'
+      + '<td>' + segUseBadge(s.use) + '</td>'
+      + '<td>' + rulesLabel(s) + '</td>'
+      + '<td><span style="font-size:12px;color:#374151">' + s.timeWindow + '</span></td>'
+      + '<td>' + segStatusBadge(s.status) + '</td>'
+      + '<td style="font-size:12px;color:#9ca3af">' + s.updatedAt + '</td>'
+      + '<td><div class="ra2">'
+      + '<button class="ab2" data-sid="' + sid + '" onclick="event.stopPropagation();openSegDrw(this.dataset.sid)"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button>'
+      + '<button class="ab2" data-sid="' + sid + '" onclick="event.stopPropagation();cloneSegment(this.dataset.sid)"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Clone</button>'
+      + '</div></td>'
+      + '</tr>';
+  }).join('');
+  var cnt = document.getElementById('seg-count');
+  if (cnt) cnt.textContent = filtered.length + ' segment' + (filtered.length===1?'':'s');
+}
+
+function filterSegByUse(use) {
+  _segActiveUseFilter = use;
+  document.querySelectorAll('#screen-segments .ntf-tab').forEach(function(t,i) {
+    var uses = ['all','Tournament','Store','Offers','Quest'];
+    t.classList.toggle('active', uses[i]===use);
+  });
+  renderSegTable();
+}
+
+// Drawer
+function openSegDrw(id) {
+  _segEditId = id;
+  _segRuleCount = 0;
+  var seg = id ? SEG_DATA.find(function(s){return s.id===id;}) : null;
+
+  document.getElementById('seg-drw-title').textContent = seg ? 'Edit Segment' : 'New Segment';
+  document.getElementById('seg-drw-sub').textContent = seg ? (seg.id + ' — ' + seg.use) : 'Define rules and time window';
+  document.getElementById('seg-name').value = seg ? seg.name : '';
+  document.getElementById('seg-desc').value = seg ? (seg.desc||'') : '';
+  document.getElementById('seg-status-sel').value = seg ? seg.status : 'Active';
+  document.getElementById('seg-drw-saved').textContent = seg ? ('Last saved: ' + seg.updatedAt + ' by ' + seg.updatedBy) : 'Unsaved';
+
+  // Use case
+  if (seg) {
+    var radio = document.querySelector('input[name="seg-use"][value="' + seg.use + '"]');
+    if (radio) radio.checked = true;
+  } else {
+    document.querySelectorAll('input[name="seg-use"]').forEach(function(r){r.checked=false;});
+  }
+
+  // All players
+  var apCb = document.getElementById('seg-all-players');
+  apCb.checked = seg ? (seg.allPlayers||false) : false;
+  toggleAllPlayers(apCb);
+
+  // Rules
+  var rb = document.getElementById('seg-rule-builder');
+  rb.innerHTML = '';
+  _segRuleCount = 0;
+  if (seg && seg.rules && seg.rules.length) {
+    seg.rules.forEach(function(r, i) { addSegRule(r, i); });
+  } else if (!seg) {
+    addSegRule(null, 0);
+  }
+
+  // Time window
+  var twType = seg ? (seg.twType||'alltime') : 'today';
+  document.querySelectorAll('.tw-preset').forEach(function(p){p.classList.remove('active');});
+  var activePreset = document.querySelector('.tw-preset[onclick*="' + twType + '"]');
+  if (activePreset) activePreset.classList.add('active');
+  _segActiveTwPreset = twType;
+  var customDiv = document.getElementById('tw-custom-range');
+  if (customDiv) customDiv.classList.toggle('visible', twType==='custom');
+
+  // Preview tab summary
+  updateSegPreview(seg);
+
+  switchSegTab('definition');
+  document.getElementById('seg-drw-ov').classList.add('open');
+  document.getElementById('seg-drw').classList.add('open');
+  setTimeout(function(){document.getElementById('seg-drw').style.right='0';},10);
+}
+
+function closeSegDrw() {
+  document.getElementById('seg-drw-ov').classList.remove('open');
+  document.getElementById('seg-drw').classList.remove('open');
+  document.getElementById('seg-drw').style.right='-780px';
+}
+
+function switchSegTab(name) {
+  var tabs = ['definition','timewindow','preview'];
+  document.querySelectorAll('#seg-drw .drw2-tab').forEach(function(t,i){t.classList.toggle('active',tabs[i]===name);});
+  tabs.forEach(function(t){var p=document.getElementById('seg-tab-'+t);if(p)p.classList.toggle('active',t===name);});
+  if (name==='preview') updateSegPreview(null);
+}
+
+function addSegRule(existing, index) {
+  var rb = document.getElementById('seg-rule-builder');
+  if (!rb) return;
+  var ruleId = 'rule-' + (_segRuleCount++);
+
+  // AND connector (not for first rule)
+  if (index > 0 || rb.children.length > 0) {
+    var conn = document.createElement('div');
+    conn.className = 'rule-connector';
+    conn.innerHTML = '<select><option>AND</option></select>';
+    rb.appendChild(conn);
+  }
+
+  var row = document.createElement('div');
+  row.className = 'rule-row';
+  row.id = ruleId;
+
+  var paramOpts = SEG_PARAMS.map(function(p){
+    var sel = existing && existing.param===p.id ? 'selected' : '';
+    return '<option value="' + p.id + '" ' + sel + '>' + p.label + '</option>';
+  }).join('');
+
+  var selParam = existing ? SEG_PARAMS.find(function(p){return p.id===existing.param;}) : SEG_PARAMS[0];
+  var ops = selParam ? selParam.ops : ['=','<','>'];
+  var opOpts = ops.map(function(op){
+    return '<option value="' + op + '" ' + (existing&&existing.op===op?'selected':'') + '>' + op + '</option>';
+  }).join('');
+
+  var valInput;
+  if (selParam && selParam.values) {
+    valInput = '<select class="rule-val" id="' + ruleId + '-val">'
+      + selParam.values.map(function(v){return '<option value="' + v + '" ' + (existing&&existing.val===v?'selected':'') + '>' + v + '</option>';}).join('')
+      + '</select>';
+  } else {
+    valInput = '<input type="text" class="rule-val" id="' + ruleId + '-val" placeholder="value" value="' + (existing?existing.val:'') + '">';
+  }
+
+  row.innerHTML = '<select class="rule-param" id="' + ruleId + '-param" data-rid="' + ruleId + '" onchange="onSegParamChange(this.dataset.rid)">' + paramOpts + '</select>'
+    + '<select class="rule-op" id="' + ruleId + '-op">' + opOpts + '</select>'
+    + valInput
+    + '<div class="rule-remove" onclick="removeSegRule(this.closest(\'.rule-row\').id)" title="Remove">&#215;</div>';
+
+  rb.appendChild(row);
+}
+
+function onSegParamChange(ruleId) {
+  var paramSel = document.getElementById(ruleId + '-param');
+  if (!paramSel) return;
+  var p = SEG_PARAMS.find(function(x){return x.id===paramSel.value;});
+  if (!p) return;
+  // Update operators
+  var opSel = document.getElementById(ruleId + '-op');
+  if (opSel) opSel.innerHTML = p.ops.map(function(op){return '<option>' + op + '</option>';}).join('');
+  // Update value input
+  var valEl = document.getElementById(ruleId + '-val');
+  if (valEl) {
+    if (p.values) {
+      var newSel = document.createElement('select');
+      newSel.className = 'rule-val';
+      newSel.id = ruleId + '-val';
+      newSel.innerHTML = p.values.map(function(v){return '<option>' + v + '</option>';}).join('');
+      valEl.parentNode.replaceChild(newSel, valEl);
+    } else {
+      var newInp = document.createElement('input');
+      newInp.type = 'text';
+      newInp.className = 'rule-val';
+      newInp.id = ruleId + '-val';
+      newInp.placeholder = 'value';
+      valEl.parentNode.replaceChild(newInp, valEl);
+    }
+  }
+}
+
+function removeSegRule(ruleId) {
+  var row = document.getElementById(ruleId);
+  if (!row) return;
+  // Remove AND connector before this row if exists
+  var prev = row.previousElementSibling;
+  if (prev && prev.classList.contains('rule-connector')) prev.remove();
+  row.remove();
+}
+
+function toggleAllPlayers(cb) {
+  var rb = document.getElementById('seg-rule-builder');
+  var addBtn = document.getElementById('seg-add-rule-btn');
+  if (rb) rb.style.opacity = cb.checked ? '0.3' : '1';
+  if (rb) rb.style.pointerEvents = cb.checked ? 'none' : '';
+  if (addBtn) addBtn.style.opacity = cb.checked ? '0.3' : '1';
+  if (addBtn) addBtn.style.pointerEvents = cb.checked ? 'none' : '';
+}
+
+function setTwPreset(el, preset) {
+  document.querySelectorAll('.tw-preset').forEach(function(p){p.classList.remove('active');});
+  el.classList.add('active');
+  _segActiveTwPreset = preset;
+  var customDiv = document.getElementById('tw-custom-range');
+  if (customDiv) customDiv.classList.toggle('visible', preset==='custom');
+}
+
+function saveSegDrw(status) {
+  var name = document.getElementById('seg-name').value.trim();
+  if (!name) { showToast2('Please enter a segment name'); return; }
+  var useEl = document.querySelector('input[name="seg-use"]:checked');
+  if (!useEl) { showToast2('Please select a use case'); return; }
+
+  var rules = [];
+  document.querySelectorAll('#seg-rule-builder .rule-row').forEach(function(row) {
+    var pEl = row.querySelector('.rule-param');
+    var oEl = row.querySelector('.rule-op');
+    var vEl = row.querySelector('.rule-val');
+    if (pEl && oEl && vEl) {
+      rules.push({param:pEl.value, op:oEl.value, val:vEl.value});
+    }
+  });
+
+  var apCb = document.getElementById('seg-all-players');
+  var allPlayers = apCb && apCb.checked;
+  if (!allPlayers && rules.length === 0) { showToast2('Add at least one rule, or select All Players'); return; }
+
+  var twLabels = {today:'Today',yesterday:'Yesterday',last7:'Last 7 days',last30:'Last 30 days',alltime:'All time',custom:'Custom range'};
+  var newSeg = {
+    id: _segEditId || ('SEG-' + String(SEG_DATA.length+1).padStart(3,'0')),
+    name: name,
+    desc: document.getElementById('seg-desc').value,
+    use: useEl.value,
+    rules: rules,
+    allPlayers: allPlayers,
+    timeWindow: twLabels[_segActiveTwPreset]||'Today',
+    twType: _segActiveTwPreset,
+    status: status,
+    updatedBy: 'Admin YK',
+    updatedAt: new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}),
+  };
+
+  if (_segEditId) {
+    var idx = SEG_DATA.findIndex(function(s){return s.id===_segEditId;});
+    if (idx>=0) SEG_DATA[idx] = newSeg;
+  } else {
+    SEG_DATA.push(newSeg);
+  }
+
+  renderSegTable();
+  closeSegDrw();
+  showToast2(name + ' saved as ' + status);
+}
+
+function cloneSegment(id) {
+  var s = SEG_DATA.find(function(x){return x.id===id;});
+  if (!s) return;
+  var clone = JSON.parse(JSON.stringify(s));
+  clone.id = 'SEG-' + String(SEG_DATA.length+1).padStart(3,'0');
+  clone.name = 'Copy of ' + s.name;
+  clone.status = 'Draft';
+  clone.updatedAt = new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+  SEG_DATA.push(clone);
+  renderSegTable();
+  showToast2('Cloned: ' + clone.name);
+}
+
+function updateSegPreview(seg) {
+  var rules = [];
+  document.querySelectorAll('#seg-rule-builder .rule-row').forEach(function(row) {
+    var pEl = row.querySelector('.rule-param');
+    var oEl = row.querySelector('.rule-op');
+    var vEl = row.querySelector('.rule-val');
+    if (pEl && oEl && vEl) rules.push(pEl.value + ' ' + oEl.value + ' ' + vEl.value);
+  });
+  var useEl = document.querySelector('input[name="seg-use"]:checked');
+  var twLabels = {today:'Today',yesterday:'Yesterday',last7:'Last 7 days',last30:'Last 30 days',alltime:'All time',custom:'Custom'};
+
+  var rn = document.getElementById('seg-prev-rules');
+  var un = document.getElementById('seg-prev-use');
+  var tn = document.getElementById('seg-prev-tw');
+  var apCb = document.getElementById('seg-all-players');
+  if (rn) rn.textContent = (apCb&&apCb.checked) ? 'ALL' : rules.length;
+  if (un) un.textContent = useEl ? useEl.value : '—';
+  if (tn) tn.textContent = twLabels[_segActiveTwPreset]||'—';
+}
+
+function initSegments() {
+  renderSegTable();
+}
+
 </script>
 
 <div class="drw2-ov" id="edit-drw-ov" onclick="closeEditDrw()"></div>
@@ -4984,6 +5449,203 @@ function dispatchManualSend() {
     <span style="font-size:11px;color:#9ca3af;margin-right:auto" id="edrw-lastsaved">Unsaved</span>
     <button class="btn2 bo" onclick="closeEditDrw()">Cancel</button>
     <button class="btn2 bp" onclick="saveEditDrw()"><svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/></svg>Save changes</button>
+  </div>
+</div>
+
+
+<!-- Segment Drawer -->
+<div class="drw2-ov" id="seg-drw-ov" onclick="closeSegDrw()"></div>
+<div class="drw2" id="seg-drw" style="width:780px;right:-780px">
+  <div class="drw2-hdr">
+    <div style="flex:1">
+      <div style="font-size:16px;font-weight:700;color:#1a1a2e" id="seg-drw-title">New Segment</div>
+      <div style="font-size:12px;color:#9ca3af;margin-top:2px" id="seg-drw-sub">Define rules and time window</div>
+    </div>
+    <button class="drw2-cls" onclick="closeSegDrw()">
+      <svg viewBox="0 0 24 24" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+
+  <div class="drw2-tabs">
+    <div class="drw2-tab active" onclick="switchSegTab('definition')">Definition</div>
+    <div class="drw2-tab" onclick="switchSegTab('timewindow')">Time Window</div>
+    <div class="drw2-tab" onclick="switchSegTab('preview')">Preview &amp; Lookup</div>
+  </div>
+
+  <div class="drw2-body">
+
+    <!-- Tab: Definition -->
+    <div class="tpnl active" id="seg-tab-definition">
+      <div class="csec2">
+        <div class="csec2-h"><span class="csec2-t">Segment details</span></div>
+        <div class="fg2" style="margin-bottom:12px">
+          <div class="fi2">
+            <span class="fl2">Segment name</span>
+            <input type="text" class="finp2" id="seg-name" placeholder="e.g. High Value Players">
+          </div>
+          <div class="fi2">
+            <span class="fl2">Status</span>
+            <select class="fsel2" id="seg-status-sel">
+              <option value="Active">Active</option>
+              <option value="Draft">Draft</option>
+              <option value="Inactive">Inactive</option>
+            </select>
+          </div>
+        </div>
+        <div class="fi2">
+          <span class="fl2">Description (optional)</span>
+          <input type="text" class="finp2" id="seg-desc" placeholder="Internal description...">
+        </div>
+      </div>
+
+      <div class="csec2">
+        <div class="csec2-h">
+          <span class="csec2-t">Use Case</span>
+          <span style="font-size:11px;color:#9ca3af">Where will this segment be used?</span>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap" id="seg-use-cases">
+          <label style="display:flex;align-items:center;gap:7px;padding:8px 14px;border:1px solid #e5e7eb;border-radius:7px;cursor:pointer;font-size:12.5px">
+            <input type="radio" name="seg-use" value="Tournament" id="seg-use-tournament"> <span style="display:flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:#1e40af;display:inline-block"></span>Tournament</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:7px;padding:8px 14px;border:1px solid #e5e7eb;border-radius:7px;cursor:pointer;font-size:12.5px">
+            <input type="radio" name="seg-use" value="Store" id="seg-use-store"> <span style="display:flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:#065f46;display:inline-block"></span>Store</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:7px;padding:8px 14px;border:1px solid #e5e7eb;border-radius:7px;cursor:pointer;font-size:12.5px">
+            <input type="radio" name="seg-use" value="Offers" id="seg-use-offers"> <span style="display:flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:#5b21b6;display:inline-block"></span>Offers</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:7px;padding:8px 14px;border:1px solid #e5e7eb;border-radius:7px;cursor:pointer;font-size:12.5px">
+            <input type="radio" name="seg-use" value="Quest" id="seg-use-quest"> <span style="display:flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:#92400e;display:inline-block"></span>Quest</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="csec2">
+        <div class="csec2-h">
+          <span class="csec2-t">Rules</span>
+          <span style="font-size:11px;color:#9ca3af">All conditions must be met (AND logic)</span>
+        </div>
+
+        <!-- Special: ALL PLAYERS option -->
+        <label style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:#f9fafb;border:1px solid #e8e8ec;border-radius:8px;cursor:pointer;margin-bottom:12px">
+          <input type="checkbox" id="seg-all-players" onchange="toggleAllPlayers(this)">
+          <div>
+            <div style="font-size:12.5px;font-weight:600;color:#374151">ALL PLAYERS</div>
+            <div style="font-size:11px;color:#9ca3af">Include all players without any condition. No rules needed.</div>
+          </div>
+        </label>
+
+        <div id="seg-rule-builder" class="rule-builder"></div>
+
+        <div style="margin-top:10px">
+          <button class="add-rule-btn" onclick="addSegRule()" id="seg-add-rule-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add condition
+          </button>
+        </div>
+
+        <div class="aud-preview" id="seg-aud-preview" style="display:none">
+          <div>
+            <div class="aud-num" id="seg-aud-num">~2,400</div>
+            <div class="aud-lbl">estimated matching players</div>
+          </div>
+          <div style="font-size:11px;color:#7c3aed;margin-left:auto">Preview only — not for MVP</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab: Time Window -->
+    <div class="tpnl" id="seg-tab-timewindow">
+      <div class="csec2">
+        <div class="csec2-h"><span class="csec2-t">Time Window</span></div>
+        <div style="font-size:12px;color:#6b7280;margin-bottom:14px">
+          Applies to time-based parameters (e.g. deposits_count, wager_fee_sum, wins_count).
+          Static parameters (Country, Is_tester, user_level) are always evaluated in real-time and ignore this setting.
+        </div>
+
+        <div class="time-window-card">
+          <div style="font-size:11px;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px">Quick presets</div>
+          <div class="tw-presets">
+            <div class="tw-preset active" onclick="setTwPreset(this,'today')">Today</div>
+            <div class="tw-preset" onclick="setTwPreset(this,'yesterday')">Yesterday</div>
+            <div class="tw-preset" onclick="setTwPreset(this,'last7')">Last 7 days</div>
+            <div class="tw-preset" onclick="setTwPreset(this,'last30')">Last 30 days</div>
+            <div class="tw-preset" onclick="setTwPreset(this,'alltime')">All time</div>
+            <div class="tw-preset" onclick="setTwPreset(this,'custom')">Custom range...</div>
+          </div>
+
+          <div class="tw-custom" id="tw-custom-range">
+            <div style="display:flex;flex-direction:column;gap:3px">
+              <label style="font-size:10.5px;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:.4px">From</label>
+              <input type="date" class="tw-date-input" id="tw-from">
+            </div>
+            <div style="display:flex;flex-direction:column;gap:3px">
+              <label style="font-size:10.5px;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:.4px">To</label>
+              <input type="date" class="tw-date-input" id="tw-to">
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:16px">
+          <div style="font-size:12.5px;font-weight:600;color:#374151;margin-bottom:8px">How parameters are calculated per window</div>
+          <table style="width:100%;border-collapse:collapse;font-size:12px">
+            <thead>
+              <tr style="background:#fafafa;border-bottom:1px solid #e8e8ec">
+                <th style="padding:7px 12px;text-align:left;font-size:10.5px;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:.4px">Parameter</th>
+                <th style="padding:7px 12px;text-align:left;font-size:10.5px;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:.4px">Type</th>
+                <th style="padding:7px 12px;text-align:left;font-size:10.5px;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:.4px">Time-sensitive?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom:1px solid #f0f0f5"><td style="padding:7px 12px">user_level_group</td><td style="padding:7px 12px;color:#9ca3af">String</td><td style="padding:7px 12px"><span style="color:#6b7280;font-size:11px">Realtime — no window</span></td></tr>
+              <tr style="border-bottom:1px solid #f0f0f5"><td style="padding:7px 12px">user_level</td><td style="padding:7px 12px;color:#9ca3af">Number</td><td style="padding:7px 12px"><span style="color:#6b7280;font-size:11px">Realtime — no window</span></td></tr>
+              <tr style="border-bottom:1px solid #f0f0f5"><td style="padding:7px 12px">deposits_count</td><td style="padding:7px 12px;color:#9ca3af">Number</td><td style="padding:7px 12px"><span style="color:#10b981;font-size:11px">&#10003; Applies window</span></td></tr>
+              <tr style="border-bottom:1px solid #f0f0f5"><td style="padding:7px 12px">tournaments_played_count</td><td style="padding:7px 12px;color:#9ca3af">Number</td><td style="padding:7px 12px"><span style="color:#10b981;font-size:11px">&#10003; Applies window</span></td></tr>
+              <tr style="border-bottom:1px solid #f0f0f5"><td style="padding:7px 12px">wager_fee_sum</td><td style="padding:7px 12px;color:#9ca3af">Number</td><td style="padding:7px 12px"><span style="color:#10b981;font-size:11px">&#10003; Applies window</span></td></tr>
+              <tr style="border-bottom:1px solid #f0f0f5"><td style="padding:7px 12px">deposit_sum</td><td style="padding:7px 12px;color:#9ca3af">Number</td><td style="padding:7px 12px"><span style="color:#10b981;font-size:11px">&#10003; Applies window</span></td></tr>
+              <tr style="border-bottom:1px solid #f0f0f5"><td style="padding:7px 12px">AVG_x_deposits_value</td><td style="padding:7px 12px;color:#9ca3af">Number</td><td style="padding:7px 12px"><span style="color:#10b981;font-size:11px">&#10003; Applies window</span></td></tr>
+              <tr style="border-bottom:1px solid #f0f0f5"><td style="padding:7px 12px">wins_count</td><td style="padding:7px 12px;color:#9ca3af">Number</td><td style="padding:7px 12px"><span style="color:#10b981;font-size:11px">&#10003; Applies window</span></td></tr>
+              <tr style="border-bottom:1px solid #f0f0f5"><td style="padding:7px 12px">Country</td><td style="padding:7px 12px;color:#9ca3af">String</td><td style="padding:7px 12px"><span style="color:#6b7280;font-size:11px">Static — no window</span></td></tr>
+              <tr style="border-bottom:1px solid #f0f0f5"><td style="padding:7px 12px">Is_tester</td><td style="padding:7px 12px;color:#9ca3af">Boolean</td><td style="padding:7px 12px"><span style="color:#6b7280;font-size:11px">Static — no window</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab: Preview & Lookup -->
+    <div class="tpnl" id="seg-tab-preview">
+      <div class="csec2">
+        <div class="csec2-h"><span class="csec2-t">Player Lookup</span><span class="not-mvp-tag" style="margin-left:8px">Not for MVP</span></div>
+        <div style="font-size:12px;color:#6b7280;margin-bottom:12px">Check if a specific player belongs to this segment, or search which segments a player is in.</div>
+        <div style="display:flex;gap:10px;align-items:flex-end">
+          <div style="flex:1;display:flex;flex-direction:column;gap:3px">
+            <label style="font-size:10.5px;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:.4px">Player User ID</label>
+            <input type="text" class="finp2" placeholder="USR-XXXX" style="max-width:280px">
+          </div>
+          <button class="btn2 bo" style="opacity:.5;cursor:not-allowed">Check membership</button>
+        </div>
+        <div style="margin-top:16px;padding:16px;background:#f9fafb;border-radius:8px;text-align:center;color:#9ca3af;font-size:12px">
+          Available in a future release
+        </div>
+      </div>
+
+      <div class="csec2">
+        <div class="csec2-h"><span class="csec2-t">Segment Summary</span></div>
+        <div class="kpi-s2" style="grid-template-columns:repeat(3,1fr)">
+          <div class="kpi-c2"><div class="kpi-n2" style="color:#7c3aed" id="seg-prev-rules">—</div><div class="kpi-l2">Rules defined</div></div>
+          <div class="kpi-c2"><div class="kpi-n2" id="seg-prev-use">—</div><div class="kpi-l2">Use case</div></div>
+          <div class="kpi-c2"><div class="kpi-n2" id="seg-prev-tw">—</div><div class="kpi-l2">Time window</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="drw2-ft">
+    <span style="font-size:11px;color:#9ca3af;margin-right:auto" id="seg-drw-saved">Unsaved</span>
+    <button class="btn2 bo" onclick="closeSegDrw()">Cancel</button>
+    <button class="btn2 bo" style="border-color:#7c3aed;color:#7c3aed" onclick="saveSegDrw('Draft')">Save as draft</button>
+    <button class="btn2 bp" onclick="saveSegDrw('Active')">Save &amp; Activate</button>
   </div>
 </div>
 
