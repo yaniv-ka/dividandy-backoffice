@@ -2030,7 +2030,7 @@ input[readonly]{background:#f9fafb;color:#6b7280}
       <div class="mli"><span class="mb m1">Model 1</span><span>Native Apple / Google Store billing</span></div>
       <div class="mli"><span class="mb m2">Model 2</span><span>Embedded WebView / iFrame checkout (BridgerPay)</span></div>
       <div class="mli"><span class="mb m3">Model 3</span><span>External browser with authenticated landing page (BridgerPay)</span></div>
-      <div class="mli" style="margin-left:auto"><span class="not-mvp-tag">Not for MVP</span><span style="font-size:11px;color:#9ca3af">Fields tagged as not for MVP are shown for reference only</span></div>
+      
     </div>
   </div>
   <div class="tb2">
@@ -2053,7 +2053,7 @@ input[readonly]{background:#f9fafb;color:#6b7280}
         <th>Store Slug <span style="font-size:10px;color:#9ca3af;font-weight:400">(Models 2 &amp; 3)</span></th>
         <th>Landing Page URL <span style="font-size:10px;color:#9ca3af;font-weight:400">(Model 3 only)</span></th>
         <th>Web Store URL <span style="font-size:10px;color:#9ca3af;font-weight:400">(Model 3 only)</span></th>
-        <th>Status <span class="not-mvp-tag">Not for MVP</span></th>
+        <th>Status</th>
         <th>Last updated by</th><th>Last updated at</th><th></th>
       </tr></thead>
       <tbody id="ss-tbody"></tbody>
@@ -2101,27 +2101,28 @@ input[readonly]{background:#f9fafb;color:#6b7280}
       <!-- Rate Limiting -->
       <div class="gs-card" style="grid-column:span 2">
         <div class="gs-card-title">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
-          Rate Limiting &mdash; Per Category &times; Priority
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Priority Collapse Window &mdash; Per Category
         </div>
-        <div style="font-size:11.5px;color:#6b7280;margin-bottom:14px">Define the maximum number of notifications per priority level, per category, within a chosen time window. Priority 1 is always exempt.</div>
+        <div style="font-size:12px;color:#6b7280;margin-bottom:16px;padding:10px 14px;background:#f3f0ff;border:1px solid #c4b5fd;border-radius:8px;line-height:1.6">
+          <strong>How it works:</strong> Within each collapse window, if multiple notifications from the same category are triggered, only the one with the <strong>highest priority</strong> is sent. P1 notifications always bypass the window and are sent immediately.
+          <div style="margin-top:6px;display:flex;gap:16px;flex-wrap:wrap">
+            <span style="font-size:11px"><strong style="color:#991b1b">P1</strong> &mdash; Always immediate, never queued</span>
+            <span style="font-size:11px"><strong style="color:#92400e">P2</strong> &mdash; Wins over P3 in same window</span>
+            <span style="font-size:11px"><strong style="color:#6b7280">P3</strong> &mdash; Dropped if P1 or P2 exists in window</span>
+            <span style="font-size:11px"><strong style="color:#7c3aed">Always Send</strong> &mdash; Exits window immediately (set per notification)</span>
+          </div>
+        </div>
         <div id="rl-table-wrap">
-          <div style="display:grid;grid-template-columns:170px 1fr 1fr 1fr;gap:6px;margin-bottom:6px">
+          <div style="display:grid;grid-template-columns:170px 1fr 140px;gap:8px;margin-bottom:10px">
+            <div style="font-size:10.5px;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:.4px">Category</div>
+            <div style="font-size:10.5px;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:.4px">Collapse Window</div>
             <div></div>
-            <div style="text-align:center;padding:5px 8px;background:#fee2e2;border-radius:6px;font-size:10.5px;font-weight:700;color:#991b1b">P1 &mdash; Critical<br><span style="font-weight:400;font-size:10px">Always exempt</span></div>
-            <div style="text-align:center;padding:5px 8px;background:#fef3c7;border-radius:6px;font-size:10.5px;font-weight:700;color:#92400e">P2 &mdash; Medium</div>
-            <div style="text-align:center;padding:5px 8px;background:#f3f4f6;border-radius:6px;font-size:10.5px;font-weight:700;color:#6b7280">P3 &mdash; Low</div>
           </div>
           <div id="rl-rows"></div>
         </div>
-        <div style="margin-top:14px;padding-top:12px;border-top:1px solid #e8e8ec;display:flex;gap:16px;align-items:center;flex-wrap:wrap">
-          <span style="font-size:11.5px;color:#6b7280;font-weight:500">Global default cap (when no category cap is set):</span>
-          <div style="display:flex;align-items:center;gap:6px">
-            <span style="font-size:11.5px;color:#374151">Max</span>
-            <input class="gs-inp" type="number" value="3" min="1" style="width:55px">
-            <span style="font-size:11.5px;color:#374151">per</span>
-            <select class="fs2" style="padding:5px 8px;font-size:11.5px"><option>hour</option><option selected>day</option><option>week</option></select>
-          </div>
+        <div style="margin-top:14px;padding-top:12px;border-top:1px solid #e8e8ec;font-size:11.5px;color:#6b7280">
+          One notification is always sent per window — the highest priority wins. Equal priority: most recent wins.
         </div>
       </div>
       <!-- Quiet Hours -->
@@ -3436,7 +3437,7 @@ function renderSS(data){
       <td>${isM23?`<input class="ui2" value="${r.slug}" placeholder="/slug" oninput="ssUpdSlug('${r.id}',this.value)" style="width:80px">`:'<span style="color:#d1d5db">—</span>'}</td>
       <td>${isM3?`<div class="uc2"><input class="ui2" value="${r.landingUrl}" oninput="ssUpdUrl('${r.id}','landingUrl',this.value)" placeholder="https://…"><button class="ucpy" onclick="ssCpy('${r.landingUrl}')"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button></div>`:'<span style="color:#d1d5db">—</span>'}</td>
       <td>${isM3?`<div class="uc2"><input class="ui2" value="${r.webStoreUrl}" oninput="ssUpdUrl('${r.id}','webStoreUrl',this.value)" placeholder="https://…"><button class="ucpy" onclick="ssCpy('${r.webStoreUrl}')"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button></div>`:'<span style="color:#d1d5db">—</span>'}</td>
-      <td style="opacity:.45"><span class="bdg2 bact" style="font-size:10.5px"><span class="bdot"></span>${r.status}</span><span class="not-mvp-tag">Not for MVP</span></td>
+      <td><span class="bdg2 bact" style="font-size:10.5px"><span class="bdot"></span>${r.status}</span></td>
       <td style="font-size:12px;color:#374151">${r.upBy}</td>
       <td style="font-size:12px;color:#9ca3af">${r.upAt}</td>
       <td><div class="ra2"><button class="ab2" onclick="showToast2('Row saved')"><svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/></svg>Save</button></div></td>
@@ -3452,6 +3453,15 @@ function filterSS(){
 function ssUpdModel(id,val){const r=ssRows.find(r=>r.id===id);if(!r)return;r.model=val;r.landingUrl=(val==='Model 3')?`https://play.dividandy.com/${r.slug}`:'';r.webStoreUrl=(val==='Model 3')?`https://store.dividandy.com/${r.slug}`:'';filterSS();}
 function ssUpdSlug(id,val){const r=ssRows.find(r=>r.id===id);if(r)r.slug=val;}
 function ssUpdUrl(id,field,val){const r=ssRows.find(r=>r.id===id);if(r)r[field]=val;}
+function ssUpdStatus(id,val){
+  var r=ssRows.find(function(r){return r.id===id;});
+  if(!r)return;
+  r.status=val;
+  filterSS();
+  showToast2(val==='Inactive'
+    ? r.country+' ('+( r.platform==='ios'?'iOS':'Android')+') → Inactive, fallback to Model 1'
+    : r.country+' ('+( r.platform==='ios'?'iOS':'Android')+') → Active');
+}
 function ssCpy(url){if(!url)return;navigator.clipboard.writeText(url).then(()=>showToast2('URL copied'));}
 function ssTglRow(id,cb){if(cb.checked)ssSel.add(id);else ssSel.delete(id);ssBulkBar();}
 function selAll(cb){document.querySelectorAll('#ss-tbody input[type=checkbox]').forEach(c=>c.checked=cb.checked);if(cb.checked)ssRows.forEach(r=>ssSel.add(r.id));else ssSel.clear();ssBulkBar();}
@@ -4668,7 +4678,7 @@ function openEditDrw(id) {
   var priSel = document.getElementById('edrw-priority-num');
   if (priSel) priSel.value = String(n.priority || 2);
   document.getElementById('edrw-qh-sel').value = n.quietHours || 'Respect';
-  document.getElementById('edrw-rl').value = CRIT_IDS.has(n.id) ? 'exempt' : 'standard';
+  // edrw-rl removed — rate limiting governed by Global Settings collapse window
   document.getElementById('edrw-target').value = n.target || '';
   document.getElementById('edrw-tokens').textContent = n.tokens || 'None';
   document.getElementById('edrw-audience').textContent = n.audience || '—';
@@ -4794,10 +4804,10 @@ function saveEditDrw() {
     n[lang].email_body    = rd('f-'+lang+'-email-body');
     n[lang].email_cta     = rd('f-'+lang+'-email-cta');
   });
-  n.priority   = rd('edrw-priority') || n.priority;
+  var priNum = document.getElementById('edrw-priority-num'); if (priNum) n.priority = parseInt(priNum.value) || n.priority;
   n.quietHours = rd('edrw-qh-sel') || n.quietHours;
   n.target     = rd('edrw-target');
-  n.critical   = rd('edrw-rl') === 'exempt';
+  // Rate limiting governed by Global Settings collapse window — not per-notification
   var as2 = document.getElementById('edrw-always-send');
   if (as2) n.alwaysSend = as2.checked;
   var sg = document.getElementById('f-en-sg-template-id');
@@ -4834,45 +4844,42 @@ function initNotifications() {
 // RATE LIMITING TABLE
 // ═══════════════════════════════════════════
 var RL_CATEGORIES = ['In-Tournament','Post-Tournament','Onboarding','Wallet','Social & Rival','Sit & Go','Profile'];
-var RL_WINDOWS = ['per hour','per day','per week'];
 
-// Default values [max, window_index]
+// Default collapse windows (minutes) per category
 var RL_DEFAULTS = {
-  'In-Tournament':   {p2:[5,'per hour'], p3:[3,'per hour']},
-  'Post-Tournament': {p2:[10,'per day'], p3:[5,'per day']},
-  'Onboarding':      {p2:[3,'per hour'], p3:[2,'per hour']},
-  'Wallet':          {p2:[5,'per day'],  p3:[3,'per day']},
-  'Social & Rival':  {p2:[5,'per day'],  p3:[3,'per day']},
-  'Sit & Go':        {p2:[5,'per hour'], p3:[3,'per hour']},
-  'Profile':         {p2:[3,'per day'],  p3:[2,'per day']},
+  'In-Tournament':   10,
+  'Post-Tournament': 0,   // P1 only - always immediate
+  'Onboarding':      0,   // P1 only - always immediate
+  'Wallet':          0,   // P1 only - always immediate
+  'Social & Rival':  30,
+  'Sit & Go':        5,
+  'Profile':         60,
 };
 
 function renderRLTable() {
   var wrap = document.getElementById('rl-rows');
   if (!wrap) return;
   wrap.innerHTML = RL_CATEGORIES.map(function(cat) {
-    var d = RL_DEFAULTS[cat] || {p2:[3,'per day'],p3:[2,'per day']};
+    var defMin = RL_DEFAULTS[cat] !== undefined ? RL_DEFAULTS[cat] : 10;
     var catId = cat.replace(/[^a-z0-9]/gi,'-');
-    return '<div style="display:grid;grid-template-columns:170px 1fr 1fr 1fr;gap:6px;margin-bottom:6px;align-items:center">'
+    var isPriority1Only = defMin === 0;
+    return '<div style="display:grid;grid-template-columns:170px 1fr 140px;gap:8px;margin-bottom:8px;align-items:center">'
       + '<div style="font-size:12.5px;color:#374151;font-weight:500">' + cat + '</div>'
-      + '<div style="text-align:center;padding:6px;background:#fff8f8;border:1px dashed #fecaca;border-radius:6px;font-size:11px;color:#9ca3af">Exempt — always sent</div>'
-      + rlCell(catId,'p2',d.p2[0],d.p2[1])
-      + rlCell(catId,'p3',d.p3[0],d.p3[1])
+      + (isPriority1Only
+          ? '<div style="font-size:11.5px;color:#9ca3af;font-style:italic;padding:6px 0">P1 only — always sent immediately</div>'
+          : '<div style="display:flex;align-items:center;gap:8px">'
+            + '<span style="font-size:12px;color:#374151">Collapse window:</span>'
+            + '<input type="number" value="' + defMin + '" min="1" max="240" id="rl-' + catId + '-min"'
+            + ' style="width:65px;padding:5px 8px;border:1px solid #e5e7eb;border-radius:6px;font-size:12px;text-align:center;outline:none">'
+            + '<span style="font-size:12px;color:#374151">minutes</span>'
+            + '<span style="font-size:11px;color:#9ca3af;margin-left:4px">→ 1 notification per window (highest priority wins)</span>'
+            + '</div>'
+        )
+      + '<div style="font-size:11px;color:#9ca3af;text-align:right">'
+      + (isPriority1Only ? '' : '<span style="background:#fee2e2;color:#991b1b;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:600">P1 always immediate</span>')
+      + '</div>'
       + '</div>';
   }).join('');
-}
-
-function rlCell(catId, pri, defVal, defWin) {
-  var winOpts = RL_WINDOWS.map(function(w) {
-    return '<option' + (w===defWin?' selected':'') + '>' + w + '</option>';
-  }).join('');
-  return '<div style="display:flex;align-items:center;gap:5px;padding:6px 8px;background:#fff;border:1px solid #e8e8ec;border-radius:7px">'
-    + '<span style="font-size:11px;color:#9ca3af">Max</span>'
-    + '<input type="number" value="' + defVal + '" min="1" style="width:50px;padding:4px 6px;border:1px solid #e5e7eb;border-radius:5px;font-size:12px;text-align:center;outline:none" id="rl-' + catId + '-' + pri + '-val">'
-    + '<select style="padding:4px 6px;border:1px solid #e5e7eb;border-radius:5px;font-size:11.5px;color:#374151;background:#fff;outline:none" id="rl-' + catId + '-' + pri + '-win">'
-    + winOpts
-    + '</select>'
-    + '</div>';
 }
 
 function initRLTable() {
@@ -4880,8 +4887,6 @@ function initRLTable() {
     renderRLTable();
   }
 }
-
-
 
 // ═══════════════════════════════════════════
 // MANUAL SEND
@@ -5417,13 +5422,15 @@ function initSegments() {
           </select>
         </div>
         <div class="ctrl-card"><div class="ctrl-card-title">Quiet Hours</div><select class="fsel2" id="edrw-qh-sel"><option value="Allowed">Allowed — sends during quiet hours</option><option value="Respect">Respect — queued until 08:00</option></select></div>
-        <div class="ctrl-card"><div class="ctrl-card-title">Rate Limiting</div><select class="fsel2" id="edrw-rl"><option value="standard">Standard (counts toward cap)</option><option value="exempt">Exempt (Priority 1 — bypasses cap)</option></select></div>
+        <div class="ctrl-card"><div class="ctrl-card-title">Collapse Window</div>
+          <div style="font-size:11.5px;color:#374151;line-height:1.6">Defined per category in<br><a onclick="switchNtfTab('global')" style="color:#7c3aed;cursor:pointer;text-decoration:underline">Global Settings</a></div>
+        </div>
         <div class="ctrl-card"><div class="ctrl-card-title">Consecutive Deduplication</div>
           <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
             <label class="tgl2"><input type="checkbox" id="edrw-always-send"><span class="tgl2-sl"></span></label>
             <span style="font-size:12px;color:#374151">Always Send</span>
           </div>
-          <div style="font-size:10.5px;color:#9ca3af;margin-top:6px">When ON: sends even if a higher-priority notification in the same sequence was already sent</div>
+          <div style="font-size:10.5px;color:#9ca3af;margin-top:6px">When ON: exits the collapse window immediately — sent without waiting, regardless of other queued notifications in this category</div>
         </div>
       </div>
       <div class="ctrl-grid" style="margin-top:0">
