@@ -545,12 +545,6 @@ input[readonly]{background:#f9fafb;color:#6b7280}
 #ms-modal-overlay{display:none}
 
 /* ═══ SEGMENTS SCREEN ═══ */
-.seg-use-badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:4px;font-size:10.5px;font-weight:600}
-.seg-tournament{background:#dbeafe;color:#1e40af}
-.seg-store{background:#d1fae5;color:#065f46}
-.seg-offers{background:#ede9fe;color:#5b21b6}
-.seg-quest{background:#fef3c7;color:#92400e}
-.seg-all{background:#f3f4f6;color:#374151}
 
 /* Rule builder */
 .rule-builder{display:flex;flex-direction:column;gap:10px}
@@ -2246,7 +2240,7 @@ input[readonly]{background:#f9fafb;color:#6b7280}
     <div class="page-hdr-top">
       <div>
         <div class="page-title2">Segments</div>
-        <div class="page-sub">Define player segments for Tournaments, Store, Offers and Quests. Default: All Players when no segment is assigned.</div>
+        <div class="page-sub">Define global player segments based on behavioral, financial and profile attributes. Available across the whole system. Default: All Players when no segment is assigned.</div>
       </div>
       <div class="hdr-actions">
         <button class="btn2 bo" onclick="showToast2('Exported')">
@@ -2268,10 +2262,6 @@ input[readonly]{background:#f9fafb;color:#6b7280}
       <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       <input class="si2" type="text" placeholder="Search segments..." id="seg-search" oninput="renderSegTable()">
     </div>
-    <select class="fs2" id="seg-use-f" onchange="renderSegTable()">
-      <option value="">All use cases</option>
-      <option>Tournament</option><option>Store</option><option>Offers</option><option>Quest</option>
-    </select>
     <select class="fs2" id="seg-status-f" onchange="renderSegTable()">
       <option value="">All statuses</option>
       <option>Active</option>
@@ -2285,7 +2275,6 @@ input[readonly]{background:#f9fafb;color:#6b7280}
     <table class="tbl2" id="seg-table">
       <thead><tr>
         <th>Name</th>
-        <th>Use Case</th>
         <th>Rules</th>
         <th>Time Window</th>
         <th>Status</th>
@@ -5021,78 +5010,47 @@ function dispatchManualSend() {
 
 // Segment parameters from the Sheet "New"
 const SEG_PARAMS = [
-  // ── Level
-  {id:'user_level_group', label:'User Level Group', type:'string', timeWindow:false,
-   ops:['=','!='], values:['Newborn','Starter','Talent','Pro Investor','Master','Fox'],
-   hint:'Player level group (realtime)'},
-  {id:'user_level', label:'User Level', type:'num', timeWindow:false,
-   ops:['=','<','<=','>','>=','!='],
-   hint:'Numeric level (realtime)'},
-  // ── Deposits
-  {id:'deposits_count', label:'Deposits Count', type:'num', timeWindow:true,
-   ops:['=','<','<=','>','>=','!='],
-   hint:'Number of deposits in the selected window'},
-  {id:'deposit_sum', label:'Deposit Sum', type:'num', timeWindow:true,
-   ops:['<','<=','>','>='],
-   hint:'Total deposit amount in window'},
-  {id:'AVG_x_deposits_value', label:'AVG Deposits Value', type:'avg', timeWindow:false,
-   ops:['<','<=','>','>='],
-   avgModes:['last_x','window'],
-   hint:'Average deposit value — choose: last X deposits OR time window'},
-  // ── Activity
-  {id:'wager_fee_sum', label:'Wager Fee Sum', type:'num', timeWindow:true,
-   ops:['<','<=','>','>='],
-   hint:'Total wager fees in window'},
-  {id:'wins_count', label:'Wins Count', type:'num', timeWindow:true,
-   ops:['=','<','<=','>','>='],
-   hint:'Number of tournament wins in window'},
-  // ── Tournaments
-  {id:'tournaments_played_count', label:'Tournaments Played', type:'num', timeWindow:true,
-   ops:['=','<','<=','>','>=','!='],
-   hint:'Total tournaments entered in window'},
-  {id:'tournaments_finished_count', label:'Tournaments Finished', type:'num', timeWindow:true,
-   ops:['=','<','<=','>','>=','!='],
-   hint:'Tournaments completed (not disqualified)'},
-  {id:'tournaments_disqualified_count', label:'Tournaments Disqualified', type:'num', timeWindow:true,
-   ops:['=','<','<=','>','>='],
-   hint:'Tournaments ended by disqualification'},
-  // ── Dates
-  {id:'registration_Date', label:'Registration Date', type:'date', timeWindow:false,
-   dateModes:['lookback','range'],
-   ops:['<','<=','>','>='],
-   hint:'Days since registration (lookback) or specific date range'},
-  {id:'Login_Date', label:'Login_Date', type:'date', timeWindow:false,
-   dateModes:['lookback','range'],
-   ops:['<','<=','>','>='],
-   hint:'Days since last login (lookback) or specific date range'},
-  // ── Other
+  {id:'user_level_group', label:'user_level_group', type:'string', timeWindow:false,
+   ops:['=','!='], values:['Newborn','Starter','Talent','Pro Investor','Master','Fox']},
+  {id:'user_level', label:'user_level', type:'num', timeWindow:false,
+   ops:['=','<','<=','>','>=','!=']},
+  {id:'deposits_count', label:'deposits_count', type:'num', timeWindow:true,
+   ops:['=','<','<=','>','>=','!=']},
+  {id:'tournaments_played_count', label:'tournaments_played_count', type:'num', timeWindow:true,
+   ops:['=','<','<=','>','>=','!=']},
+  {id:'wager_fee_sum', label:'wager_fee_sum', type:'num', timeWindow:true,
+   ops:['<','<=','>','>=']},
+  {id:'deposit_sum', label:'deposit_sum', type:'num', timeWindow:true,
+   ops:['<','<=','>','>=']},
+  {id:'AVG_x_deposits_value', label:'AVG_x_deposits_value', type:'num', timeWindow:true,
+   ops:['<','<=','>','>=']},
+  {id:'wins_count', label:'wins_count', type:'num', timeWindow:true,
+   ops:['=','<','<=','>','>=']},
   {id:'Country', label:'Country', type:'string', timeWindow:false,
-   ops:['=','!=','IN','NOT IN'],
-   hint:'Player registered country'},
-  {id:'Is_tester', label:'Is Tester', type:'bool', timeWindow:false,
-   ops:['='], values:['TRUE','FALSE'],
-   hint:'Internal QA/test account flag'},
+   ops:['=','!=','IN','NOT IN']},
+  {id:'Is_tester', label:'Is_tester', type:'bool', timeWindow:false,
+   ops:['='], values:['TRUE','FALSE']},
 ];
 
 // Sample data
 var SEG_DATA = [
-  {id:'SEG-001', name:'High Value Payers', use:'Tournament', desc:'Players with deposits > 100',
+  {id:'SEG-001', name:'High Value Payers', desc:'Players with deposits > 100',
    rules:[{param:'deposits_count',op:'>',val:'3'}], timeWindow:'Last 30 days', twType:'last30',
    status:'Active', updatedBy:'Admin YK', updatedAt:'22 Jun 2026', allPlayers:false},
-  {id:'SEG-002', name:'New Players', use:'Quest', desc:'Registered in last 7 days',
+  {id:'SEG-002', name:'New Players', desc:'Registered in last 7 days',
    rules:[{param:'user_level_group',op:'=',val:'Newborn'}], timeWindow:'All time', twType:'alltime',
    status:'Active', updatedBy:'Admin YK', updatedAt:'22 Jun 2026', allPlayers:false},
-  {id:'SEG-003', name:'FTD Players', use:'Store', desc:'First time depositors',
+  {id:'SEG-003', name:'FTD Players', desc:'First time depositors',
    rules:[{param:'deposits_count',op:'=',val:'1'}], timeWindow:'All time', twType:'alltime',
    status:'Active', updatedBy:'Admin MB', updatedAt:'21 Jun 2026', allPlayers:false},
-  {id:'SEG-004', name:'Active Traders', use:'Offers', desc:'High wager last week',
+  {id:'SEG-004', name:'Active Traders', desc:'High wager last week',
    rules:[{param:'wager_fee_sum',op:'>=',val:'50'},{param:'tournaments_played_count',op:'>=',val:'3'}],
    timeWindow:'Last 7 days', twType:'last7',
    status:'Draft', updatedBy:'Admin YK', updatedAt:'20 Jun 2026', allPlayers:false},
-  {id:'SEG-005', name:'Test Users', use:'Tournament', desc:'QA testers only',
+  {id:'SEG-005', name:'Test Users', desc:'QA testers only',
    rules:[{param:'Is_tester',op:'=',val:'TRUE'}], timeWindow:'All time', twType:'alltime',
    status:'Inactive', updatedBy:'Admin MB', updatedAt:'18 Jun 2026', allPlayers:false},
-  {id:'SEG-006', name:'Argentina Players', use:'Store', desc:'Country = Argentina',
+  {id:'SEG-006', name:'Argentina Players', desc:'Country = Argentina',
    rules:[{param:'Country',op:'=',val:'Argentina'}], timeWindow:'All time', twType:'alltime',
    status:'Active', updatedBy:'Admin YK', updatedAt:'18 Jun 2026', allPlayers:false},
 ];
@@ -5102,10 +5060,6 @@ var _segRuleCount = 0;
 var _segActiveTwPreset = 'today';
 
 
-function segUseBadge(use) {
-  var cls = {Tournament:'seg-tournament',Store:'seg-store',Offers:'seg-offers',Quest:'seg-quest'};
-  return '<span class="seg-use-badge ' + (cls[use]||'seg-all') + '">' + use + '</span>';
-}
 function segStatusBadge(s) {
   var cls = {Active:'seg-active',Inactive:'seg-inactive',Draft:'seg-draft'};
   return '<span class="' + (cls[s]||'seg-inactive') + '">' + s + '</span>';
@@ -5114,10 +5068,7 @@ function rulesLabel(seg) {
   if (seg.allPlayers) return '<span style="font-size:12px;color:#374151">ALL PLAYERS</span>';
   var twMap = {today:'Today',yesterday:'Yesterday',last7:'7d',last30:'30d',alltime:'',custom:'custom'};
   return seg.rules.map(function(r, i) {
-    var twLabel = '';
-    if (r.avgMode==='last_x' && r.avgX) twLabel = 'Last '+r.avgX+' deposits';
-    else if (r.dateMode==='range' && r.dateFrom) twLabel = r.dateFrom + ' - ' + (r.dateTo||'now');
-    else if (r.tw && r.tw !== 'alltime') twLabel = r.tw==='custom' ? r.twCustom+'d' : twMap[r.tw]||r.tw;
+    var twLabel = r.tw && r.tw !== 'alltime' ? (r.tw==='custom' ? r.twCustom+'d' : twMap[r.tw]||r.tw) : '';
     var twBadge = twLabel ? ' <span style="font-size:10px;color:#7c3aed;background:#f3f0ff;padding:1px 5px;border-radius:3px">' + twLabel + '</span>' : '';
     var pill = '<span style="font-size:11px;background:#f3f4f6;padding:2px 7px;border-radius:4px;color:#374151">' + esc(r.param) + ' ' + r.op + ' ' + esc(r.val) + twBadge + '</span>';
     if (i === 0) return pill;
@@ -5129,12 +5080,10 @@ function rulesLabel(seg) {
 function renderSegTable() {
   var q  = (document.getElementById('seg-search')||{}).value||'';
   var sf = (document.getElementById('seg-status-f')||{}).value||'';
-  var uf = (document.getElementById('seg-use-f')||{}).value||'';
   var filtered = SEG_DATA.filter(function(s) {
     var mq = !q  || s.name.toLowerCase().includes(q.toLowerCase()) || s.id.toLowerCase().includes(q.toLowerCase());
     var ms = !sf || s.status === sf;
-    var mu = !uf  || s.use === uf;
-    return mq && ms && mu;
+    return mq && ms;
   });
   var tbody = document.getElementById('seg-tbody');
   if (!tbody) return;
@@ -5143,7 +5092,6 @@ function renderSegTable() {
     return '<tr data-sid="' + sid + '" onclick="openSegDrw(this.dataset.sid)">'
       + '<td><div style="font-weight:600;font-size:12.5px;color:#1a1a2e">' + s.name + '</div>'
       + '<div style="font-size:11px;color:#9ca3af;font-family:monospace">' + sid + '</div></td>'
-      + '<td>' + segUseBadge(s.use) + '</td>'
       + '<td>' + rulesLabel(s) + '</td>'
       + '<td><span style="font-size:12px;color:#374151">' + s.timeWindow + '</span></td>'
       + '<td>' + segStatusBadge(s.status) + '</td>'
@@ -5167,24 +5115,11 @@ function openSegDrw(id) {
   var seg = id ? SEG_DATA.find(function(s){return s.id===id;}) : null;
 
   document.getElementById('seg-drw-title').textContent = seg ? 'Edit Segment' : 'New Segment';
-  document.getElementById('seg-drw-sub').textContent = seg ? (seg.id + ' — ' + seg.use) : 'Define rules and time window';
+  document.getElementById('seg-drw-sub').textContent = seg ? seg.id : 'Define rules and time window';
   document.getElementById('seg-name').value = seg ? seg.name : '';
   document.getElementById('seg-desc').value = seg ? (seg.desc||'') : '';
   document.getElementById('seg-status-sel').value = seg ? seg.status : 'Active';
   document.getElementById('seg-drw-saved').textContent = seg ? ('Last saved: ' + seg.updatedAt + ' by ' + seg.updatedBy) : 'Unsaved';
-  var typeSel = document.getElementById('seg-type-sel');
-  if (typeSel) {
-    typeSel.value = (seg && seg.segType) ? seg.segType : 'rules';
-    onSegTypeChange(typeSel);
-  }
-
-  // Use case
-  if (seg) {
-    var radio = document.querySelector('input[name="seg-use"][value="' + seg.use + '"]');
-    if (radio) radio.checked = true;
-  } else {
-    document.querySelectorAll('input[name="seg-use"]').forEach(function(r){r.checked=false;});
-  }
 
   // All players
   var apCb = document.getElementById('seg-all-players');
@@ -5239,114 +5174,29 @@ function buildValInput(ruleId, param, val) {
       + param.values.map(function(v){return '<option value="' + v + '"' + (val===v?' selected':'') + '>' + v + '</option>';}).join('')
       + '</select>';
   }
-  if (param && param.type === 'avg') {
-    return '<div style="display:flex;align-items:center;gap:4px">'
-      + '<input type="number" class="rule-val" id="' + ruleId + '-val" placeholder="threshold" value="' + (val||'') + '" style="width:80px">'
-      + '<span style="font-size:10.5px;color:#9ca3af">avg value</span>'
-      + '</div>';
-  }
-  if (param && param.type === 'date') {
-    return '<div style="width:1px"></div>';
-  }
   return '<input type="text" class="rule-val" id="' + ruleId + '-val" placeholder="value" value="' + (val||'') + '">';
 }
 
-function buildTwInput(ruleId, param, twVal, extra) {
-  if (!param) return '<div style="width:1px"></div>';
-  extra = extra || {};
-  var wrap = '<div style="display:flex;align-items:center;gap:4px;flex-shrink:0;flex-wrap:wrap" id="' + ruleId + '-tw-wrap">';
-
-  // ── AVG type: mode selector first
-  if (param.type === 'avg') {
-    var avgMode = extra.avgMode || 'last_x';
-    wrap += '<select id="' + ruleId + '-avg-mode" data-rid="' + ruleId + '" onchange="onAvgModeChange(this)"'
-      + ' style="padding:4px 7px;border:1px solid #c4b5fd;border-radius:6px;font-size:11.5px;color:#5b21b6;background:#f3f0ff;outline:none">'
-      + '<option value="last_x"' + (avgMode==='last_x'?' selected':'') + '>Last X deposits</option>'
-      + '<option value="window"' + (avgMode==='window'?' selected':'') + '>Time window</option>'
-      + '</select>';
-    // Last X mode
-    wrap += '<div id="' + ruleId + '-avg-lastx" style="' + (avgMode==='last_x'?'display:flex':'display:none') + ';align-items:center;gap:3px">'
-      + '<span style="font-size:11px;color:#9ca3af">X =</span>'
-      + '<input type="number" id="' + ruleId + '-avg-x" value="' + (extra.avgX||'3') + '" min="1" max="50"'
-      + ' style="width:50px;padding:4px 6px;border:1px solid #e5e7eb;border-radius:6px;font-size:11.5px;text-align:center;outline:none">'
-      + '<span style="font-size:11px;color:#9ca3af">deposits</span></div>';
-    // Window mode — reuse standard presets
-    wrap += '<div id="' + ruleId + '-avg-window" style="' + (avgMode==='window'?'display:flex':'display:none') + ';align-items:center;gap:4px">'
-      + buildPresetSelect(ruleId, extra.tw || 'last30')
-      + buildCustomDays(ruleId, extra.twDays || '30', extra.tw)
-      + '</div>';
-    return wrap + '</div>';
-  }
-
-  // ── DATE type: lookback or range
-  if (param.type === 'date') {
-    var dateMode = extra.dateMode || 'lookback';
-    wrap += '<select id="' + ruleId + '-date-mode" data-rid="' + ruleId + '" onchange="onDateModeChange(this)"'
-      + ' style="padding:4px 7px;border:1px solid #c4b5fd;border-radius:6px;font-size:11.5px;color:#5b21b6;background:#f3f0ff;outline:none">'
-      + '<option value="lookback"' + (dateMode==='lookback'?' selected':'') + '>Lookback</option>'
-      + '<option value="range"' + (dateMode==='range'?' selected':'') + '>Date range</option>'
-      + '</select>';
-    // Lookback
-    wrap += '<div id="' + ruleId + '-date-lookback" style="' + (dateMode==='lookback'?'display:flex':'display:none') + ';align-items:center;gap:4px">'
-      + buildPresetSelect(ruleId, extra.tw || 'last7')
-      + buildCustomDays(ruleId, extra.twDays || '7', extra.tw)
-      + '</div>';
-    // Range
-    wrap += '<div id="' + ruleId + '-date-range" style="' + (dateMode==='range'?'display:flex':'display:none') + ';align-items:center;gap:6px">'
-      + '<input type="date" id="' + ruleId + '-date-from" value="' + (extra.dateFrom||'') + '"'
-      + ' style="padding:4px 8px;border:1px solid #e5e7eb;border-radius:6px;font-size:11.5px;outline:none">'
-      + '<span style="font-size:11px;color:#9ca3af">to</span>'
-      + '<input type="date" id="' + ruleId + '-date-to" value="' + (extra.dateTo||'') + '"'
-      + ' style="padding:4px 8px;border:1px solid #e5e7eb;border-radius:6px;font-size:11.5px;outline:none">'
-      + '</div>';
-    return wrap + '</div>';
-  }
-
-  // ── Standard timeWindow
-  if (!param.timeWindow) return '<div style="width:1px"></div>';
-  wrap += buildPresetSelect(ruleId, extra.tw || 'alltime')
-    + buildCustomDays(ruleId, extra.twDays || '30', extra.tw);
-  return wrap + '</div>';
-}
-
-function buildPresetSelect(ruleId, twVal) {
-  var presets = [{v:'today',l:'Today'},{v:'yesterday',l:'Yesterday'},{v:'last7',l:'Last 7d'},
-    {v:'last30',l:'Last 30d'},{v:'alltime',l:'All time'},{v:'custom',l:'Custom...'}];
-  return '<select class="rule-tw" id="' + ruleId + '-tw" data-rid="' + ruleId + '" onchange="onTwChange(this)"'
-    + ' style="padding:4px 7px;border:1px solid #e5e7eb;border-radius:6px;font-size:11.5px;color:#374151;background:#fff;outline:none">'
-    + presets.map(function(p){return '<option value="' + p.v + '"' + (twVal===p.v?' selected':'') + '>' + p.l + '</option>';}).join('')
-    + '</select>';
-}
-
-function buildCustomDays(ruleId, days, twVal) {
-  var vis = twVal==='custom' ? 'flex' : 'none';
-  return '<div id="' + ruleId + '-tw-custom" style="display:' + vis + ';align-items:center;gap:3px">'
+function buildTwInput(ruleId, param, twVal, twCustomVal) {
+  if (!param || !param.timeWindow) return '<div style="width:1px"></div>';
+  twVal = twVal || 'alltime';
+  var presets = [{v:'today',l:'Today'},{v:'yesterday',l:'Yesterday'},{v:'last7',l:'Last 7d'},{v:'last30',l:'Last 30d'},{v:'alltime',l:'All time'},{v:'custom',l:'Custom'}];
+  var selOpts = presets.map(function(p){return '<option value="' + p.v + '"' + (twVal===p.v?' selected':'') + '>' + p.l + '</option>';}).join('');
+  var customStyle = twVal==='custom' ? 'display:flex' : 'display:none';
+  return '<div style="display:flex;align-items:center;gap:4px;flex-shrink:0">'
+    + '<select class="rule-tw" id="' + ruleId + '-tw" data-rid="' + ruleId + '" onchange="onTwChange(this)" style="padding:4px 7px;border:1px solid #e5e7eb;border-radius:6px;font-size:11.5px;color:#374151;background:#fff;outline:none">'
+    + selOpts + '</select>'
+    + '<div id="' + ruleId + '-tw-custom" style="' + customStyle + ';align-items:center;gap:3px">'
     + '<span style="font-size:11px;color:#9ca3af">Last</span>'
-    + '<input type="number" id="' + ruleId + '-tw-days" value="' + (days||'30') + '" min="1" max="365"'
-    + ' style="width:50px;padding:4px 6px;border:1px solid #e5e7eb;border-radius:6px;font-size:11.5px;text-align:center;outline:none">'
-    + '<span style="font-size:11px;color:#9ca3af">days</span></div>';
+    + '<input type="number" id="' + ruleId + '-tw-days" value="' + (twCustomVal||'30') + '" min="1" max="365" style="width:50px;padding:4px 6px;border:1px solid #e5e7eb;border-radius:6px;font-size:11.5px;text-align:center;outline:none">'
+    + '<span style="font-size:11px;color:#9ca3af">days</span>'
+    + '</div></div>';
 }
 
 function onTwChange(sel) {
   var ruleId = sel.dataset.rid;
   var customDiv = document.getElementById(ruleId + '-tw-custom');
   if (customDiv) customDiv.style.display = sel.value==='custom' ? 'flex' : 'none';
-}
-
-function onAvgModeChange(sel) {
-  var ruleId = sel.dataset.rid;
-  var lx = document.getElementById(ruleId + '-avg-lastx');
-  var wn = document.getElementById(ruleId + '-avg-window');
-  if (lx) lx.style.display = sel.value==='last_x' ? 'flex' : 'none';
-  if (wn) wn.style.display = sel.value==='window'  ? 'flex' : 'none';
-}
-
-function onDateModeChange(sel) {
-  var ruleId = sel.dataset.rid;
-  var lb = document.getElementById(ruleId + '-date-lookback');
-  var rg = document.getElementById(ruleId + '-date-range');
-  if (lb) lb.style.display = sel.value==='lookback' ? 'flex' : 'none';
-  if (rg) rg.style.display = sel.value==='range'    ? 'flex' : 'none';
 }
 
 function addSegRule(existing, index) {
@@ -5378,14 +5228,16 @@ function addSegRule(existing, index) {
     return '<option value="' + op + '" ' + (existing&&existing.op===op?'selected':'') + '>' + op + '</option>';
   }).join('');
 
-  var valInput = buildValInput(ruleId, selParam, existing ? existing.val : '');
+  var valInput;
+  if (selParam && selParam.values) {
+    valInput = '<select class="rule-val" id="' + ruleId + '-val">'
+      + selParam.values.map(function(v){return '<option value="' + v + '" ' + (existing&&existing.val===v?'selected':'') + '>' + v + '</option>';}).join('')
+      + '</select>';
+  } else {
+    valInput = '<input type="text" class="rule-val" id="' + ruleId + '-val" placeholder="value" value="' + (existing?existing.val:'') + '">';
+  }
 
-  var twExtra = existing ? {
-    tw: existing.tw, twDays: existing.twCustom,
-    avgMode: existing.avgMode, avgX: existing.avgX,
-    dateMode: existing.dateMode, dateFrom: existing.dateFrom, dateTo: existing.dateTo
-  } : {};
-  var twHtml = buildTwInput(ruleId, selParam, existing ? existing.tw : '', twExtra);
+  var twHtml = buildTwInput(ruleId, selParam, existing ? existing.tw : 'alltime', existing ? existing.twCustom : '');
   row.innerHTML = '<select class="rule-param" id="' + ruleId + '-param" data-rid="' + ruleId + '" onchange="onSegParamChange(this.dataset.rid)">' + paramOpts + '</select>'
     + '<select class="rule-op" id="' + ruleId + '-op">' + opOpts + '</select>'
     + valInput
@@ -5403,39 +5255,20 @@ function onSegParamChange(ruleId) {
   // Update operators
   var opSel = document.getElementById(ruleId + '-op');
   if (opSel) opSel.innerHTML = p.ops.map(function(op){return '<option>' + op + '</option>';}).join('');
-  // Update value input — may be wrapped in a div for avg/date types
+  // Update value input
   var valEl = document.getElementById(ruleId + '-val');
-  var valContainer = valEl ? valEl.parentNode : null;
-  // For avg type, the val is inside a wrapper div — go up one level
-  if (valContainer && valContainer.tagName === 'DIV' && !valContainer.classList.contains('rule-row')) {
-    valContainer = valContainer.parentNode;
+  if (valEl) {
+    var newValDiv = document.createElement('div');
+    newValDiv.innerHTML = buildValInput(ruleId, p, '');
+    valEl.parentNode.replaceChild(newValDiv.firstChild, valEl);
   }
-  var newValDiv = document.createElement('div');
-  newValDiv.innerHTML = buildValInput(ruleId, p, '');
-  var newValNode = newValDiv.firstChild;
-  if (valEl && valEl.parentNode) {
-    // Replace the val element or its wrapper
-    var target = (valEl.parentNode.tagName === 'DIV' && !valEl.parentNode.classList.contains('rule-row'))
-      ? valEl.parentNode : valEl;
-    if (target.parentNode) target.parentNode.replaceChild(newValNode, target);
-  }
-  // Update time window — find by wrap ID
-  var oldTwWrap = document.getElementById(ruleId + '-tw-wrap');
-  if (!oldTwWrap) {
-    // fallback: find by tw select
-    var oldTwSel = document.getElementById(ruleId + '-tw');
-    oldTwWrap = oldTwSel ? oldTwSel.parentNode : null;
-  }
-  var newTwDiv = document.createElement('div');
-  newTwDiv.innerHTML = buildTwInput(ruleId, p, '', {});
-  var newTwNode = newTwDiv.firstChild;
-  if (oldTwWrap && oldTwWrap.parentNode) {
-    oldTwWrap.parentNode.replaceChild(newTwNode, oldTwWrap);
-  } else {
-    // TW wrap not found — find the rule-remove div and insert before it
-    var row = document.getElementById(ruleId);
-    var removeDiv = row ? row.querySelector('.rule-remove') : null;
-    if (removeDiv && newTwNode) row.insertBefore(newTwNode, removeDiv);
+  // Update time window
+  var oldTw = document.getElementById(ruleId + '-tw');
+  if (oldTw) {
+    var oldTwWrap = oldTw.parentNode;
+    var newTwDiv = document.createElement('div');
+    newTwDiv.innerHTML = buildTwInput(ruleId, p, 'alltime', '');
+    oldTwWrap.parentNode.replaceChild(newTwDiv.firstChild, oldTwWrap);
   }
 }
 
@@ -5468,8 +5301,6 @@ function setTwPreset(el, preset) {
 function saveSegDrw(status) {
   var name = document.getElementById('seg-name').value.trim();
   if (!name) { showToast2('Please enter a segment name'); return; }
-  var useEl = document.querySelector('input[name="seg-use"]:checked');
-  if (!useEl) { showToast2('Please select a use case'); return; }
 
   var rules = [];
   var rb2 = document.getElementById('seg-rule-builder');
@@ -5483,23 +5314,10 @@ function saveSegDrw(status) {
       var prev = row.previousElementSibling;
       var connEl = prev && prev.classList.contains('rule-connector') ? prev.querySelector('select') : null;
       if (pEl && oEl && vEl) {
-        var rId = row.id;
-        var avgModeEl  = document.getElementById(rId+'-avg-mode');
-        var avgXEl     = document.getElementById(rId+'-avg-x');
-        var dateModeEl = document.getElementById(rId+'-date-mode');
-        var dateFromEl = document.getElementById(rId+'-date-from');
-        var dateToEl   = document.getElementById(rId+'-date-to');
-        rules.push({
-          param: pEl.value, op: oEl.value, val: vEl.value,
+        rules.push({param:pEl.value, op:oEl.value, val:vEl.value,
           tw: twEl ? twEl.value : 'alltime',
           twCustom: twDays ? twDays.value : '',
-          connector: connEl ? connEl.value : 'AND',
-          avgMode:  avgModeEl  ? avgModeEl.value  : null,
-          avgX:     avgXEl     ? avgXEl.value      : null,
-          dateMode: dateModeEl ? dateModeEl.value  : null,
-          dateFrom: dateFromEl ? dateFromEl.value  : null,
-          dateTo:   dateToEl   ? dateToEl.value    : null,
-        });
+          connector: connEl ? connEl.value : 'AND'});
       }
     });
   }
@@ -5513,8 +5331,6 @@ function saveSegDrw(status) {
     id: _segEditId || ('SEG-' + String(SEG_DATA.length+1).padStart(3,'0')),
     name: name,
     desc: document.getElementById('seg-desc').value,
-    use: useEl.value,
-    segType: (document.getElementById('seg-type-sel')||{value:'rules'}).value,
     rules: rules,
     allPlayers: allPlayers,
     timeWindow: twLabels[_segActiveTwPreset]||'Today',
@@ -5557,54 +5373,13 @@ function updateSegPreview(seg) {
     var vEl = row.querySelector('.rule-val');
     if (pEl && oEl && vEl) rules.push(pEl.value + ' ' + oEl.value + ' ' + vEl.value);
   });
-  var useEl = document.querySelector('input[name="seg-use"]:checked');
   var twLabels = {today:'Today',yesterday:'Yesterday',last7:'Last 7 days',last30:'Last 30 days',alltime:'All time',custom:'Custom'};
 
   var rn = document.getElementById('seg-prev-rules');
-  var un = document.getElementById('seg-prev-use');
   var tn = document.getElementById('seg-prev-tw');
   var apCb = document.getElementById('seg-all-players');
   if (rn) rn.textContent = (apCb&&apCb.checked) ? 'ALL' : rules.length;
-  if (un) un.textContent = useEl ? useEl.value : '—';
   if (tn) tn.textContent = twLabels[_segActiveTwPreset]||'—';
-}
-
-
-function onSegTypeChange(sel) {
-  var isUserList = sel.value === 'userlist';
-  var rulesSection = document.getElementById('seg-rule-builder');
-  var addBtn       = document.getElementById('seg-add-rule-btn');
-  var allPlayersRow= document.querySelector('label[for="seg-all-players"]') || document.querySelector('#seg-all-players') && document.querySelector('#seg-all-players').parentNode;
-  var userListSec  = document.getElementById('seg-userlist-section');
-  if (rulesSection) rulesSection.style.display    = isUserList ? 'none' : '';
-  if (addBtn)       addBtn.style.display          = isUserList ? 'none' : '';
-  if (userListSec)  userListSec.style.display     = isUserList ? ''     : 'none';
-}
-
-function handleSegCsv(input) {
-  var file = input.files[0];
-  if (!file) return;
-  var reader = new FileReader();
-  reader.onload = function(e) {
-    var lines = e.target.result.split(/\r?\n/).filter(Boolean);
-    if (!lines.length) return;
-    var header = lines[0].toLowerCase().split(',').map(function(h){return h.trim();});
-    var uidCol = header.indexOf('user_id'); if (uidCol===-1) uidCol=0;
-    var seen={}, valid=0, invalid=0, dups=0;
-    lines.slice(1).forEach(function(line) {
-      var uid = (line.split(',')[uidCol]||'').trim();
-      if (!uid) { invalid++; return; }
-      if (seen[uid]) { dups++; return; }
-      seen[uid]=true; valid++;
-    });
-    document.getElementById('seg-csv-valid').textContent   = valid;
-    document.getElementById('seg-csv-invalid').textContent = invalid;
-    document.getElementById('seg-csv-dups').textContent    = dups;
-    var sum = document.getElementById('seg-csv-summary');
-    if (sum) { sum.style.display='flex'; }
-    document.getElementById('seg-csv-label').textContent = file.name + ' loaded (' + valid + ' users)';
-  };
-  reader.readAsText(file);
 }
 
 function initSegments() {
@@ -5733,53 +5508,9 @@ function initSegments() {
             </select>
           </div>
         </div>
-        <div class="fg2" style="margin-bottom:12px">
-          <div class="fi2">
-            <span class="fl2">Segment type</span>
-            <select class="fsel2" id="seg-type-sel" onchange="onSegTypeChange(this)">
-              <option value="rules">Rule-based</option>
-              <option value="userlist">User list (CSV upload)</option>
-            </select>
-          </div>
-          <div class="fi2">
-            <span class="fl2">Description (optional)</span>
-            <input type="text" class="finp2" id="seg-desc" placeholder="Internal description...">
-          </div>
-        </div>
-        <!-- User list upload (shown when type = userlist) -->
-        <div id="seg-userlist-section" style="display:none;margin-top:4px">
-          <div style="border:2px dashed #e5e7eb;border-radius:8px;padding:20px;text-align:center;background:#fafafa;cursor:pointer" onclick="document.getElementById('seg-csv-input').click()">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.5" style="margin-bottom:6px"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-            <div id="seg-csv-label" style="font-size:12.5px;font-weight:500;color:#374151">Upload CSV with User IDs</div>
-            <div style="font-size:11px;color:#9ca3af;margin-top:3px">Column must be named <code>user_id</code></div>
-            <input type="file" id="seg-csv-input" accept=".csv" style="display:none" onchange="handleSegCsv(this)">
-          </div>
-          <div id="seg-csv-summary" style="display:none;margin-top:10px;padding:10px 14px;background:#fff;border:1px solid #e8e8ec;border-radius:8px;gap:20px">
-            <div style="text-align:center"><div style="font-size:18px;font-weight:800;color:#10b981" id="seg-csv-valid">0</div><div style="font-size:10px;color:#9ca3af">Valid IDs</div></div>
-            <div style="text-align:center"><div style="font-size:18px;font-weight:800;color:#ef4444" id="seg-csv-invalid">0</div><div style="font-size:10px;color:#9ca3af">Invalid</div></div>
-            <div style="text-align:center"><div style="font-size:18px;font-weight:800;color:#f59e0b" id="seg-csv-dups">0</div><div style="font-size:10px;color:#9ca3af">Duplicates</div></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="csec2">
-        <div class="csec2-h">
-          <span class="csec2-t">Use Case</span>
-          <span style="font-size:11px;color:#9ca3af">Where will this segment be used?</span>
-        </div>
-        <div style="display:flex;gap:10px;flex-wrap:wrap" id="seg-use-cases">
-          <label style="display:flex;align-items:center;gap:7px;padding:8px 14px;border:1px solid #e5e7eb;border-radius:7px;cursor:pointer;font-size:12.5px">
-            <input type="radio" name="seg-use" value="Tournament" id="seg-use-tournament"> <span style="display:flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:#1e40af;display:inline-block"></span>Tournament</span>
-          </label>
-          <label style="display:flex;align-items:center;gap:7px;padding:8px 14px;border:1px solid #e5e7eb;border-radius:7px;cursor:pointer;font-size:12.5px">
-            <input type="radio" name="seg-use" value="Store" id="seg-use-store"> <span style="display:flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:#065f46;display:inline-block"></span>Store</span>
-          </label>
-          <label style="display:flex;align-items:center;gap:7px;padding:8px 14px;border:1px solid #e5e7eb;border-radius:7px;cursor:pointer;font-size:12.5px">
-            <input type="radio" name="seg-use" value="Offers" id="seg-use-offers"> <span style="display:flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:#5b21b6;display:inline-block"></span>Offers</span>
-          </label>
-          <label style="display:flex;align-items:center;gap:7px;padding:8px 14px;border:1px solid #e5e7eb;border-radius:7px;cursor:pointer;font-size:12.5px">
-            <input type="radio" name="seg-use" value="Quest" id="seg-use-quest"> <span style="display:flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:#92400e;display:inline-block"></span>Quest</span>
-          </label>
+        <div class="fi2">
+          <span class="fl2">Description (optional)</span>
+          <input type="text" class="finp2" id="seg-desc" placeholder="Internal description...">
         </div>
       </div>
 
@@ -5895,9 +5626,8 @@ function initSegments() {
 
       <div class="csec2">
         <div class="csec2-h"><span class="csec2-t">Segment Summary</span></div>
-        <div class="kpi-s2" style="grid-template-columns:repeat(3,1fr)">
+        <div class="kpi-s2" style="grid-template-columns:repeat(2,1fr)">
           <div class="kpi-c2"><div class="kpi-n2" style="color:#7c3aed" id="seg-prev-rules">—</div><div class="kpi-l2">Rules defined</div></div>
-          <div class="kpi-c2"><div class="kpi-n2" id="seg-prev-use">—</div><div class="kpi-l2">Use case</div></div>
           <div class="kpi-c2"><div class="kpi-n2" id="seg-prev-tw">—</div><div class="kpi-l2">Time window</div></div>
         </div>
       </div>
