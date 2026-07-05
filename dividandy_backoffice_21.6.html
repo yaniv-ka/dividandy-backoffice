@@ -2306,11 +2306,15 @@ input[readonly]{background:#f9fafb;color:#6b7280}
     <div class="drw2-tab" onclick="switchUTab('wallet')">Wallet</div>
     <div class="drw2-tab" onclick="switchUTab('tournaments')">Tournaments</div>
     <div class="drw2-tab" onclick="switchUTab('notifications')">Notifications</div>
+    <div class="drw2-tab" onclick="switchUTab('ftue')">FTUE</div>
+    <div class="drw2-tab" onclick="switchUTab('purchases')">Purchases &amp; Payments</div>
+    <div class="drw2-tab" onclick="switchUTab('support')">Support</div>
   </div>
   <div class="drw2-body">
     <!-- Profile -->
     <div class="tpnl active" id="u-tab-profile">
       <div class="csec2"><div class="csec2-h"><span class="csec2-t">Account details</span><select class="fsel2" style="width:120px" id="u-st-sel"><option>Active</option><option>Inactive</option><option>Blocked</option></select></div>
+        <div style="margin-bottom:10px"><label style="font-size:10.5px;color:#9ca3af;font-weight:500;text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:4px">Status reason</label><input type="text" class="finp2" style="width:100%" id="u-st-reason" placeholder="Reason for status change (internal)…"></div>
         <div class="fg2">
           <div class="fi2"><span class="fl2">User ID</span><span class="fv2" id="u-f-id" style="font-family:monospace">USR-4567</span></div>
           <div class="fi2"><span class="fl2">Nickname</span><span class="fv2" id="u-f-nick">JohnCena99</span></div>
@@ -2320,9 +2324,9 @@ input[readonly]{background:#f9fafb;color:#6b7280}
           <div class="fi2"><span class="fl2">Language</span><span class="fv2" id="u-f-lang">ES</span></div>
           <div class="fi2"><span class="fl2">Registration</span><span class="fv2" id="u-f-reg">12 Mar 2024</span></div>
           <div class="fi2"><span class="fl2">Last login</span><span class="fv2" id="u-f-login">2h ago · iOS 18.1</span></div>
-          <div class="fi2"><span class="fl2">Environment</span><span class="fv2" id="u-f-env">DiviDandy</span></div>
           <div class="fi2"><span class="fl2">Install source</span><span class="fv2" id="u-f-src">Google Play</span></div>
         </div>
+        <div style="display:flex;justify-content:flex-end;margin-top:10px"><button class="btn2 bp" style="padding:5px 12px;font-size:12px" onclick="showToast2('Profile status saved')">Save changes</button></div>
       </div>
       <div class="csec2"><div class="csec2-h"><span class="csec2-t">XP &amp; Loyalty</span></div>
         <div class="kpi-s2" style="margin-bottom:12px">
@@ -2351,6 +2355,10 @@ input[readonly]{background:#f9fafb;color:#6b7280}
     <!-- KYC -->
     <div class="tpnl" id="u-tab-kyc">
       <div class="csec2"><div class="csec2-h"><span class="csec2-t">KYC status</span><span class="kyc-a" id="u-kyc-bdg">Approved</span></div>
+        <div class="fg2" style="margin-bottom:10px">
+          <div style="display:flex;flex-direction:column;gap:3px"><label style="font-size:10.5px;color:#9ca3af;font-weight:500;text-transform:uppercase;letter-spacing:.4px">Reason</label><select class="fsel2" id="u-kyc-reason"><option value="">—</option><option>Document unclear</option><option>Name mismatch</option><option>Expired document</option><option>Address mismatch</option><option>Suspected fraud</option></select></div>
+          <div style="display:flex;flex-direction:column;gap:3px"><label style="font-size:10.5px;color:#9ca3af;font-weight:500;text-transform:uppercase;letter-spacing:.4px">Applicant message</label><input type="text" class="finp2" id="u-kyc-msg" placeholder="Message shown to the user…"></div>
+        </div>
         <div class="fg2">
           <div class="fi2"><span class="fl2">KYC verified at</span><span class="fv2">20 Mar 2024</span></div>
           <div class="fi2"><span class="fl2">KYC expiration</span><span class="fv2">20 Mar 2025</span></div>
@@ -2359,6 +2367,7 @@ input[readonly]{background:#f9fafb;color:#6b7280}
           <div class="fi2"><span class="fl2">Issuing country</span><span class="fv2">Argentina</span></div>
           <div class="fi2"><span class="fl2">ID expiration</span><span class="fv2">15 Jun 2030</span></div>
         </div>
+        <div style="display:flex;justify-content:flex-end;margin-top:10px"><button class="btn2 bp" style="padding:5px 12px;font-size:12px" onclick="showToast2('KYC status saved')">Save changes</button></div>
       </div>
       <div class="csec2"><div class="csec2-h"><span class="csec2-t">Verified identity</span></div>
         <div class="fg2">
@@ -2396,12 +2405,19 @@ input[readonly]{background:#f9fafb;color:#6b7280}
           <div style="display:flex;flex-direction:column;gap:2px;flex:1"><label style="font-size:10.5px;color:#9ca3af;font-weight:500;text-transform:uppercase;letter-spacing:.4px">Reason</label><input type="text" placeholder="e.g. Compensation for tournament issue" class="finp2"></div>
           <button class="btn2 bp">Add</button>
         </div>
+        <div style="display:flex;align-items:flex-end;gap:10px;background:#fff;border:1px solid #e8e8ec;border-radius:8px;padding:12px;margin-bottom:10px">
+          <div style="display:flex;flex-direction:column;gap:2px;flex:0 0 150px"><label style="font-size:10.5px;color:#9ca3af;font-weight:500;text-transform:uppercase;letter-spacing:.4px">Bulk compensation (Đ)</label><input type="number" placeholder="0" min="0" class="finp2" id="u-w-bulk"></div>
+          <div style="display:flex;flex-direction:column;gap:2px;flex:1"><label style="font-size:10.5px;color:#9ca3af;font-weight:500;text-transform:uppercase;letter-spacing:.4px">Applies to</label><span class="fv2" style="padding-top:6px;display:block">This user only</span></div>
+          <button class="btn2 bp">Apply compensation</button>
+        </div>
         <div style="display:flex;align-items:center;gap:10px;background:#fff8f8;border:1px solid #fecaca;border-radius:8px;padding:10px 12px">
           <i class="ti ti-alert-triangle" style="color:#991b1b;flex-shrink:0"></i>
           <label style="font-size:12px;color:#991b1b;flex:1">Reset all BDC to 0</label>
           <input type="text" placeholder="Reset reason (required)" class="finp2" style="flex:1;border-color:#fecaca">
           <button class="btn2" style="background:#fee2e2;color:#991b1b;border:1px solid #fecaca;padding:5px 12px;font-size:12px">Reset BDC</button>
         </div>
+        <div style="margin-top:10px"><label style="font-size:10.5px;color:#9ca3af;font-weight:500;text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:4px">Internal notes (wallet)</label><textarea class="ta2" id="u-w-notes" placeholder="Internal notes about wallet activity for this user…"></textarea></div>
+        <div style="display:flex;justify-content:flex-end;margin-top:8px"><button class="btn2 bp" style="padding:5px 12px;font-size:12px" onclick="showToast2('Wallet changes saved')">Save changes</button></div>
       </div>
       <div class="sdiv">Recent wallet activity</div>
       <div class="csec2" style="padding:0;overflow:hidden">
@@ -2462,13 +2478,82 @@ input[readonly]{background:#f9fafb;color:#6b7280}
           <div class="ntfr"><span class="ntfl">DiviCoins purchase</span><label class="tgl2"><input type="checkbox" checked><span class="tgl2-sl"></span></label></div>
           <div class="ntfr"><span class="ntfl">Withdrawal status</span><label class="tgl2"><input type="checkbox" checked><span class="tgl2-sl"></span></label></div>
           <div class="ntfr"><span class="ntfl">New login detected</span><label class="tgl2"><input type="checkbox" checked><span class="tgl2-sl"></span></label></div>
-          <div class="ntfr"><span class="ntfl">KYC required</span><label class="tgl2"><input type="checkbox" checked><span class="tgl2-sl"></span></label></div>
+          <div class="ntfr"><span class="ntfl">Password / passcode changes</span><label class="tgl2"><input type="checkbox" checked><span class="tgl2-sl"></span></label></div>
+          <div class="ntfr"><span class="ntfl">KYC required before withdrawal</span><label class="tgl2"><input type="checkbox" checked><span class="tgl2-sl"></span></label></div>
           <div class="ntfr"><span class="ntfl">Policy / legal updates</span><label class="tgl2"><input type="checkbox"><span class="tgl2-sl"></span></label></div>
           <div class="ntfr"><span class="ntfl">Personalized offers</span><label class="tgl2"><input type="checkbox" checked><span class="tgl2-sl"></span></label></div>
           <div class="ntfr"><span class="ntfl">Promotions &amp; bundles</span><label class="tgl2"><input type="checkbox" checked><span class="tgl2-sl"></span></label></div>
           <div class="ntfr"><span class="ntfl">News &amp; product updates</span><label class="tgl2"><input type="checkbox"><span class="tgl2-sl"></span></label></div>
           <div class="ntfr"><span class="ntfl">Market data</span><label class="tgl2"><input type="checkbox"><span class="tgl2-sl"></span></label></div>
+          <div class="ntfr"><span class="ntfl">Heartbeats <span style="color:#9ca3af;font-weight:400">(session keep-alive)</span></span><label class="tgl2"><input type="checkbox" checked><span class="tgl2-sl"></span></label></div>
         </div>
+      </div>
+    </div>
+    <!-- FTUE -->
+    <div class="tpnl" id="u-tab-ftue">
+      <div class="csec2"><div class="csec2-h"><span class="csec2-t">First-time user experience</span><span style="font-size:11px;color:#9ca3af;font-weight:400">Read-only · reported by app</span></div>
+        <div class="fg2">
+          <div class="fi2"><span class="fl2">FTUE status</span><span class="fv2" id="u-ftue-status">intro_completed</span></div>
+          <div class="fi2"><span class="fl2">Onboarding game started</span><span class="fv2" id="u-ftue-og-start">Yes · 12 Mar 2024</span></div>
+          <div class="fi2"><span class="fl2">Onboarding game finished</span><span class="fv2" id="u-ftue-og-fin">Yes · 12 Mar 2024</span></div>
+          <div class="fi2"><span class="fl2">Educational game started</span><span class="fv2" id="u-ftue-eg-start">Yes · 13 Mar 2024</span></div>
+          <div class="fi2"><span class="fl2">Educational game finished</span><span class="fv2" id="u-ftue-eg-fin">No</span></div>
+        </div>
+      </div>
+    </div>
+    <!-- Purchases & Payments -->
+    <div class="tpnl" id="u-tab-purchases">
+      <div class="kpi-s2">
+        <div class="kpi-c2"><div class="kpi-n2" style="color:#7c3aed" id="u-pur-count">28</div><div class="kpi-l2">Transactions (lifetime)</div></div>
+        <div class="kpi-c2"><div class="kpi-n2" id="u-pur-sum">$412.50</div><div class="kpi-l2">Total spend</div></div>
+        <div class="kpi-c2"><div class="kpi-n2" id="u-pur-avg">$14.73</div><div class="kpi-l2">Avg transaction</div></div>
+        <div class="kpi-c2"><div class="kpi-n2" id="u-pur-last">$19.99 · 3d ago</div><div class="kpi-l2">Last purchase</div></div>
+      </div>
+      <div class="kpi-s2" style="grid-template-columns:repeat(4,1fr);margin-top:10px">
+        <div class="kpi-c2"><div class="kpi-n2" style="color:#ef4444" id="u-pur-ref">1</div><div class="kpi-l2">Refunds</div></div>
+        <div class="kpi-c2"><div class="kpi-n2" style="color:#991b1b" id="u-pur-cb">0</div><div class="kpi-l2">Chargebacks</div></div>
+        <div class="kpi-c2"><div class="kpi-n2" style="color:#10b981" id="u-pur-cash">$8.20</div><div class="kpi-l2">Cashback total</div></div>
+        <div class="kpi-c2"><div class="kpi-n2" id="u-pur-credit">$0.00</div><div class="kpi-l2">Credit total</div></div>
+      </div>
+      <div class="sdiv">Recent payment transactions</div>
+      <div class="csec2" style="padding:0;overflow:hidden">
+        <table class="mt2">
+          <thead><tr><th>Date</th><th>Order ID</th><th>Amount</th><th>Method</th><th>PSP</th><th>Status</th><th></th></tr></thead>
+          <tbody>
+            <tr><td>02 Jul 2026</td><td style="font-family:monospace">ORD-88213</td><td>$19.99</td><td>Card</td><td>Nuvei</td><td><span class="bdg2 bact" style="font-size:10.5px">Approved</span></td><td></td></tr>
+            <tr><td>28 Jun 2026</td><td style="font-family:monospace">ORD-88011</td><td>$49.99</td><td>Card</td><td>Nuvei</td><td><span class="bdg2 bact" style="font-size:10.5px">Approved</span></td><td></td></tr>
+            <tr><td>19 Jun 2026</td><td style="font-family:monospace">ORD-87650</td><td>$9.99</td><td>Google Play</td><td>App Store</td><td><span class="bdg2" style="font-size:10.5px;background:#fee2e2;color:#991b1b">Refunded</span></td><td>Reason: accidental purchase</td></tr>
+            <tr><td>05 Jun 2026</td><td style="font-family:monospace">ORD-86980</td><td>$19.99</td><td>Crypto</td><td>Payhound</td><td><span class="bdg2 bact" style="font-size:10.5px">Approved</span></td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="sdiv">Withdrawals</div>
+      <div class="kpi-s2" style="grid-template-columns:repeat(4,1fr)">
+        <div class="kpi-c2"><div class="kpi-n2" id="u-wd-count">3</div><div class="kpi-l2">Withdrawal count</div></div>
+        <div class="kpi-c2"><div class="kpi-n2" id="u-wd-sum">120 Đ</div><div class="kpi-l2">Withdrawal sum</div></div>
+        <div class="kpi-c2"><div class="kpi-n2" style="color:#f59e0b" id="u-wd-pending">0 Đ</div><div class="kpi-l2">Pending amount</div></div>
+        <div class="kpi-c2"><div class="kpi-n2" id="u-wd-last">22 Jun 2026</div><div class="kpi-l2">Last withdrawal</div></div>
+      </div>
+    </div>
+    <!-- Support -->
+    <div class="tpnl" id="u-tab-support">
+      <div class="kpi-s2" style="grid-template-columns:repeat(4,1fr)">
+        <div class="kpi-c2"><div class="kpi-n2" style="color:#7c3aed" id="u-sup-total">4</div><div class="kpi-l2">Total tickets</div></div>
+        <div class="kpi-c2"><div class="kpi-n2" style="color:#f59e0b" id="u-sup-open">1</div><div class="kpi-l2">Open tickets</div></div>
+        <div class="kpi-c2"><div class="kpi-n2" id="u-sup-res">6.5h</div><div class="kpi-l2">Avg resolution time</div></div>
+        <div class="kpi-c2"><div class="kpi-n2" id="u-sup-days">14</div><div class="kpi-l2">Days since last ticket</div></div>
+      </div>
+      <div class="sdiv">Ticket history</div>
+      <div class="csec2" style="padding:0;overflow:hidden">
+        <table class="mt2">
+          <thead><tr><th>Ticket #</th><th>Type</th><th>Category</th><th>Status</th><th>Escalation</th><th>Opened</th><th>Resolved</th></tr></thead>
+          <tbody>
+            <tr><td style="font-family:monospace">TCK-4021</td><td>Payment issue</td><td>Billing</td><td><span class="bdg2" style="font-size:10.5px;background:#fef3c7;color:#92400e">Open</span></td><td>L1</td><td>21 Jun 2026</td><td>—</td></tr>
+            <tr><td style="font-family:monospace">TCK-3980</td><td>KYC question</td><td>Account</td><td><span class="bdg2 binact" style="font-size:10.5px">Resolved</span></td><td>L1</td><td>02 Jun 2026</td><td>02 Jun 2026</td></tr>
+            <tr><td style="font-family:monospace">TCK-3712</td><td>Tournament dispute</td><td>Gameplay</td><td><span class="bdg2 binact" style="font-size:10.5px">Resolved</span></td><td>L2</td><td>14 May 2026</td><td>15 May 2026</td></tr>
+            <tr><td style="font-family:monospace">TCK-3401</td><td>Withdrawal delay</td><td>Wallet</td><td><span class="bdg2 binact" style="font-size:10.5px">Resolved</span></td><td>L1</td><td>02 Apr 2026</td><td>03 Apr 2026</td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
@@ -3368,7 +3453,7 @@ function openUDrw(idx){
 }
 function closeUDrw(){document.getElementById('u-drw-ov').classList.remove('open');document.getElementById('u-drw').classList.remove('open');}
 function switchUTab(name){
-  const tabs=['profile','kyc','wallet','tournaments','notifications'];
+  const tabs=['profile','kyc','wallet','tournaments','notifications','ftue','purchases','support'];
   document.querySelectorAll('#u-drw .drw2-tab').forEach((t,i)=>t.classList.toggle('active',tabs[i]===name));
   tabs.forEach(t=>{const p=document.getElementById('u-tab-'+t);if(p)p.classList.toggle('active',t===name);});
 }
