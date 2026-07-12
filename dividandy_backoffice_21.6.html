@@ -522,6 +522,7 @@ input[readonly]{background:#f9fafb;color:#6b7280}
 .field-row input,.field-row textarea{width:100%;padding:7px 10px;border:1px solid #e5e7eb;border-radius:7px;font-size:12.5px;color:#374151;background:#fff;outline:none;font-family:inherit;transition:border-color .15s;resize:vertical}
 .field-row input:focus,.field-row textarea:focus{border-color:#7c3aed}
 .field-row textarea{min-height:65px}
+.field-row input[type="radio"],.field-row input[type="checkbox"]{width:15px;min-width:15px;flex:0 0 auto;padding:0;border:none;background:none;border-radius:0}
 .ctrl-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:14px}
 .ctrl-card{background:#fff;border:1px solid #e8e8ec;border-radius:8px;padding:12px}
 .ctrl-card-title{font-size:10.5px;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px}
@@ -1038,7 +1039,7 @@ input[readonly]{background:#f9fafb;color:#6b7280}
                   <span><strong>Overlay exposure:</strong> <span id="re-overlay-banner-amt">0</span> DC would be funded by Dividandy if this tournament opened right now.</span>
                 </div>
 
-                <div class="field-row"><span class="field-label">Currently Registered</span><div class="field-value ro"><span id="re-registered-players">44</span> players <span style="font-size:11px;color:#9ca3af;margin-left:6px">(live registration count, read-only)</span></div></div>
+                <div class="field-row"><span class="field-label">Currently Registered</span><div class="field-value"><div class="input-pair"><input type="number" id="re-registered-players" value="44" min="0" style="max-width:80px" oninput="calcRegGuarantee()"><span>players</span></div><div style="font-size:11px;color:#9ca3af;margin-top:3px">Test value for this preview — in production this is the live registration count and is read-only here</div></div></div>
 
                 <div class="field-row"><span class="field-label">Calculated Guarantee</span><div class="field-value ro">
                   <strong id="re-calc-guarantee">80</strong> DC
@@ -1062,9 +1063,9 @@ input[readonly]{background:#f9fafb;color:#6b7280}
                 </div></div>
 
                 <div class="field-row"><span class="field-label">Opening Policy</span><div class="field-value">
-                  <div style="display:flex;flex-direction:column;gap:8px;padding-top:4px">
-                    <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:#374151"><input type="radio" name="re-open-policy" value="strict" onchange="setRegPolicy('strict')"> Strict — open only if registered ≥ Min Participants (default)</label>
-                    <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:#374151"><input type="radio" name="re-open-policy" value="overlay" checked onchange="setRegPolicy('overlay')"> Open if overlay ≤ X</label>
+                  <div style="display:flex;flex-direction:column;gap:10px;padding-top:4px;max-width:480px">
+                    <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;font-size:13px;color:#374151;line-height:1.4"><input type="radio" name="re-open-policy" value="strict" onchange="setRegPolicy('strict')" style="margin-top:3px"><span>Strict — open only if registered ≥ Min Participants <span style="color:#9ca3af">(default)</span></span></label>
+                    <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;font-size:13px;color:#374151;line-height:1.4"><input type="radio" name="re-open-policy" value="overlay" checked onchange="setRegPolicy('overlay')" style="margin-top:3px"><span>Open if overlay ≤ X</span></label>
                   </div>
                   <div id="re-policy-x" style="margin-top:8px"><div class="input-pair"><span>X =</span><input type="number" id="re-max-overlay" value="100" min="0" style="max-width:90px" oninput="calcRegGuarantee()"><span>DC max overlay Dividandy will fund at start (0 = open only if no exposure)</span></div></div>
                   <div style="font-size:11px;color:#9ca3af;margin-top:6px">Evaluated once, at scheduled start time. Late registrations only reduce realized overlay — never counted toward the opening decision. A tournament reaching Min Participants always opens, regardless of policy.</div>
@@ -1076,6 +1077,7 @@ input[readonly]{background:#f9fafb;color:#6b7280}
                   <div class="kpi"><label>Gross Collected</label><span id="re-gross-collected" style="font-weight:600">440 DC</span></div>
                   <div class="kpi"><label>Current Overlay</label><span id="re-current-overlay" style="font-weight:600">0 DC</span></div>
                   <div class="kpi"><label>Prize Pool at Start</label><span id="re-prize-at-start" style="color:#7c3aed;font-weight:600">352 DC</span></div>
+                  <div class="kpi"><label>Total XP</label><span id="re-total-xp" style="color:#7c3aed;font-weight:600">35,200</span></div>
                 </div>
               </div>
             </div>
@@ -1124,10 +1126,8 @@ input[readonly]{background:#f9fafb;color:#6b7280}
               <div class="card-header"><div class="card-title"><i class="ti ti-trophy"></i> Prize &amp; XP Distribution</div></div>
               <div class="card-body">
                 <div class="field-row"><span class="field-label">Rewards</span><div class="field-value"><div class="toggle-wrap"><div class="toggle on" onclick="toggleSwitch(this)"></div><span class="toggle-label">Enabled</span></div></div></div>
-                <div class="field-row"><span class="field-label">Prize Pool Table</span><div class="field-value"><div class="input-pair"><select><option selected>Prize_Table_B</option><option>Prize_Table_A</option></select><button class="btn btn-outline btn-sm" onclick="openDrawer('prize')"><i class="ti ti-eye"></i> Preview</button></div></div></div>
-                <div class="field-row"><span class="field-label">Seed Money</span><div class="field-value"><div class="input-pair"><input type="number" value="1500" style="max-width:80px"><span>DC</span></div></div></div>
-                
-                <div class="field-row"><span class="field-label">XP Table</span><div class="field-value"><div class="input-pair"><select><option selected>XP_Daily</option><option>XP_Standard</option></select><button class="btn btn-outline btn-sm" onclick="openDrawer('xp')"><i class="ti ti-eye"></i> Preview</button></div></div></div>
+                <div class="field-row"><span class="field-label">Prize Pool Table</span><div class="field-value"><div class="input-pair"><select><option selected>Prize_Table_B</option><option>Prize_Table_A</option></select><button class="btn btn-outline btn-sm" onclick="openDrawer('prize')"><i class="ti ti-eye"></i> Preview</button></div><div style="font-size:11px;color:#9ca3af;margin-top:3px">Defines the % split across ranks. The total pool size is driven by Guaranteed Prize Pool &amp; Overlay, below.</div></div></div>
+                <div class="field-row"><span class="field-label">XP Table</span><div class="field-value"><div class="input-pair"><select><option selected>XP_Daily</option><option>XP_Standard</option></select><button class="btn btn-outline btn-sm" onclick="openDrawer('xp')"><i class="ti ti-eye"></i> Preview</button></div><div style="font-size:11px;color:#9ca3af;margin-top:3px">Defines per-rank XP weighting only. Total XP distributed is derived from the Prize Pool (see Total XP in Guaranteed Prize Pool &amp; Overlay, below).</div></div></div>
               </div>
             </div>
 
@@ -1429,6 +1429,7 @@ input[readonly]{background:#f9fafb;color:#6b7280}
                     <div class="field-row"><span class="field-label">Gross Collected</span><span class="field-value ro">440 DC</span></div>
                     <div class="field-row"><span class="field-label">Current Overlay</span><span class="field-value ro" id="rv-current-overlay">0 DC</span></div>
                     <div class="field-row"><span class="field-label">Prize Pool at Start</span><span class="field-value ro" style="color:#7c3aed;font-weight:600">352 DC</span></div>
+                    <div class="field-row"><span class="field-label">Total XP</span><span class="field-value ro" style="color:#7c3aed;font-weight:600">35,200</span></div>
                   </div>
                 </div>
               </div>
@@ -2873,6 +2874,7 @@ function toggleSwitch(el,cb){
 // ═══════════════════════════════════════════
 // GUARANTEED PRIZE POOL & OVERLAY (Regular tournament instances)
 // ═══════════════════════════════════════════
+const XP_PER_DC=100; // 100 XP awarded per DC in the Prize Pool at Start
 let regOverrideState={active:true,reason:'launch promo',by:'A. Cohen',date:'2026-07-10 14:32 UTC',calcAtOverride:80,reconfirmed:true};
 let regOverrideHistory=[
   {ts:'2026-07-10 14:32 UTC',actor:'A. Cohen',calc:80,prevActive:80,newActive:100,reason:'launch promo'}
@@ -2884,7 +2886,7 @@ function calcRegGuarantee(){
   const minP=parseFloat(document.getElementById('re-minp')?.value)||0;
   const fee=parseFloat(document.getElementById('re-fee')?.value)||0;
   const rake=parseFloat(document.getElementById('re-rake')?.value)||0;
-  const registered=parseFloat(document.getElementById('re-registered-players')?.textContent)||0;
+  const registered=parseFloat(document.getElementById('re-registered-players')?.value)||0;
 
   const calc=minP*fee*(1-rake/100);
   const calcEl=document.getElementById('re-calc-guarantee');
@@ -2915,12 +2917,15 @@ function calcRegGuarantee(){
   const gross=registered*fee;
   const overlay=Math.max(0, active-gross);
   const prizeAtStart=Math.max(active, gross*(1-rake/100));
+  const totalXp=Math.round(prizeAtStart*XP_PER_DC);
   const grossEl=document.getElementById('re-gross-collected');
   const overlayEl=document.getElementById('re-current-overlay');
   const prizeEl=document.getElementById('re-prize-at-start');
+  const xpEl=document.getElementById('re-total-xp');
   if(grossEl) grossEl.textContent=fmtDC(gross)+' DC';
   if(overlayEl) overlayEl.textContent=fmtDC(overlay)+' DC';
   if(prizeEl) prizeEl.textContent=fmtDC(prizeAtStart)+' DC';
+  if(xpEl) xpEl.textContent=totalXp.toLocaleString();
 
   const policy=document.querySelector('input[name="re-open-policy"]:checked')?.value||'strict';
   const flagged=policy==='overlay' && overlay>0;
