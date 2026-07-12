@@ -844,6 +844,7 @@ input[readonly]{background:#f9fafb;color:#6b7280}
           <div style="display:flex;align-items:center;gap:14px;margin-bottom:9px;font-size:12px;color:#6b7280">
             <span><span class="live-dot"></span><strong style="color:#065f46" id="rl-live">2</strong> live now</span>
             <span id="rl-total">5 events</span>
+            <span id="rl-overlay-count" style="display:flex;align-items:center;gap:5px;color:#991b1b"><i class="ti ti-flag-filled" style="font-size:12px"></i></span>
           </div>
           <div class="tbl-card"><div class="tbl-scroll">
             <table class="list-tbl">
@@ -932,7 +933,7 @@ input[readonly]{background:#f9fafb;color:#6b7280}
             <div class="action-bar">
               <div class="action-bar-left">
                 <button class="btn btn-outline" onclick="goBack('reg')"><i class="ti ti-arrow-left"></i> Back</button>
-                <button class="btn btn-primary"><i class="ti ti-device-floppy"></i> Save</button>
+                <button class="btn btn-primary" onclick="saveRegEvent()"><i class="ti ti-device-floppy"></i> Save</button>
                 <button class="btn btn-success"><i class="ti ti-world"></i> Publish</button>
                 <button class="btn btn-outline"><i class="ti ti-copy"></i> Clone</button>
                 <button class="btn btn-outline"><i class="ti ti-refresh"></i> Reset</button>
@@ -967,8 +968,8 @@ input[readonly]{background:#f9fafb;color:#6b7280}
                     
                     
                     <div class="field-row"><span class="field-label">Starting Balance ($)</span><div class="field-value"><div class="input-pair"><span>$</span><input type="number" value="100099" style="max-width:120px"></div></div></div>
-                    <div class="field-row"><span class="field-label">Entry Fee (DC)</span><div class="field-value"><input type="number" value="10" style="max-width:80px"></div></div>
-                    <div class="field-row"><span class="field-label">House fee (%)</span><div class="field-value"><input type="number" value="30" style="max-width:80px"></div></div>
+                    <div class="field-row"><span class="field-label">Entry Fee (DC)</span><div class="field-value"><input type="number" id="re-fee" value="10" style="max-width:80px" oninput="calcRegGuarantee()"></div></div>
+                    <div class="field-row"><span class="field-label">House fee (%)</span><div class="field-value"><input type="number" id="re-rake" value="20" style="max-width:80px" oninput="calcRegGuarantee()"><div style="font-size:11px;color:#9ca3af;margin-top:3px">Used as "rake" in the Guaranteed Prize Pool calculation below</div></div></div>
                   </div>
                   <div>
                     <div class="field-row"><span class="field-label">Status</span><div class="field-value ro"><span class="chip chip-draft">DRAFT</span></div></div>
@@ -982,7 +983,7 @@ input[readonly]{background:#f9fafb;color:#6b7280}
                         <span class="chip-sel off" onclick="this.classList.toggle('on');this.classList.toggle('off')">Global</span>
                       </div>
                     </div></div>
-                    <div class="field-row"><span class="field-label">Min Participants</span><div class="field-value"><input type="number" value="2" style="max-width:80px"></div></div>
+                    <div class="field-row"><span class="field-label">Min Participants</span><div class="field-value"><input type="number" id="re-minp" value="10" style="max-width:80px" oninput="calcRegGuarantee()"></div></div>
                     
                     <div class="field-row"><span class="field-label">Maximum Entry Level</span><div class="field-value"><select style="max-width:140px"><option>Newborn</option><option>Fox</option><option>Talented</option><option>Pro</option><option selected>Master</option></select></div></div>
                     <div class="field-row"><span class="field-label">Min. trading actions</span><div class="field-value"><input type="number" value="5" style="max-width:80px"></div></div>
@@ -1028,7 +1029,72 @@ input[readonly]{background:#f9fafb;color:#6b7280}
               </div>
             </div>
 
+            <div class="card" id="re-guarantee-card">
+              <div class="card-header"><div class="card-title"><i class="ti ti-shield-dollar"></i> Guaranteed Prize Pool &amp; Overlay</div></div>
+              <div class="card-body">
 
+                <div id="re-overlay-banner" style="display:none;align-items:center;gap:9px;background:#fef2f2;border:1px solid #fca5a5;border-radius:7px;padding:9px 14px;margin-bottom:14px;font-size:12.5px;color:#991b1b">
+                  <i class="ti ti-flag-filled"></i>
+                  <span><strong>Overlay exposure:</strong> <span id="re-overlay-banner-amt">0</span> DC would be funded by Dividandy if this tournament opened right now.</span>
+                </div>
+
+                <div class="field-row"><span class="field-label">Currently Registered</span><div class="field-value ro"><span id="re-registered-players">44</span> players <span style="font-size:11px;color:#9ca3af;margin-left:6px">(live registration count, read-only)</span></div></div>
+
+                <div class="field-row"><span class="field-label">Calculated Guarantee</span><div class="field-value ro">
+                  <strong id="re-calc-guarantee">80</strong> DC
+                  <div style="font-size:11px;color:#9ca3af;margin-top:3px">= Min Participants × Entry Fee × (1 − House fee) — recalculates live as those change</div>
+                </div></div>
+
+                <div class="field-row"><span class="field-label">Override Guarantee</span><div class="field-value">
+                  <div class="toggle-wrap"><div class="toggle on" id="re-override-toggle" onclick="toggleRegOverride(this)"></div><span class="toggle-label">Enabled</span></div>
+                  <div id="re-override-fields" style="margin-top:8px">
+                    <div class="input-pair" style="margin-bottom:8px"><input type="number" id="re-active-guarantee" value="100" style="max-width:90px" oninput="calcRegGuarantee()"><span>DC — Active Guarantee</span></div>
+                    <textarea id="re-override-reason" placeholder="Reason for override (required)…" style="width:100%;max-width:420px;min-height:50px;padding:7px 10px;border:1px solid #e5e7eb;border-radius:7px;font-size:12.5px;font-family:inherit">launch promo</textarea>
+                    <div style="font-size:11px;color:#dc2626;margin-top:3px">A reason is required to save an override</div>
+                  </div>
+                  <div id="re-override-summary" style="font-size:12px;color:#374151;margin-top:8px"></div>
+                  <div id="re-stale-banner" style="display:none;align-items:center;gap:9px;background:#fffbeb;border:1px solid #fde68a;border-radius:7px;padding:9px 12px;margin-top:8px;font-size:12px;color:#92400e">
+                    <i class="ti ti-alert-triangle"></i>
+                    <span style="flex:1">Min Participants / Entry Fee / House fee changed since this override was set. Re-confirm or clear the override before saving.</span>
+                    <button class="btn btn-outline btn-sm" onclick="reconfirmRegOverride()">Re-confirm</button>
+                    <button class="btn btn-outline btn-sm" onclick="clearRegOverride()">Clear override</button>
+                  </div>
+                </div></div>
+
+                <div class="field-row"><span class="field-label">Opening Policy</span><div class="field-value">
+                  <div style="display:flex;flex-direction:column;gap:8px;padding-top:4px">
+                    <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:#374151"><input type="radio" name="re-open-policy" value="strict" onchange="setRegPolicy('strict')"> Strict — open only if registered ≥ Min Participants (default)</label>
+                    <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:#374151"><input type="radio" name="re-open-policy" value="overlay" checked onchange="setRegPolicy('overlay')"> Open if overlay ≤ X</label>
+                  </div>
+                  <div id="re-policy-x" style="margin-top:8px"><div class="input-pair"><span>X =</span><input type="number" id="re-max-overlay" value="100" min="0" style="max-width:90px" oninput="calcRegGuarantee()"><span>DC max overlay Dividandy will fund at start (0 = open only if no exposure)</span></div></div>
+                  <div style="font-size:11px;color:#9ca3af;margin-top:6px">Evaluated once, at scheduled start time. Late registrations only reduce realized overlay — never counted toward the opening decision. A tournament reaching Min Participants always opens, regardless of policy.</div>
+                </div></div>
+
+                <div style="height:6px"></div>
+                <div class="sec-label">Live Exposure (if it started right now)</div>
+                <div class="kpi-grid">
+                  <div class="kpi"><label>Gross Collected</label><span id="re-gross-collected" style="font-weight:600">440 DC</span></div>
+                  <div class="kpi"><label>Current Overlay</label><span id="re-current-overlay" style="font-weight:600">0 DC</span></div>
+                  <div class="kpi"><label>Prize Pool at Start</label><span id="re-prize-at-start" style="color:#7c3aed;font-weight:600">352 DC</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card" style="margin-top:8px">
+              <div class="collapsible-hdr" onclick="toggleCollapsible(this)" style="display:flex;align-items:center;justify-content:space-between;padding:12px 18px;cursor:pointer;user-select:none;border-bottom:1px solid transparent">
+                <div class="card-title"><i class="ti ti-history" style="color:#7c3aed;font-size:15px"></i> Guarantee Override History</div>
+                <i class="ti ti-chevron-down collapsible-arrow" style="font-size:13px;color:#6b7280;transition:transform .2s"></i>
+              </div>
+              <div class="collapsible-body" style="padding:0">
+                <div class="tbl-scroll">
+                  <table class="status-tbl">
+                    <thead><tr><th>Timestamp</th><th>Actor</th><th>Calculated (at time)</th><th>Previous Active</th><th>New Active</th><th>Reason</th></tr></thead>
+                    <tbody id="re-override-history-body"></tbody>
+                  </table>
+                </div>
+                <div style="font-size:11px;color:#9ca3af;padding:8px 18px">Append-only audit log — entries are never edited or deleted.</div>
+              </div>
+            </div>
 
             <div class="card">
               <div class="card-header"><div class="card-title"><i class="ti ti-repeat"></i> Recurrence</div></div>
@@ -1325,7 +1391,7 @@ input[readonly]{background:#f9fafb;color:#6b7280}
                     </span></div>
                     <div class="field-row"><span class="field-label">Starting Balance</span><span class="field-value ro">$100,099</span></div>
                     <div class="field-row"><span class="field-label">Entry Fee</span><span class="field-value ro">10 DC</span></div>
-                    <div class="field-row"><span class="field-label">House fee</span><span class="field-value ro">30%</span></div>
+                    <div class="field-row"><span class="field-label">House fee</span><span class="field-value ro">20%</span></div>
                   </div>
                   <div>
                     <div class="field-row"><span class="field-label">Status</span><span class="field-value ro"><span class="chip chip-active">ACTIVE</span></span></div>
@@ -1342,6 +1408,32 @@ input[readonly]{background:#f9fafb;color:#6b7280}
                 </div>
               </div>
             </div>
+
+            <div class="card" id="rv-guarantee-card">
+              <div class="card-header"><div class="card-title"><i class="ti ti-shield-dollar"></i> Guaranteed Prize Pool &amp; Overlay</div></div>
+              <div class="card-body">
+                <div id="rv-overlay-banner" style="display:none;align-items:center;gap:9px;background:#fef2f2;border:1px solid #fca5a5;border-radius:7px;padding:9px 14px;margin-bottom:14px;font-size:12.5px;color:#991b1b">
+                  <i class="ti ti-flag-filled"></i>
+                  <span><strong>Overlay exposure:</strong> <span id="rv-overlay-banner-amt">0</span> DC would be / was funded by Dividandy.</span>
+                </div>
+                <div class="two-col">
+                  <div>
+                    <div class="field-row"><span class="field-label">Opening Policy</span><span class="field-value ro">Open if overlay ≤ 100 DC</span></div>
+                    <div class="field-row"><span class="field-label">Calculated Guarantee</span><span class="field-value ro">80 DC</span></div>
+                    <div class="field-row"><span class="field-label">Active Guarantee</span><span class="field-value ro">
+                      100 DC
+                      <div style="font-size:11px;color:#6b7280;margin-top:3px">Overridden by A. Cohen, 2026-07-10 14:32 UTC: "launch promo"</div>
+                    </span></div>
+                  </div>
+                  <div>
+                    <div class="field-row"><span class="field-label">Gross Collected</span><span class="field-value ro">440 DC</span></div>
+                    <div class="field-row"><span class="field-label">Current Overlay</span><span class="field-value ro" id="rv-current-overlay">0 DC</span></div>
+                    <div class="field-row"><span class="field-label">Prize Pool at Start</span><span class="field-value ro" style="color:#7c3aed;font-weight:600">352 DC</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div class="card" id="re-game-data-card">
               <div class="card-header">
                 <div class="card-title" id="re-game-data-title"><i class="ti ti-chart-bar"></i> Game Data</div>
@@ -2306,15 +2398,11 @@ input[readonly]{background:#f9fafb;color:#6b7280}
     <div class="drw2-tab" onclick="switchUTab('wallet')">Wallet</div>
     <div class="drw2-tab" onclick="switchUTab('tournaments')">Tournaments</div>
     <div class="drw2-tab" onclick="switchUTab('notifications')">Notifications</div>
-    <div class="drw2-tab" onclick="switchUTab('ftue')">FTUE</div>
-    <div class="drw2-tab" onclick="switchUTab('purchases')">Purchases &amp; Payments</div>
-    <div class="drw2-tab" onclick="switchUTab('support')">Support</div>
   </div>
   <div class="drw2-body">
     <!-- Profile -->
     <div class="tpnl active" id="u-tab-profile">
       <div class="csec2"><div class="csec2-h"><span class="csec2-t">Account details</span><select class="fsel2" style="width:120px" id="u-st-sel"><option>Active</option><option>Inactive</option><option>Blocked</option></select></div>
-        <div style="margin-bottom:10px"><label style="font-size:10.5px;color:#9ca3af;font-weight:500;text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:4px">Status reason</label><input type="text" class="finp2" style="width:100%" id="u-st-reason" placeholder="Reason for status change (internal)…"></div>
         <div class="fg2">
           <div class="fi2"><span class="fl2">User ID</span><span class="fv2" id="u-f-id" style="font-family:monospace">USR-4567</span></div>
           <div class="fi2"><span class="fl2">Nickname</span><span class="fv2" id="u-f-nick">JohnCena99</span></div>
@@ -2324,9 +2412,9 @@ input[readonly]{background:#f9fafb;color:#6b7280}
           <div class="fi2"><span class="fl2">Language</span><span class="fv2" id="u-f-lang">ES</span></div>
           <div class="fi2"><span class="fl2">Registration</span><span class="fv2" id="u-f-reg">12 Mar 2024</span></div>
           <div class="fi2"><span class="fl2">Last login</span><span class="fv2" id="u-f-login">2h ago · iOS 18.1</span></div>
+          <div class="fi2"><span class="fl2">Environment</span><span class="fv2" id="u-f-env">DiviDandy</span></div>
           <div class="fi2"><span class="fl2">Install source</span><span class="fv2" id="u-f-src">Google Play</span></div>
         </div>
-        <div style="display:flex;justify-content:flex-end;margin-top:10px"><button class="btn2 bp" style="padding:5px 12px;font-size:12px" onclick="showToast2('Profile status saved')">Save changes</button></div>
       </div>
       <div class="csec2"><div class="csec2-h"><span class="csec2-t">XP &amp; Loyalty</span></div>
         <div class="kpi-s2" style="margin-bottom:12px">
@@ -2355,10 +2443,6 @@ input[readonly]{background:#f9fafb;color:#6b7280}
     <!-- KYC -->
     <div class="tpnl" id="u-tab-kyc">
       <div class="csec2"><div class="csec2-h"><span class="csec2-t">KYC status</span><span class="kyc-a" id="u-kyc-bdg">Approved</span></div>
-        <div class="fg2" style="margin-bottom:10px">
-          <div style="display:flex;flex-direction:column;gap:3px"><label style="font-size:10.5px;color:#9ca3af;font-weight:500;text-transform:uppercase;letter-spacing:.4px">Reason</label><select class="fsel2" id="u-kyc-reason"><option value="">—</option><option>Document unclear</option><option>Name mismatch</option><option>Expired document</option><option>Address mismatch</option><option>Suspected fraud</option></select></div>
-          <div style="display:flex;flex-direction:column;gap:3px"><label style="font-size:10.5px;color:#9ca3af;font-weight:500;text-transform:uppercase;letter-spacing:.4px">Applicant message</label><input type="text" class="finp2" id="u-kyc-msg" placeholder="Message shown to the user…"></div>
-        </div>
         <div class="fg2">
           <div class="fi2"><span class="fl2">KYC verified at</span><span class="fv2">20 Mar 2024</span></div>
           <div class="fi2"><span class="fl2">KYC expiration</span><span class="fv2">20 Mar 2025</span></div>
@@ -2367,7 +2451,6 @@ input[readonly]{background:#f9fafb;color:#6b7280}
           <div class="fi2"><span class="fl2">Issuing country</span><span class="fv2">Argentina</span></div>
           <div class="fi2"><span class="fl2">ID expiration</span><span class="fv2">15 Jun 2030</span></div>
         </div>
-        <div style="display:flex;justify-content:flex-end;margin-top:10px"><button class="btn2 bp" style="padding:5px 12px;font-size:12px" onclick="showToast2('KYC status saved')">Save changes</button></div>
       </div>
       <div class="csec2"><div class="csec2-h"><span class="csec2-t">Verified identity</span></div>
         <div class="fg2">
@@ -2405,19 +2488,12 @@ input[readonly]{background:#f9fafb;color:#6b7280}
           <div style="display:flex;flex-direction:column;gap:2px;flex:1"><label style="font-size:10.5px;color:#9ca3af;font-weight:500;text-transform:uppercase;letter-spacing:.4px">Reason</label><input type="text" placeholder="e.g. Compensation for tournament issue" class="finp2"></div>
           <button class="btn2 bp">Add</button>
         </div>
-        <div style="display:flex;align-items:flex-end;gap:10px;background:#fff;border:1px solid #e8e8ec;border-radius:8px;padding:12px;margin-bottom:10px">
-          <div style="display:flex;flex-direction:column;gap:2px;flex:0 0 150px"><label style="font-size:10.5px;color:#9ca3af;font-weight:500;text-transform:uppercase;letter-spacing:.4px">Bulk compensation (Đ)</label><input type="number" placeholder="0" min="0" class="finp2" id="u-w-bulk"></div>
-          <div style="display:flex;flex-direction:column;gap:2px;flex:1"><label style="font-size:10.5px;color:#9ca3af;font-weight:500;text-transform:uppercase;letter-spacing:.4px">Applies to</label><span class="fv2" style="padding-top:6px;display:block">This user only</span></div>
-          <button class="btn2 bp">Apply compensation</button>
-        </div>
         <div style="display:flex;align-items:center;gap:10px;background:#fff8f8;border:1px solid #fecaca;border-radius:8px;padding:10px 12px">
           <i class="ti ti-alert-triangle" style="color:#991b1b;flex-shrink:0"></i>
           <label style="font-size:12px;color:#991b1b;flex:1">Reset all BDC to 0</label>
           <input type="text" placeholder="Reset reason (required)" class="finp2" style="flex:1;border-color:#fecaca">
           <button class="btn2" style="background:#fee2e2;color:#991b1b;border:1px solid #fecaca;padding:5px 12px;font-size:12px">Reset BDC</button>
         </div>
-        <div style="margin-top:10px"><label style="font-size:10.5px;color:#9ca3af;font-weight:500;text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:4px">Internal notes (wallet)</label><textarea class="ta2" id="u-w-notes" placeholder="Internal notes about wallet activity for this user…"></textarea></div>
-        <div style="display:flex;justify-content:flex-end;margin-top:8px"><button class="btn2 bp" style="padding:5px 12px;font-size:12px" onclick="showToast2('Wallet changes saved')">Save changes</button></div>
       </div>
       <div class="sdiv">Recent wallet activity</div>
       <div class="csec2" style="padding:0;overflow:hidden">
@@ -2478,82 +2554,13 @@ input[readonly]{background:#f9fafb;color:#6b7280}
           <div class="ntfr"><span class="ntfl">DiviCoins purchase</span><label class="tgl2"><input type="checkbox" checked><span class="tgl2-sl"></span></label></div>
           <div class="ntfr"><span class="ntfl">Withdrawal status</span><label class="tgl2"><input type="checkbox" checked><span class="tgl2-sl"></span></label></div>
           <div class="ntfr"><span class="ntfl">New login detected</span><label class="tgl2"><input type="checkbox" checked><span class="tgl2-sl"></span></label></div>
-          <div class="ntfr"><span class="ntfl">Password / passcode changes</span><label class="tgl2"><input type="checkbox" checked><span class="tgl2-sl"></span></label></div>
-          <div class="ntfr"><span class="ntfl">KYC required before withdrawal</span><label class="tgl2"><input type="checkbox" checked><span class="tgl2-sl"></span></label></div>
+          <div class="ntfr"><span class="ntfl">KYC required</span><label class="tgl2"><input type="checkbox" checked><span class="tgl2-sl"></span></label></div>
           <div class="ntfr"><span class="ntfl">Policy / legal updates</span><label class="tgl2"><input type="checkbox"><span class="tgl2-sl"></span></label></div>
           <div class="ntfr"><span class="ntfl">Personalized offers</span><label class="tgl2"><input type="checkbox" checked><span class="tgl2-sl"></span></label></div>
           <div class="ntfr"><span class="ntfl">Promotions &amp; bundles</span><label class="tgl2"><input type="checkbox" checked><span class="tgl2-sl"></span></label></div>
           <div class="ntfr"><span class="ntfl">News &amp; product updates</span><label class="tgl2"><input type="checkbox"><span class="tgl2-sl"></span></label></div>
           <div class="ntfr"><span class="ntfl">Market data</span><label class="tgl2"><input type="checkbox"><span class="tgl2-sl"></span></label></div>
-          <div class="ntfr"><span class="ntfl">Heartbeats <span style="color:#9ca3af;font-weight:400">(session keep-alive)</span></span><label class="tgl2"><input type="checkbox" checked><span class="tgl2-sl"></span></label></div>
         </div>
-      </div>
-    </div>
-    <!-- FTUE -->
-    <div class="tpnl" id="u-tab-ftue">
-      <div class="csec2"><div class="csec2-h"><span class="csec2-t">First-time user experience</span><span style="font-size:11px;color:#9ca3af;font-weight:400">Read-only · reported by app</span></div>
-        <div class="fg2">
-          <div class="fi2"><span class="fl2">FTUE status</span><span class="fv2" id="u-ftue-status">intro_completed</span></div>
-          <div class="fi2"><span class="fl2">Onboarding game started</span><span class="fv2" id="u-ftue-og-start">Yes · 12 Mar 2024</span></div>
-          <div class="fi2"><span class="fl2">Onboarding game finished</span><span class="fv2" id="u-ftue-og-fin">Yes · 12 Mar 2024</span></div>
-          <div class="fi2"><span class="fl2">Educational game started</span><span class="fv2" id="u-ftue-eg-start">Yes · 13 Mar 2024</span></div>
-          <div class="fi2"><span class="fl2">Educational game finished</span><span class="fv2" id="u-ftue-eg-fin">No</span></div>
-        </div>
-      </div>
-    </div>
-    <!-- Purchases & Payments -->
-    <div class="tpnl" id="u-tab-purchases">
-      <div class="kpi-s2">
-        <div class="kpi-c2"><div class="kpi-n2" style="color:#7c3aed" id="u-pur-count">28</div><div class="kpi-l2">Transactions (lifetime)</div></div>
-        <div class="kpi-c2"><div class="kpi-n2" id="u-pur-sum">$412.50</div><div class="kpi-l2">Total spend</div></div>
-        <div class="kpi-c2"><div class="kpi-n2" id="u-pur-avg">$14.73</div><div class="kpi-l2">Avg transaction</div></div>
-        <div class="kpi-c2"><div class="kpi-n2" id="u-pur-last">$19.99 · 3d ago</div><div class="kpi-l2">Last purchase</div></div>
-      </div>
-      <div class="kpi-s2" style="grid-template-columns:repeat(4,1fr);margin-top:10px">
-        <div class="kpi-c2"><div class="kpi-n2" style="color:#ef4444" id="u-pur-ref">1</div><div class="kpi-l2">Refunds</div></div>
-        <div class="kpi-c2"><div class="kpi-n2" style="color:#991b1b" id="u-pur-cb">0</div><div class="kpi-l2">Chargebacks</div></div>
-        <div class="kpi-c2"><div class="kpi-n2" style="color:#10b981" id="u-pur-cash">$8.20</div><div class="kpi-l2">Cashback total</div></div>
-        <div class="kpi-c2"><div class="kpi-n2" id="u-pur-credit">$0.00</div><div class="kpi-l2">Credit total</div></div>
-      </div>
-      <div class="sdiv">Recent payment transactions</div>
-      <div class="csec2" style="padding:0;overflow:hidden">
-        <table class="mt2">
-          <thead><tr><th>Date</th><th>Order ID</th><th>Amount</th><th>Method</th><th>PSP</th><th>Status</th><th></th></tr></thead>
-          <tbody>
-            <tr><td>02 Jul 2026</td><td style="font-family:monospace">ORD-88213</td><td>$19.99</td><td>Card</td><td>Nuvei</td><td><span class="bdg2 bact" style="font-size:10.5px">Approved</span></td><td></td></tr>
-            <tr><td>28 Jun 2026</td><td style="font-family:monospace">ORD-88011</td><td>$49.99</td><td>Card</td><td>Nuvei</td><td><span class="bdg2 bact" style="font-size:10.5px">Approved</span></td><td></td></tr>
-            <tr><td>19 Jun 2026</td><td style="font-family:monospace">ORD-87650</td><td>$9.99</td><td>Google Play</td><td>App Store</td><td><span class="bdg2" style="font-size:10.5px;background:#fee2e2;color:#991b1b">Refunded</span></td><td>Reason: accidental purchase</td></tr>
-            <tr><td>05 Jun 2026</td><td style="font-family:monospace">ORD-86980</td><td>$19.99</td><td>Crypto</td><td>Payhound</td><td><span class="bdg2 bact" style="font-size:10.5px">Approved</span></td><td></td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="sdiv">Withdrawals</div>
-      <div class="kpi-s2" style="grid-template-columns:repeat(4,1fr)">
-        <div class="kpi-c2"><div class="kpi-n2" id="u-wd-count">3</div><div class="kpi-l2">Withdrawal count</div></div>
-        <div class="kpi-c2"><div class="kpi-n2" id="u-wd-sum">120 Đ</div><div class="kpi-l2">Withdrawal sum</div></div>
-        <div class="kpi-c2"><div class="kpi-n2" style="color:#f59e0b" id="u-wd-pending">0 Đ</div><div class="kpi-l2">Pending amount</div></div>
-        <div class="kpi-c2"><div class="kpi-n2" id="u-wd-last">22 Jun 2026</div><div class="kpi-l2">Last withdrawal</div></div>
-      </div>
-    </div>
-    <!-- Support -->
-    <div class="tpnl" id="u-tab-support">
-      <div class="kpi-s2" style="grid-template-columns:repeat(4,1fr)">
-        <div class="kpi-c2"><div class="kpi-n2" style="color:#7c3aed" id="u-sup-total">4</div><div class="kpi-l2">Total tickets</div></div>
-        <div class="kpi-c2"><div class="kpi-n2" style="color:#f59e0b" id="u-sup-open">1</div><div class="kpi-l2">Open tickets</div></div>
-        <div class="kpi-c2"><div class="kpi-n2" id="u-sup-res">6.5h</div><div class="kpi-l2">Avg resolution time</div></div>
-        <div class="kpi-c2"><div class="kpi-n2" id="u-sup-days">14</div><div class="kpi-l2">Days since last ticket</div></div>
-      </div>
-      <div class="sdiv">Ticket history</div>
-      <div class="csec2" style="padding:0;overflow:hidden">
-        <table class="mt2">
-          <thead><tr><th>Ticket #</th><th>Type</th><th>Category</th><th>Status</th><th>Escalation</th><th>Opened</th><th>Resolved</th></tr></thead>
-          <tbody>
-            <tr><td style="font-family:monospace">TCK-4021</td><td>Payment issue</td><td>Billing</td><td><span class="bdg2" style="font-size:10.5px;background:#fef3c7;color:#92400e">Open</span></td><td>L1</td><td>21 Jun 2026</td><td>—</td></tr>
-            <tr><td style="font-family:monospace">TCK-3980</td><td>KYC question</td><td>Account</td><td><span class="bdg2 binact" style="font-size:10.5px">Resolved</span></td><td>L1</td><td>02 Jun 2026</td><td>02 Jun 2026</td></tr>
-            <tr><td style="font-family:monospace">TCK-3712</td><td>Tournament dispute</td><td>Gameplay</td><td><span class="bdg2 binact" style="font-size:10.5px">Resolved</span></td><td>L2</td><td>14 May 2026</td><td>15 May 2026</td></tr>
-            <tr><td style="font-family:monospace">TCK-3401</td><td>Withdrawal delay</td><td>Wallet</td><td><span class="bdg2 binact" style="font-size:10.5px">Resolved</span></td><td>L1</td><td>02 Apr 2026</td><td>03 Apr 2026</td></tr>
-          </tbody>
-        </table>
       </div>
     </div>
   </div>
@@ -2582,12 +2589,24 @@ const statusMap={
 };
 
 const regRows=[
-  {id:'153',name:'Alpha Storm',status:'active',type:'Regular',cats:['Crypto','Forex'],start:'31/03/2026 19:55',end:'31/03/2026 22:55',players:44,maxP:100,maxLvl:'Master',entryFee:'10 DC',prize:'10,000 DC',geo:['US','MX','BR','AR'],rec:true,inst:true,tpl:'TPL001'},
-  {id:'80',name:'Apex Liquidity Arena',status:'active',type:'Regular',cats:['Crypto','Stocks'],start:'25/03/2026 19:03',end:'25/03/2026 21:03',players:61,maxP:100,maxLvl:'Pro',entryFee:'10 DC',prize:'8,000 DC',geo:['US','MX','BR','AR'],rec:false,inst:true,tpl:'TPL001'},
-  {id:'147',name:'Forex Daily Challenge',status:'published',type:'Regular',cats:['Forex'],start:'17/05/2026 18:00',end:'17/05/2026 21:00',players:18,maxP:50,maxLvl:'Talented',entryFee:'5 DC',prize:'2,500 DC',geo:['IL'],rec:true,inst:true,tpl:'TPL002'},
-  {id:'138',name:'Tutorial: First Steps',status:'rfp',type:'Tutorial',cats:['Mixed'],start:'20/05/2026 10:00',end:'20/05/2026 11:00',players:0,maxP:200,maxLvl:'Fox',entryFee:'0 DC',prize:'500 DC',geo:['Global'],rec:false,inst:false,tpl:''},
-  {id:'129',name:'Crypto Rush Weekly',status:'draft',type:'Regular',cats:['Crypto'],start:'25/05/2026 20:00',end:'25/05/2026 23:00',players:0,maxP:120,maxLvl:'Master',entryFee:'15 DC',prize:'15,000 DC',geo:['EU','AR'],rec:true,inst:false,tpl:'TPL001'},
+  {id:'153',name:'Alpha Storm',status:'active',type:'Regular',cats:['Crypto','Forex'],start:'31/03/2026 19:55',end:'31/03/2026 22:55',players:44,maxP:100,maxLvl:'Master',entryFee:'10 DC',prize:'10,000 DC',geo:['US','MX','BR','AR'],rec:true,inst:true,tpl:'TPL001',
+    minPlayers:10,feeNum:10,rakePct:20,policy:'overlay',maxOverlay:100,override:{active:true,value:100,reason:'launch promo',by:'A. Cohen',date:'2026-07-10'}},
+  {id:'80',name:'Apex Liquidity Arena',status:'active',type:'Regular',cats:['Crypto','Stocks'],start:'25/03/2026 19:03',end:'25/03/2026 21:03',players:61,maxP:100,maxLvl:'Pro',entryFee:'10 DC',prize:'8,000 DC',geo:['US','MX','BR','AR'],rec:false,inst:true,tpl:'TPL001',
+    minPlayers:15,feeNum:10,rakePct:25,policy:'strict',maxOverlay:0,override:null},
+  {id:'147',name:'Forex Daily Challenge',status:'published',type:'Regular',cats:['Forex'],start:'17/05/2026 18:00',end:'17/05/2026 21:00',players:18,maxP:50,maxLvl:'Talented',entryFee:'5 DC',prize:'2,500 DC',geo:['IL'],rec:true,inst:true,tpl:'TPL002',
+    minPlayers:30,feeNum:5,rakePct:20,policy:'overlay',maxOverlay:50,override:null},
+  {id:'138',name:'Tutorial: First Steps',status:'rfp',type:'Tutorial',cats:['Mixed'],start:'20/05/2026 10:00',end:'20/05/2026 11:00',players:0,maxP:200,maxLvl:'Fox',entryFee:'0 DC',prize:'500 DC',geo:['Global'],rec:false,inst:false,tpl:'',
+    minPlayers:50,feeNum:0,rakePct:0,policy:'overlay',maxOverlay:500,override:{active:true,value:500,reason:'Freeroll — fixed prize funded by marketing budget (fee=0 edge case)',by:'A. Cohen',date:'2026-07-08'}},
+  {id:'129',name:'Crypto Rush Weekly',status:'draft',type:'Regular',cats:['Crypto'],start:'25/05/2026 20:00',end:'25/05/2026 23:00',players:0,maxP:120,maxLvl:'Master',entryFee:'15 DC',prize:'15,000 DC',geo:['EU','AR'],rec:true,inst:false,tpl:'TPL001',
+    minPlayers:20,feeNum:15,rakePct:20,policy:'strict',maxOverlay:0,override:null},
 ];
+
+// ── GUARANTEE / OVERLAY HELPERS (Regular tournament instances only) ──
+function regCalcGuarantee(r){ return r.minPlayers*r.feeNum*(1-r.rakePct/100); }
+function regActiveGuarantee(r){ return (r.override&&r.override.active)?r.override.value:regCalcGuarantee(r); }
+function regGrossCollected(r){ return r.players*r.feeNum; }
+function regCurrentOverlay(r){ return Math.max(0, regActiveGuarantee(r)-regGrossCollected(r)); }
+function regIsOverlayFlagged(r){ return r.policy==='overlay' && regCurrentOverlay(r)>0; }
 
 const sgRows=[
   {id:'SGI-042',tpl:'Crypto Quick',tplId:'SGTPL001',cat:'Crypto',cats:['Crypto','Forex'],dur:'30m',players:4,target:8,instStatus:'active',status:'active',market:'open',marketClose:'4h 22m',endDate:'30/06/2026'},
@@ -2606,10 +2625,12 @@ function renderRegList(data){
     const sm=statusMap[r.status]||{label:r.status,cls:'chip-draft'};
     const pct=Math.min(100,Math.round((r.players/r.maxP)*100));
     const barClr=pct>=80?'#ef4444':pct>=50?'#f59e0b':'#7c3aed';
+    const overlayAmt=regCurrentOverlay(r);
+    const overlayFlag=regIsOverlayFlagged(r)?`<i class="ti ti-flag-filled" title="Overlay exposure: ${fmtDC(overlayAmt)} DC would be funded by Dividandy if this tournament opened right now" style="color:#dc2626;margin-right:4px;font-size:13px;vertical-align:-1px"></i>`:'';
     return `<tr>
       <td><input type="checkbox" class="checkbox"></td>
       <td style="color:#7c3aed;font-weight:500;cursor:pointer" onclick="navigate('reg-event','${r.id}','view')">${r.id}</td>
-      <td style="font-weight:500;cursor:pointer;max-width:170px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" onclick="navigate('reg-event','${r.id}','view')">${r.name}</td>
+      <td style="font-weight:500;cursor:pointer;max-width:170px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" onclick="navigate('reg-event','${r.id}','view')">${overlayFlag}${r.name}</td>
       <td><span class="chip ${sm.cls}">${sm.label}</span></td>
       <td>${(r.cats||[r.type]).map(c=>catChip(c)).join('')}</td>
       <td style="font-size:12px;line-height:1.6">${r.start}<br><span style="color:#9ca3af;font-size:11.5px">→ ${r.end}</span></td>
@@ -2636,6 +2657,9 @@ function renderRegList(data){
   document.getElementById('rl-page-info').textContent=`1–${data.length} of ${data.length}`;
   document.getElementById('rl-live').textContent=data.filter(r=>r.status==='active').length;
   document.getElementById('rl-total').textContent=`${data.length} events`;
+  const overlayCount=data.filter(regIsOverlayFlagged).length;
+  const overlayEl=document.getElementById('rl-overlay-count');
+  if(overlayEl) overlayEl.innerHTML=overlayCount>0?`<i class="ti ti-flag-filled" style="font-size:12px"></i> ${overlayCount} with overlay exposure`:'';
 }
 
 function filterRegList(){
@@ -2846,6 +2870,142 @@ function toggleSwitch(el,cb){
   if(cb)cb(!on);
 }
 
+// ═══════════════════════════════════════════
+// GUARANTEED PRIZE POOL & OVERLAY (Regular tournament instances)
+// ═══════════════════════════════════════════
+let regOverrideState={active:true,reason:'launch promo',by:'A. Cohen',date:'2026-07-10 14:32 UTC',calcAtOverride:80,reconfirmed:true};
+let regOverrideHistory=[
+  {ts:'2026-07-10 14:32 UTC',actor:'A. Cohen',calc:80,prevActive:80,newActive:100,reason:'launch promo'}
+];
+
+function fmtDC(n){ return (Math.round(n*100)/100).toLocaleString(); }
+
+function calcRegGuarantee(){
+  const minP=parseFloat(document.getElementById('re-minp')?.value)||0;
+  const fee=parseFloat(document.getElementById('re-fee')?.value)||0;
+  const rake=parseFloat(document.getElementById('re-rake')?.value)||0;
+  const registered=parseFloat(document.getElementById('re-registered-players')?.textContent)||0;
+
+  const calc=minP*fee*(1-rake/100);
+  const calcEl=document.getElementById('re-calc-guarantee');
+  if(calcEl) calcEl.textContent=fmtDC(calc);
+
+  const overrideToggle=document.getElementById('re-override-toggle');
+  const overrideOn=overrideToggle?overrideToggle.classList.contains('on'):false;
+  const activeInput=document.getElementById('re-active-guarantee');
+  const active=overrideOn?(parseFloat(activeInput?.value)||0):calc;
+
+  // Stale-override detection: params changed since override snapshot → must re-confirm or clear before saving
+  const staleBanner=document.getElementById('re-stale-banner');
+  const isStale=overrideOn && regOverrideState.active && Math.abs(regOverrideState.calcAtOverride-calc)>0.001;
+  if(staleBanner) staleBanner.style.display=isStale?'flex':'none';
+
+  // Override summary line — always shows both calculated and active values, never hides the calculated value
+  const summaryEl=document.getElementById('re-override-summary');
+  if(summaryEl){
+    if(overrideOn && regOverrideState.active){
+      summaryEl.innerHTML=`Calculated: ${fmtDC(calc)} · Active: ${fmtDC(active)} <span style="color:#6b7280">(overridden by ${regOverrideState.by}, ${regOverrideState.date}: '${regOverrideState.reason}')</span>`;
+    } else if(overrideOn){
+      summaryEl.innerHTML=`Calculated: ${fmtDC(calc)} · Active: ${fmtDC(active)}`;
+    } else {
+      summaryEl.innerHTML='';
+    }
+  }
+
+  const gross=registered*fee;
+  const overlay=Math.max(0, active-gross);
+  const prizeAtStart=Math.max(active, gross*(1-rake/100));
+  const grossEl=document.getElementById('re-gross-collected');
+  const overlayEl=document.getElementById('re-current-overlay');
+  const prizeEl=document.getElementById('re-prize-at-start');
+  if(grossEl) grossEl.textContent=fmtDC(gross)+' DC';
+  if(overlayEl) overlayEl.textContent=fmtDC(overlay)+' DC';
+  if(prizeEl) prizeEl.textContent=fmtDC(prizeAtStart)+' DC';
+
+  const policy=document.querySelector('input[name="re-open-policy"]:checked')?.value||'strict';
+  const flagged=policy==='overlay' && overlay>0;
+  const banner=document.getElementById('re-overlay-banner');
+  const bannerAmt=document.getElementById('re-overlay-banner-amt');
+  if(banner) banner.style.display=flagged?'flex':'none';
+  if(bannerAmt) bannerAmt.textContent=fmtDC(overlay);
+
+  return {minP,fee,rake,registered,calc,active,overrideOn,isStale,gross,overlay,prizeAtStart,policy};
+}
+
+function toggleRegOverride(el){
+  const on=el.classList.contains('on');
+  el.classList.toggle('on',!on);el.classList.toggle('off',on);
+  const lbl=el.nextElementSibling;
+  if(lbl&&lbl.classList.contains('toggle-label'))lbl.textContent=on?'Disabled':'Enabled';
+  const fields=document.getElementById('re-override-fields');
+  const turningOn=!on;
+  if(fields) fields.style.display=turningOn?'':'none';
+  if(turningOn && !regOverrideState.active){
+    // Seed the Active Guarantee with the current calculated value when first enabling
+    const calc=parseFloat(document.getElementById('re-calc-guarantee')?.textContent.replace(/,/g,''))||0;
+    const activeInput=document.getElementById('re-active-guarantee');
+    if(activeInput && !activeInput.value) activeInput.value=calc;
+  }
+  calcRegGuarantee();
+}
+
+function setRegPolicy(v){
+  const box=document.getElementById('re-policy-x');
+  if(box) box.style.display=v==='overlay'?'':'none';
+  calcRegGuarantee();
+}
+
+function reconfirmRegOverride(){
+  const state=calcRegGuarantee();
+  regOverrideHistory.unshift({ts:'now (demo)',actor:'Current user',calc:state.calc,prevActive:state.active,newActive:state.active,reason:'Re-confirmed override after Min Participants / Entry Fee / House fee change'});
+  regOverrideState.calcAtOverride=state.calc;
+  regOverrideState.reconfirmed=true;
+  renderRegOverrideHistory();
+  calcRegGuarantee();
+  showToast2('Override re-confirmed');
+}
+
+function clearRegOverride(){
+  const state=calcRegGuarantee();
+  regOverrideHistory.unshift({ts:'now (demo)',actor:'Current user',calc:state.calc,prevActive:state.active,newActive:state.calc,reason:'Override cleared'});
+  regOverrideState.active=false;
+  const toggle=document.getElementById('re-override-toggle');
+  if(toggle && toggle.classList.contains('on')) toggleRegOverride(toggle);
+  renderRegOverrideHistory();
+  calcRegGuarantee();
+  showToast2('Override cleared');
+}
+
+function renderRegOverrideHistory(){
+  const body=document.getElementById('re-override-history-body');
+  if(!body) return;
+  if(regOverrideHistory.length===0){
+    body.innerHTML='<tr><td colspan="6" style="color:#9ca3af;font-style:italic">No overrides recorded</td></tr>';
+    return;
+  }
+  body.innerHTML=regOverrideHistory.map(h=>`<tr>
+    <td>${h.ts}</td><td>${h.actor}</td><td>${fmtDC(h.calc)} DC</td><td>${fmtDC(h.prevActive)} DC</td><td style="font-weight:500">${fmtDC(h.newActive)} DC</td><td>${h.reason}</td>
+  </tr>`).join('');
+}
+
+function saveRegEvent(){
+  const state=calcRegGuarantee();
+  if(state.overrideOn){
+    const reason=(document.getElementById('re-override-reason')?.value||'').trim();
+    if(!reason){
+      showToast2('Cannot save — override reason is required');
+      document.getElementById('re-override-reason')?.focus();
+      return;
+    }
+  }
+  if(state.isStale){
+    showToast2('Cannot save — re-confirm or clear the stale override first');
+    document.getElementById('re-stale-banner')?.scrollIntoView?.({behavior:'smooth',block:'center'});
+    return;
+  }
+  showToast2('Saved');
+}
+
 // ── DRAWER ──
 const drawers={
   prize:{title:'Prize Pool',body:'<table style="width:100%;border-collapse:collapse;font-size:13px"><thead><tr style="background:#fafafa;border-bottom:1px solid #e5e7eb"><th style="padding:8px;text-align:left;color:#6b7280">Position</th><th style="padding:8px;text-align:left;color:#6b7280">Prize (DC)</th><th style="padding:8px;text-align:left;color:#6b7280">%</th></tr></thead><tbody><tr style="border-bottom:1px solid #f3f4f6"><td style="padding:8px">1st</td><td style="padding:8px;font-weight:500">3,000</td><td style="padding:8px">30%</td></tr><tr style="border-bottom:1px solid #f3f4f6"><td style="padding:8px">2nd</td><td style="padding:8px;font-weight:500">2,000</td><td style="padding:8px">20%</td></tr><tr><td style="padding:8px">3rd</td><td style="padding:8px;font-weight:500">1,000</td><td style="padding:8px">10%</td></tr></tbody></table>'},
@@ -2983,6 +3143,8 @@ function addHolidayInterval(){
 renderRegList();
 renderSgList();
 renderAssetsList();
+renderRegOverrideHistory();
+calcRegGuarantee();
 navigate('reg-list');
 
 
@@ -3453,7 +3615,7 @@ function openUDrw(idx){
 }
 function closeUDrw(){document.getElementById('u-drw-ov').classList.remove('open');document.getElementById('u-drw').classList.remove('open');}
 function switchUTab(name){
-  const tabs=['profile','kyc','wallet','tournaments','notifications','ftue','purchases','support'];
+  const tabs=['profile','kyc','wallet','tournaments','notifications'];
   document.querySelectorAll('#u-drw .drw2-tab').forEach((t,i)=>t.classList.toggle('active',tabs[i]===name));
   tabs.forEach(t=>{const p=document.getElementById('u-tab-'+t);if(p)p.classList.toggle('active',t===name);});
 }
