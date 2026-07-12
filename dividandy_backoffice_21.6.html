@@ -845,7 +845,7 @@ input[readonly]{background:#f9fafb;color:#6b7280}
           <div style="display:flex;align-items:center;gap:14px;margin-bottom:9px;font-size:12px;color:#6b7280">
             <span><span class="live-dot"></span><strong style="color:#065f46" id="rl-live">2</strong> live now</span>
             <span id="rl-total">5 events</span>
-            <span id="rl-overlay-count" style="display:flex;align-items:center;gap:5px;color:#991b1b"><i class="ti ti-flag-filled" style="font-size:12px"></i></span>
+            <span id="rl-overlay-count" style="display:flex;align-items:center;gap:5px;color:#991b1b"></span>
           </div>
           <div class="tbl-card"><div class="tbl-scroll">
             <table class="list-tbl">
@@ -1065,9 +1065,9 @@ input[readonly]{background:#f9fafb;color:#6b7280}
                 <div class="field-row"><span class="field-label">Opening Policy</span><div class="field-value">
                   <div style="display:flex;flex-direction:column;gap:10px;padding-top:4px;max-width:480px">
                     <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;font-size:13px;color:#374151;line-height:1.4"><input type="radio" name="re-open-policy" value="strict" onchange="setRegPolicy('strict')" style="margin-top:3px"><span>Strict — open only if registered ≥ Min Participants <span style="color:#9ca3af">(default)</span></span></label>
-                    <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;font-size:13px;color:#374151;line-height:1.4"><input type="radio" name="re-open-policy" value="overlay" checked onchange="setRegPolicy('overlay')" style="margin-top:3px"><span>Open if overlay ≤ X</span></label>
+                    <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;font-size:13px;color:#374151;line-height:1.4"><input type="radio" name="re-open-policy" value="overlay" checked onchange="setRegPolicy('overlay')" style="margin-top:3px"><span>Open if overlay ≤ X% of the Guarantee</span></label>
                   </div>
-                  <div id="re-policy-x" style="margin-top:8px"><div class="input-pair"><span>X =</span><input type="number" id="re-max-overlay" value="100" min="0" style="max-width:90px" oninput="calcRegGuarantee()"><span>DC max overlay Dividandy will fund at start (0 = open only if no exposure)</span></div></div>
+                  <div id="re-policy-x" style="margin-top:8px"><div class="input-pair"><span>X =</span><input type="number" id="re-max-overlay-pct" value="50" min="0" max="100" style="max-width:80px" oninput="calcRegGuarantee()"><span>% of the Active Guarantee that Dividandy will fund as overlay at start (0% = open only if no exposure)</span></div></div>
                   <div style="font-size:11px;color:#9ca3af;margin-top:6px">Evaluated once, at scheduled start time. Late registrations only reduce realized overlay — never counted toward the opening decision. A tournament reaching Min Participants always opens, regardless of policy.</div>
                 </div></div>
 
@@ -1077,7 +1077,6 @@ input[readonly]{background:#f9fafb;color:#6b7280}
                   <div class="kpi"><label>Gross Collected</label><span id="re-gross-collected" style="font-weight:600">440 DC</span></div>
                   <div class="kpi"><label>Current Overlay</label><span id="re-current-overlay" style="font-weight:600">0 DC</span></div>
                   <div class="kpi"><label>Prize Pool at Start</label><span id="re-prize-at-start" style="color:#7c3aed;font-weight:600">352 DC</span></div>
-                  <div class="kpi"><label>Total XP</label><span id="re-total-xp" style="color:#7c3aed;font-weight:600">35,200</span></div>
                 </div>
               </div>
             </div>
@@ -1126,8 +1125,8 @@ input[readonly]{background:#f9fafb;color:#6b7280}
               <div class="card-header"><div class="card-title"><i class="ti ti-trophy"></i> Prize &amp; XP Distribution</div></div>
               <div class="card-body">
                 <div class="field-row"><span class="field-label">Rewards</span><div class="field-value"><div class="toggle-wrap"><div class="toggle on" onclick="toggleSwitch(this)"></div><span class="toggle-label">Enabled</span></div></div></div>
-                <div class="field-row"><span class="field-label">Prize Pool Table</span><div class="field-value"><div class="input-pair"><select><option selected>Prize_Table_B</option><option>Prize_Table_A</option></select><button class="btn btn-outline btn-sm" onclick="openDrawer('prize')"><i class="ti ti-eye"></i> Preview</button></div><div style="font-size:11px;color:#9ca3af;margin-top:3px">Defines the % split across ranks. The total pool size is driven by Guaranteed Prize Pool &amp; Overlay, below.</div></div></div>
-                <div class="field-row"><span class="field-label">XP Table</span><div class="field-value"><div class="input-pair"><select><option selected>XP_Daily</option><option>XP_Standard</option></select><button class="btn btn-outline btn-sm" onclick="openDrawer('xp')"><i class="ti ti-eye"></i> Preview</button></div><div style="font-size:11px;color:#9ca3af;margin-top:3px">Defines per-rank XP weighting only. Total XP distributed is derived from the Prize Pool (see Total XP in Guaranteed Prize Pool &amp; Overlay, below).</div></div></div>
+                <div class="field-row"><span class="field-label">Prize Pool Table</span><div class="field-value"><div class="input-pair"><select><option selected>Prize_Table_B</option><option>Prize_Table_A</option></select><button class="btn btn-outline btn-sm" onclick="openDrawer('prize')"><i class="ti ti-eye"></i> Preview</button></div><div style="font-size:11px;color:#9ca3af;margin-top:3px">Defines the % split across ranks. The total pool size is driven by Guaranteed Prize Pool &amp; Overlay, above.</div></div></div>
+                <div class="field-row"><span class="field-label">XP Table</span><div class="field-value"><div class="input-pair"><select><option selected>XP_Daily</option><option>XP_Standard</option></select><button class="btn btn-outline btn-sm" onclick="openDrawer('xp')"><i class="ti ti-eye"></i> Preview</button></div><div style="font-size:11px;color:#9ca3af;margin-top:3px">Defines per-rank XP weighting only. Total XP distributed is calculated automatically from the Guarantee and shown in the tournament's Game Data summary (not configured here).</div></div></div>
               </div>
             </div>
 
@@ -1403,7 +1402,7 @@ input[readonly]{background:#f9fafb;color:#6b7280}
                       </div>
                     </span></div>
                     <div class="field-row"><span class="field-label">Maximum Entry Level</span><span class="field-value ro">Master</span></div>
-                    <div class="field-row"><span class="field-label">Prize Pool</span><span class="field-value ro">10,000 DC</span></div>
+                    <div class="field-row"><span class="field-label">Prize Pool</span><span class="field-value ro" id="rv-prize-pool">352 DC</span></div>
                   </div>
                 </div>
               </div>
@@ -1418,7 +1417,7 @@ input[readonly]{background:#f9fafb;color:#6b7280}
                 </div>
                 <div class="two-col">
                   <div>
-                    <div class="field-row"><span class="field-label">Opening Policy</span><span class="field-value ro">Open if overlay ≤ 100 DC</span></div>
+                    <div class="field-row"><span class="field-label">Opening Policy</span><span class="field-value ro">Open if overlay ≤ 50% of the Guarantee</span></div>
                     <div class="field-row"><span class="field-label">Calculated Guarantee</span><span class="field-value ro">80 DC</span></div>
                     <div class="field-row"><span class="field-label">Active Guarantee</span><span class="field-value ro">
                       100 DC
@@ -1429,7 +1428,6 @@ input[readonly]{background:#f9fafb;color:#6b7280}
                     <div class="field-row"><span class="field-label">Gross Collected</span><span class="field-value ro">440 DC</span></div>
                     <div class="field-row"><span class="field-label">Current Overlay</span><span class="field-value ro" id="rv-current-overlay">0 DC</span></div>
                     <div class="field-row"><span class="field-label">Prize Pool at Start</span><span class="field-value ro" style="color:#7c3aed;font-weight:600">352 DC</span></div>
-                    <div class="field-row"><span class="field-label">Total XP</span><span class="field-value ro" style="color:#7c3aed;font-weight:600">35,200</span></div>
                   </div>
                 </div>
               </div>
@@ -1458,7 +1456,8 @@ input[readonly]{background:#f9fafb;color:#6b7280}
                 <div class="sec-label" style="color:#7c3aed;display:flex;align-items:center;gap:5px"><span style="width:7px;height:7px;border-radius:50%;background:#22c55e;display:inline-block;animation:pulse 1.5s infinite"></span> Live</div>
                 <div class="kpi-grid" style="margin-bottom:14px">
                   <div class="kpi"><label>Registered Players</label><span id="re-kpi-players" style="color:#111827;font-weight:600">44 / 100</span></div>
-                  <div class="kpi"><label>Prize Pool</label><span id="re-kpi-prize" style="color:#7c3aed;font-weight:600">1,240 DC</span></div>
+                  <div class="kpi"><label>Prize Pool</label><span id="re-kpi-prize" style="color:#7c3aed;font-weight:600">352 DC</span></div>
+                  <div class="kpi"><label>Total XP</label><span id="re-kpi-total-xp" style="color:#7c3aed;font-weight:600">10,000</span><div style="font-size:10.5px;color:#9ca3af;margin-top:2px">Based on the Guarantee, not actual collections</div></div>
                 </div>
 
                 <!-- POST-GAME section: hidden until finished -->
@@ -2591,15 +2590,15 @@ const statusMap={
 
 const regRows=[
   {id:'153',name:'Alpha Storm',status:'active',type:'Regular',cats:['Crypto','Forex'],start:'31/03/2026 19:55',end:'31/03/2026 22:55',players:44,maxP:100,maxLvl:'Master',entryFee:'10 DC',prize:'10,000 DC',geo:['US','MX','BR','AR'],rec:true,inst:true,tpl:'TPL001',
-    minPlayers:10,feeNum:10,rakePct:20,policy:'overlay',maxOverlay:100,override:{active:true,value:100,reason:'launch promo',by:'A. Cohen',date:'2026-07-10'}},
+    minPlayers:10,feeNum:10,rakePct:20,policy:'overlay',maxOverlayPct:50,override:{active:true,value:100,reason:'launch promo',by:'A. Cohen',date:'2026-07-10'}},
   {id:'80',name:'Apex Liquidity Arena',status:'active',type:'Regular',cats:['Crypto','Stocks'],start:'25/03/2026 19:03',end:'25/03/2026 21:03',players:61,maxP:100,maxLvl:'Pro',entryFee:'10 DC',prize:'8,000 DC',geo:['US','MX','BR','AR'],rec:false,inst:true,tpl:'TPL001',
-    minPlayers:15,feeNum:10,rakePct:25,policy:'strict',maxOverlay:0,override:null},
+    minPlayers:15,feeNum:10,rakePct:25,policy:'strict',maxOverlayPct:0,override:null},
   {id:'147',name:'Forex Daily Challenge',status:'published',type:'Regular',cats:['Forex'],start:'17/05/2026 18:00',end:'17/05/2026 21:00',players:18,maxP:50,maxLvl:'Talented',entryFee:'5 DC',prize:'2,500 DC',geo:['IL'],rec:true,inst:true,tpl:'TPL002',
-    minPlayers:30,feeNum:5,rakePct:20,policy:'overlay',maxOverlay:50,override:null},
+    minPlayers:30,feeNum:5,rakePct:20,policy:'overlay',maxOverlayPct:40,override:null},
   {id:'138',name:'Tutorial: First Steps',status:'rfp',type:'Tutorial',cats:['Mixed'],start:'20/05/2026 10:00',end:'20/05/2026 11:00',players:0,maxP:200,maxLvl:'Fox',entryFee:'0 DC',prize:'500 DC',geo:['Global'],rec:false,inst:false,tpl:'',
-    minPlayers:50,feeNum:0,rakePct:0,policy:'overlay',maxOverlay:500,override:{active:true,value:500,reason:'Freeroll — fixed prize funded by marketing budget (fee=0 edge case)',by:'A. Cohen',date:'2026-07-08'}},
+    minPlayers:50,feeNum:0,rakePct:0,policy:'overlay',maxOverlayPct:100,override:{active:true,value:500,reason:'Freeroll — fixed prize funded by marketing budget (fee=0 edge case)',by:'A. Cohen',date:'2026-07-08'}},
   {id:'129',name:'Crypto Rush Weekly',status:'draft',type:'Regular',cats:['Crypto'],start:'25/05/2026 20:00',end:'25/05/2026 23:00',players:0,maxP:120,maxLvl:'Master',entryFee:'15 DC',prize:'15,000 DC',geo:['EU','AR'],rec:true,inst:false,tpl:'TPL001',
-    minPlayers:20,feeNum:15,rakePct:20,policy:'strict',maxOverlay:0,override:null},
+    minPlayers:20,feeNum:15,rakePct:20,policy:'strict',maxOverlayPct:0,override:null},
 ];
 
 // ── GUARANTEE / OVERLAY HELPERS (Regular tournament instances only) ──
@@ -2608,6 +2607,7 @@ function regActiveGuarantee(r){ return (r.override&&r.override.active)?r.overrid
 function regGrossCollected(r){ return r.players*r.feeNum; }
 function regCurrentOverlay(r){ return Math.max(0, regActiveGuarantee(r)-regGrossCollected(r)); }
 function regIsOverlayFlagged(r){ return r.policy==='overlay' && regCurrentOverlay(r)>0; }
+function regPrizePoolAtStart(r){ return Math.max(regActiveGuarantee(r), regGrossCollected(r)*(1-r.rakePct/100)); }
 
 const sgRows=[
   {id:'SGI-042',tpl:'Crypto Quick',tplId:'SGTPL001',cat:'Crypto',cats:['Crypto','Forex'],dur:'30m',players:4,target:8,instStatus:'active',status:'active',market:'open',marketClose:'4h 22m',endDate:'30/06/2026'},
@@ -2628,6 +2628,7 @@ function renderRegList(data){
     const barClr=pct>=80?'#ef4444':pct>=50?'#f59e0b':'#7c3aed';
     const overlayAmt=regCurrentOverlay(r);
     const overlayFlag=regIsOverlayFlagged(r)?`<i class="ti ti-flag-filled" title="Overlay exposure: ${fmtDC(overlayAmt)} DC would be funded by Dividandy if this tournament opened right now" style="color:#dc2626;margin-right:4px;font-size:13px;vertical-align:-1px"></i>`:'';
+    const prizePoolNow=fmtDC(regPrizePoolAtStart(r))+' DC';
     return `<tr>
       <td><input type="checkbox" class="checkbox"></td>
       <td style="color:#7c3aed;font-weight:500;cursor:pointer" onclick="navigate('reg-event','${r.id}','view')">${r.id}</td>
@@ -2644,7 +2645,7 @@ function renderRegList(data){
         </div>
       </td>
       <td style="color:#6b7280;font-size:12px">${r.maxLvl}</td>
-      <td style="font-weight:500">${r.status==='active'?'<span class="live-dot"></span>':''} ${r.prize}</td>
+      <td style="font-weight:500">${r.status==='active'?'<span class="live-dot"></span>':''} ${prizePoolNow}</td>
       <td>${r.geo.map(g=>`<span style="background:#f3f4f6;padding:1px 5px;border-radius:3px;font-size:10.5px;margin:1px;display:inline-block">${g}</span>`).join('')}</td>
       <td style="text-align:center">${r.rec?'<i class="ti ti-repeat" style="color:#7c3aed;font-size:13px"></i>':'<span style="color:#e5e7eb">—</span>'}</td>
       <td><div class="act-wrap">
@@ -2874,7 +2875,7 @@ function toggleSwitch(el,cb){
 // ═══════════════════════════════════════════
 // GUARANTEED PRIZE POOL & OVERLAY (Regular tournament instances)
 // ═══════════════════════════════════════════
-const XP_PER_DC=100; // 100 XP awarded per DC in the Prize Pool at Start
+const XP_PER_DC=100; // 100 XP awarded per DC in the Guarantee — XP is derived from the Guarantee, not from actual/live collections
 let regOverrideState={active:true,reason:'launch promo',by:'A. Cohen',date:'2026-07-10 14:32 UTC',calcAtOverride:80,reconfirmed:true};
 let regOverrideHistory=[
   {ts:'2026-07-10 14:32 UTC',actor:'A. Cohen',calc:80,prevActive:80,newActive:100,reason:'launch promo'}
@@ -2917,24 +2918,40 @@ function calcRegGuarantee(){
   const gross=registered*fee;
   const overlay=Math.max(0, active-gross);
   const prizeAtStart=Math.max(active, gross*(1-rake/100));
-  const totalXp=Math.round(prizeAtStart*XP_PER_DC);
+  const totalXp=Math.round(active*XP_PER_DC); // XP is derived from the Guarantee, not the actual/live Prize Pool
   const grossEl=document.getElementById('re-gross-collected');
   const overlayEl=document.getElementById('re-current-overlay');
   const prizeEl=document.getElementById('re-prize-at-start');
-  const xpEl=document.getElementById('re-total-xp');
+  const xpEl=document.getElementById('re-kpi-total-xp');
   if(grossEl) grossEl.textContent=fmtDC(gross)+' DC';
   if(overlayEl) overlayEl.textContent=fmtDC(overlay)+' DC';
   if(prizeEl) prizeEl.textContent=fmtDC(prizeAtStart)+' DC';
   if(xpEl) xpEl.textContent=totalXp.toLocaleString();
 
   const policy=document.querySelector('input[name="re-open-policy"]:checked')?.value||'strict';
+  const maxOverlayPct=parseFloat(document.getElementById('re-max-overlay-pct')?.value)||0;
+  const maxOverlayDC=active*(maxOverlayPct/100);
   const flagged=policy==='overlay' && overlay>0;
   const banner=document.getElementById('re-overlay-banner');
   const bannerAmt=document.getElementById('re-overlay-banner-amt');
   if(banner) banner.style.display=flagged?'flex':'none';
   if(bannerAmt) bannerAmt.textContent=fmtDC(overlay);
 
-  return {minP,fee,rake,registered,calc,active,overrideOn,isStale,gross,overlay,prizeAtStart,policy};
+  // Mirror into the read-only View card, since both screens share this document
+  const rvOverlayEl=document.getElementById('rv-current-overlay');
+  const rvBanner=document.getElementById('rv-overlay-banner');
+  const rvBannerAmt=document.getElementById('rv-overlay-banner-amt');
+  if(rvOverlayEl) rvOverlayEl.textContent=fmtDC(overlay)+' DC';
+  if(rvBanner) rvBanner.style.display=flagged?'flex':'none';
+  if(rvBannerAmt) rvBannerAmt.textContent=fmtDC(overlay);
+
+  // Single source of truth: every "Prize Pool" shown anywhere (Details, Game Data summary, list) is this same computed value
+  const rvPrizePoolEl=document.getElementById('rv-prize-pool');
+  const gameDataPrizeEl=document.getElementById('re-kpi-prize');
+  if(rvPrizePoolEl) rvPrizePoolEl.textContent=fmtDC(prizeAtStart)+' DC';
+  if(gameDataPrizeEl) gameDataPrizeEl.textContent=fmtDC(prizeAtStart)+' DC';
+
+  return {minP,fee,rake,registered,calc,active,overrideOn,isStale,gross,overlay,prizeAtStart,policy,maxOverlayPct,maxOverlayDC};
 }
 
 function toggleRegOverride(el){
