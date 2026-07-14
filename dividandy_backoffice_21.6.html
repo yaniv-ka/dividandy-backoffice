@@ -468,11 +468,11 @@ input[readonly]{background:#f9fafb;color:#6b7280}
 
 
 /* NOTIFICATIONS SCREEN */
-.ntf-tabs{display:flex;border-bottom:2px solid #e8e8ec;padding:0 24px;background:#fff;flex-shrink:0}
-.ntf-tab{padding:10px 18px;font-size:13px;font-weight:500;color:#9ca3af;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s}
-.ntf-tab.active{color:#7c3aed;border-bottom-color:#7c3aed;font-weight:600}
-.ntf-panel{display:none;flex:1;overflow:auto;flex-direction:column}
-.ntf-panel.active{display:flex}
+.ntf-tabs,.pg-tabs{display:flex;border-bottom:2px solid #e8e8ec;padding:0 24px;background:#fff;flex-shrink:0}
+.ntf-tab,.pg-tab{padding:10px 18px;font-size:13px;font-weight:500;color:#9ca3af;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s}
+.ntf-tab.active,.pg-tab.active{color:#7c3aed;border-bottom-color:#7c3aed;font-weight:600}
+.ntf-panel,.pg-panel{display:none;flex:1;overflow:auto;flex-direction:column}
+.ntf-panel.active,.pg-panel.active{display:flex}
 .acc-group{border:1px solid #e8e8ec;border-radius:10px;margin:0 24px 12px;overflow:hidden;background:#fff}
 .acc-hdr{display:flex;align-items:center;gap:12px;padding:12px 16px;cursor:pointer;background:#fafafa;transition:background .12s;user-select:none}
 .acc-hdr:hover{background:#f3f0ff}
@@ -583,6 +583,78 @@ input[readonly]{background:#f9fafb;color:#6b7280}
 
 .rule-tw{padding:4px 7px;border:1px solid #e5e7eb;border-radius:6px;font-size:11.5px;color:#374151;background:#fff;outline:none;flex-shrink:0}
 .rule-tw:focus{border-color:#7c3aed}
+
+/* ═══ SHOP / STOREFRONT ADMIN ═══ */
+.store-state{padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;display:inline-flex;align-items:center;gap:4px}
+.state-active{background:#d1fae5;color:#065f46}
+.state-scheduled{background:#dbeafe;color:#1e40af}
+.state-expired{background:#f3f4f6;color:#6b7280}
+.state-draft{background:#fef3c7;color:#92400e}
+
+.drag-row{cursor:grab}
+.drag-row.dragging{opacity:.35}
+.drag-handle{color:#c7cad1;cursor:grab;display:inline-flex;align-items:center;padding:2px}
+.drag-handle:hover{color:#7c3aed}
+.drop-line{height:2px;background:#7c3aed;border-radius:2px;margin:-1px 0}
+
+.color-field{display:flex;align-items:center;gap:8px}
+.color-swatch-inp{width:34px;height:30px;border:1px solid #e5e7eb;border-radius:6px;cursor:pointer;padding:2px;background:#fff}
+.color-hex-inp{flex:1;padding:6px 10px;border:1px solid #e5e7eb;border-radius:6px;font-size:12px;color:#374151;font-family:monospace;outline:none}
+.color-hex-inp:focus{border-color:#7c3aed}
+
+.asset-row{display:flex;align-items:center;gap:8px;margin-top:6px}
+.asset-inp{flex:1;padding:6px 10px;border:1px solid #e5e7eb;border-radius:6px;font-size:11.5px;color:#374151;outline:none}
+.asset-inp:focus{border-color:#7c3aed}
+.asset-clear{font-size:10.5px;color:#9ca3af;cursor:pointer;white-space:nowrap;padding:4px 6px}
+.asset-clear:hover{color:#ef4444}
+
+.vis-toggle-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.vis-toggle-row .fl2{margin-bottom:0}
+
+/* Item preview card - mirrors Storefront UI spec */
+.item-card-wrap{display:flex;flex-direction:column;align-items:center;gap:8px}
+.item-card{width:158px;height:220px;border-radius:14px;position:relative;overflow:hidden;background:#2b2140 center/cover no-repeat;display:flex;flex-direction:column;align-items:center;box-shadow:0 2px 10px rgba(0,0,0,.15);border:3px solid transparent}
+.item-card .ic-badge{position:absolute;top:8px;left:8px;font-size:9.5px;font-weight:700;color:#fff;padding:3px 8px;border-radius:20px;display:flex;align-items:center;gap:3px;max-width:80%;line-height:1.2}
+.item-card .ic-ratio{position:absolute;top:8px;right:8px;font-size:10px;font-weight:800;color:#fbbf24;background:rgba(0,0,0,.35);padding:2px 6px;border-radius:10px}
+.item-card .ic-name{margin-top:34px;font-size:11px;font-weight:600;color:#fff;text-align:center;padding:0 8px;text-shadow:0 1px 3px rgba(0,0,0,.6)}
+.item-card .ic-coins{margin-top:8px;font-size:20px;font-weight:800;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.6);display:flex;align-items:center;gap:3px}
+.item-card .ic-bonus{font-size:10.5px;font-weight:600;color:#4ade80;margin-top:1px;text-shadow:0 1px 3px rgba(0,0,0,.6)}
+.item-card .ic-lpxp{display:flex;gap:8px;margin-top:5px;font-size:9.5px;color:#e5e7eb;font-weight:600}
+.item-card .ic-bottom{margin-top:auto;width:100%;padding:8px;border-top:1px solid rgba(255,255,255,.18);display:flex;flex-direction:column;align-items:center;gap:1px;background:rgba(0,0,0,.28)}
+.item-card .ic-price-before{font-size:10px;color:#d1d5db;text-decoration:line-through}
+.item-card .ic-price{font-size:14px;font-weight:800;color:#fff}
+.item-card-mini{transform:scale(.56);transform-origin:top left;width:158px;height:220px}
+.item-card-mini-wrap{width:88px;height:123px;overflow:hidden;flex-shrink:0}
+
+.item-pick-card{border:1.5px solid #e5e7eb;border-radius:10px;padding:8px;display:flex;align-items:center;gap:8px;cursor:pointer;transition:all .12s;background:#fff}
+.item-pick-card:hover{border-color:#c4b5fd;background:#f9f8ff}
+.item-pick-card.sel{border-color:#7c3aed;background:#f3f0ff}
+.item-slot{display:flex;align-items:center;gap:10px;padding:8px 10px;border:1px solid #e8e8ec;border-radius:8px;background:#fafafa;margin-bottom:6px}
+.item-slot-num{width:22px;height:22px;border-radius:50%;background:#7c3aed;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.item-slot-remove{margin-left:auto;color:#9ca3af;cursor:pointer;font-size:16px;line-height:1;padding:2px 6px}
+.item-slot-remove:hover{color:#ef4444}
+
+.geo-empty-note{font-size:11px;color:#9ca3af;margin-top:6px;font-style:italic}
+.priority-badge{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:8px;background:#f3f0ff;color:#7c3aed;font-size:12px;font-weight:800}
+.default-tag{display:inline-flex;align-items:center;gap:3px;background:#ede9fe;color:#5b21b6;font-size:9.5px;font-weight:700;padding:1px 6px;border-radius:4px;text-transform:uppercase;letter-spacing:.3px;margin-left:4px}
+
+/* Offer card — wide carousel banner layout (different from Store Item card) */
+.offer-card-wrap{display:flex;flex-direction:column;align-items:center;gap:8px}
+.offer-card{width:320px;height:172px;border-radius:16px;position:relative;overflow:hidden;background:#2b2140 center/cover no-repeat;box-shadow:0 2px 10px rgba(0,0,0,.15);border:3px solid transparent;padding:12px}
+.offer-card .oc-badge{position:absolute;top:8px;left:50%;transform:translateX(-50%);font-size:10px;font-weight:700;color:#fff;padding:3px 10px;border-radius:20px;display:flex;align-items:center;gap:5px;white-space:nowrap;max-width:90%;overflow:hidden;text-overflow:ellipsis}
+.offer-card .oc-ratio{position:absolute;top:8px;left:8px;font-size:10px;font-weight:800;color:#0a0a0a;background:#a3e635;padding:3px 8px;border-radius:20px}
+.offer-card .oc-title{margin-top:32px;font-size:12px;font-weight:600;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.6)}
+.offer-card .oc-coins{margin-top:4px;font-size:26px;font-weight:800;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.6);display:flex;align-items:center;gap:4px}
+.offer-card .oc-bonus{font-size:12px;font-weight:600;color:#4ade80;text-shadow:0 1px 3px rgba(0,0,0,.6)}
+.offer-card .oc-lpxp{display:flex;gap:10px;margin-top:4px;font-size:10.5px;color:#e5e7eb;font-weight:600}
+.offer-card .oc-bottom{position:absolute;bottom:12px;left:12px;display:flex;align-items:baseline;gap:8px}
+.offer-card .oc-price-before{font-size:11px;color:#d1d5db;text-decoration:line-through}
+.offer-card .oc-price{font-size:16px;font-weight:800;color:#fff}
+.offer-card-mini{transform:scale(.32);transform-origin:top left;width:320px;height:172px}
+.offer-card-mini-wrap{width:102px;height:55px;overflow:hidden;flex-shrink:0;border-radius:6px}
+
+.store-link-chip{display:inline-flex;align-items:center;gap:5px;padding:6px 10px;border:1.5px solid #e5e7eb;border-radius:8px;font-size:12px;color:#374151;cursor:pointer;margin:0 6px 6px 0}
+.store-link-chip.on{border-color:#7c3aed;background:#f3f0ff;color:#5b21b6;font-weight:600}
 </style>
 </head>
 <body>
@@ -645,9 +717,10 @@ input[readonly]{background:#f9fafb;color:#6b7280}
           <i class="ti ti-chevron-down nav-arrow" id="arr-storefront"></i>
         </div>
         <div id="nav-storefront" style="display:block">
-          
+          <a class="nav-item-new" id="ni-shop-items" onclick="navigateNew('shop-items');initShopItems()"><i class="ti ti-coin"></i>Store Items</a>
+          <a class="nav-item-new" id="ni-stores" onclick="navigateNew('stores');initStores()"><i class="ti ti-building-store"></i>Stores</a>
       <a class="nav-item-new" id="ni-store-settings" onclick="navigateNew('store-settings')"><i class="ti ti-sliders"></i>Store Settings</a>
-          <a class="nav-item-new" id="ni-offers" onclick="navigateNew('offers')"><i class="ti ti-tag"></i>Offers &amp; Campaigns</a>
+          <a class="nav-item-new" id="ni-offers" onclick="navigateNew('offers');initOffers()"><i class="ti ti-tag"></i>Offers &amp; Campaigns</a>
         </div>
       </div>
       <!-- NEW: NOTIFICATIONS -->
@@ -2149,7 +2222,129 @@ input[readonly]{background:#f9fafb;color:#6b7280}
   </div>
 </div>
 
-      
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- STORE ITEMS (catalog) -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="screen" id="screen-shop-items">
+  <div class="page-hdr">
+    <div class="page-hdr-top">
+      <div><div class="page-title2">Store Items</div><div class="page-sub">Catalog of purchasable Đ product items. A Store needs at least one item to exist.</div></div>
+      <div class="hdr-actions">
+        <button class="btn2 bo" onclick="showToast2('Exported to CSV')"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Export</button>
+        <button class="btn2 bp" onclick="openItemDrw(null)"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Create new item</button>
+      </div>
+    </div>
+  </div>
+  <div class="tb2">
+    <div class="sw2"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input class="si2" type="text" placeholder="Search item name or ID…" id="si-search" oninput="renderItemsTable()"></div>
+    <select class="fs2" id="si-pack" onchange="renderItemsTable()"><option value="">All packs</option></select>
+    <select class="fs2" id="si-ratio" onchange="renderItemsTable()"><option value="">Ratio badge: all</option><option value="Y">Shown</option><option value="N">Hidden</option></select>
+    <span class="rl2" id="si-count"></span>
+  </div>
+  <div style="flex:1;overflow:auto">
+    <table class="tbl2" id="si-table">
+      <thead><tr>
+        <th style="width:70px">Preview</th><th>Item</th><th>Price</th><th>Đ / Bonus</th><th>LP / XP</th><th>Ratio</th><th>Pack</th><th>Used in</th><th>Updated</th><th></th>
+      </tr></thead>
+      <tbody id="si-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- STORES (management) -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="screen" id="screen-stores">
+  <div class="page-hdr">
+    <div class="page-hdr-top">
+      <div><div class="page-title2">Stores</div><div class="page-sub">Configure which items are shown to which segment &amp; geo, and in which order stores are evaluated</div></div>
+      <div class="hdr-actions">
+        <button class="btn2 bo" onclick="showToast2('Exported to CSV')"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Export</button>
+        <button class="btn2 bp" onclick="openStoreDrw(null)"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Create new store</button>
+      </div>
+    </div>
+  </div>
+  <div class="pg-tabs">
+    <div class="pg-tab active" onclick="switchStoreTab('live')">Active &amp; Scheduled</div>
+    <div class="pg-tab" onclick="switchStoreTab('expired')">Expired</div>
+  </div>
+  <div class="pg-panel active" id="store-panel-live">
+    <div class="tb2" style="flex-shrink:0">
+      <div class="sw2"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input class="si2" type="text" placeholder="Search store name or ID…" id="sr-search" oninput="renderStoresTable()"></div>
+      <select class="fs2" id="sr-segment" onchange="renderStoresTable()"><option value="">All segments</option></select>
+      <span class="rl2" id="sr-count"></span>
+    </div>
+    <div style="font-size:11px;color:#9ca3af;padding:0 24px 10px;display:flex;align-items:center;gap:6px"><i class="ti ti-arrows-move" style="font-size:14px"></i>Drag rows to reorder — top of the list is checked first. The first store whose Geo &amp; Segment match the player wins; a store with a "Default" segment acts as the fallback and should sit at the bottom.</div>
+    <div style="flex:1;overflow:auto">
+      <table class="tbl2" id="sr-table-live">
+        <thead><tr>
+          <th style="width:50px">Priority</th><th>Store</th><th>Geo</th><th>Segments</th><th>Items</th><th>Active period</th><th>State</th><th></th>
+        </tr></thead>
+        <tbody id="sr-tbody-live"></tbody>
+      </table>
+    </div>
+  </div>
+  <div class="pg-panel" id="store-panel-expired">
+    <div class="tb2" style="flex-shrink:0">
+      <div class="sw2"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input class="si2" type="text" placeholder="Search store name or ID…" id="sre-search" oninput="renderStoresTable()"></div>
+      <span class="rl2" id="sre-count"></span>
+    </div>
+    <div style="flex:1;overflow:auto">
+      <table class="tbl2" id="sr-table-expired">
+        <thead><tr>
+          <th>Store</th><th>Geo</th><th>Segments</th><th>Items</th><th>Active period</th><th>State</th><th></th>
+        </tr></thead>
+        <tbody id="sr-tbody-expired"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- OFFERS & CAMPAIGNS -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="screen" id="screen-offers">
+  <div class="page-hdr">
+    <div class="page-hdr-top">
+      <div><div class="page-title2">Offers &amp; Campaigns</div><div class="page-sub">Standalone purchase promos shown above the store or as a popup — targeted by segment, geo &amp; timing</div></div>
+      <div class="hdr-actions" id="offers-hdr-actions">
+        <button class="btn2 bo" onclick="showToast2('Exported to CSV')"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Export</button>
+        <button class="btn2 bp" onclick="openOfferDrw(null)"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Create new offer</button>
+      </div>
+    </div>
+  </div>
+  <div class="pg-tabs">
+    <div class="pg-tab active" onclick="switchOffersTab('offers')">Offers</div>
+    <div class="pg-tab" onclick="switchOffersTab('campaigns')">Campaigns <span class="not-mvp-tag" style="margin-left:4px">Coming soon</span></div>
+  </div>
+  <div class="pg-panel active" id="offers-panel-offers">
+    <div class="tb2" style="flex-shrink:0">
+      <div class="sw2"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input class="si2" type="text" placeholder="Search offer name or ID…" id="of-search" oninput="renderOffersTable()"></div>
+      <select class="fs2" id="of-segment" onchange="renderOffersTable()"><option value="">All segments</option></select>
+      <select class="fs2" id="of-state" onchange="renderOffersTable()"><option value="">All states</option><option>Active</option><option>Scheduled</option><option>Expired</option></select>
+      <span class="rl2" id="of-count"></span>
+    </div>
+    <div style="font-size:11px;color:#9ca3af;padding:0 24px 10px;display:flex;align-items:center;gap:6px"><i class="ti ti-info-circle" style="font-size:14px"></i>An Offer is an independent product (its own price &amp; rewards). Link it to one or more Stores to show it as a banner above them, or leave unlinked to show it as a standalone popup to the matching segment.</div>
+    <div style="flex:1;overflow:auto">
+      <table class="tbl2" id="of-table">
+        <thead><tr>
+          <th style="width:70px">Preview</th><th>Offer</th><th>Segment</th><th>Geo</th><th>Price</th><th>Đ / Bonus</th><th>Linked stores</th><th>Active period</th><th>State</th><th></th>
+        </tr></thead>
+        <tbody id="of-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+  <div class="pg-panel" id="offers-panel-campaigns">
+    <div style="flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;color:#9ca3af;padding:80px 0">
+      <i class="ti ti-stack-2" style="font-size:48px;color:#e5e7eb"></i>
+      <div style="font-size:15px;font-weight:600;color:#d1d5db">Campaigns — coming soon</div>
+      <div style="font-size:12px;max-width:360px;text-align:center">Campaigns will group Offers under a shared schedule, trigger type, recurrence and frequency cap. Offer Items built here can already be reused inside Campaigns once available.</div>
+    </div>
+  </div>
+</div>
+
+
 <div class="screen" id="screen-coming-soon">
   <div style="flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;color:#9ca3af;padding:80px 0">
     <i class="ti ti-layout-grid" style="font-size:48px;color:#e5e7eb"></i>
@@ -3526,7 +3721,7 @@ function calcRegHint(prefix){
 // ═══════════════════════════════════════════
 const newScreenMap = {
   'users':'ni-users','segments':'ni-segments','store-settings':'ni-store-settings','notifications':'ni-notifications',
-  'offers':'ni-offers','geo':'ni-geo'
+  'offers':'ni-offers','geo':'ni-geo','shop-items':'ni-shop-items','stores':'ni-stores'
 };
 
 function navigateNew(screen) {
@@ -3547,7 +3742,7 @@ function navigateNew(screen) {
 
   // Update breadcrumb
   const bc = document.getElementById('breadcrumb');
-  const labels = {'users':'Players › User Management','store-settings':'Storefront › Store Settings','offers':'Storefront › Offers & Campaigns','geo':'Players › Geo & Session'};
+  const labels = {'users':'Players › User Management','store-settings':'Storefront › Store Settings','offers':'Storefront › Offers & Campaigns','geo':'Players › Geo & Session','shop-items':'Storefront › Store Items','stores':'Storefront › Stores'};
   if (bc) bc.innerHTML = '<span class="bc-cur">' + (labels[screen]||screen) + '</span>';
 
   document.querySelector('.main').scrollTop = 0;
@@ -5655,6 +5850,789 @@ function initSegments() {
   renderSegTable();
 }
 
+// ═══════════════════════════════════════════
+// STORE ITEMS + STORES (Storefront admin)
+// ═══════════════════════════════════════════
+
+// Add a catch-all "Default" segment used as the fallback store trigger, on top of the existing Segments module data
+SEG_DATA.push({id:'SEG-000', name:'Default (All Players)', desc:'Catch-all fallback — matches every player with no other segment match',
+  rules:[], timeWindow:'All time', twType:'alltime', status:'Active', updatedBy:'Admin YK', updatedAt:'14 Jul 2026', allPlayers:true});
+SEG_DATA.push({id:'SEG-007', name:'2nd Time Depositors', desc:'Made exactly 2 deposits',
+  rules:[{param:'deposits_count',op:'=',val:'2'}], timeWindow:'All time', twType:'alltime', status:'Active', updatedBy:'Admin YK', updatedAt:'13 Jul 2026', allPlayers:false});
+SEG_DATA.push({id:'SEG-008', name:'Reactivation', desc:'Returning after a period of inactivity',
+  rules:[{param:'deposits_count',op:'>',val:'0'}], timeWindow:'Last 30 days', twType:'last30', status:'Active', updatedBy:'Admin MB', updatedAt:'13 Jul 2026', allPlayers:false});
+SEG_DATA.push({id:'SEG-009', name:'Dormant Players', desc:'No activity for an extended period',
+  rules:[{param:'wins_count',op:'=',val:'0'}], timeWindow:'Last 30 days', twType:'last30', status:'Active', updatedBy:'Admin MB', updatedAt:'13 Jul 2026', allPlayers:false});
+
+var SHOP_ITEMS = [
+  {id:'10000001',name:'5$ Divicoins',price:5,origPrice:null,divicoins:5,bonus:1,lp:50,xp:null,ratioVisible:true,pack:'Placeholder Pack',
+    frame:{visible:false,color:'#7c3aed',asset:''},badge:{visible:true,text:'Special for you',color:'#f59e0b',asset:''},bg:{asset:''},updatedBy:'Admin YK',updatedAt:'10 Jul 2026'},
+  {id:'10000002',name:'10$ Divicoins',price:10,origPrice:null,divicoins:10,bonus:3,lp:100,xp:3,ratioVisible:true,pack:'Begginer Pack',
+    frame:{visible:false,color:'#7c3aed',asset:''},badge:{visible:false,text:'',color:'#f59e0b',asset:''},bg:{asset:''},updatedBy:'Admin YK',updatedAt:'10 Jul 2026'},
+  {id:'10000003',name:'20$ Divicoins',price:20,origPrice:null,divicoins:20,bonus:7,lp:200,xp:5,ratioVisible:false,pack:'Master Pack',
+    frame:{visible:false,color:'#7c3aed',asset:''},badge:{visible:false,text:'',color:'#f59e0b',asset:''},bg:{asset:''},updatedBy:'Admin MB',updatedAt:'9 Jul 2026'},
+  {id:'10000004',name:'25$ Divicoins',price:25,origPrice:null,divicoins:25,bonus:10,lp:250,xp:1,ratioVisible:false,pack:'Fox Pack',
+    frame:{visible:false,color:'#7c3aed',asset:''},badge:{visible:false,text:'',color:'#f59e0b',asset:''},bg:{asset:''},updatedBy:'Admin MB',updatedAt:'9 Jul 2026'},
+  {id:'10000005',name:'50$ Divicoins',price:50,origPrice:60,divicoins:50,bonus:15,lp:null,xp:null,ratioVisible:true,pack:'Starter Pack',
+    frame:{visible:false,color:'#7c3aed',asset:''},badge:{visible:false,text:'',color:'#f59e0b',asset:''},bg:{asset:''},updatedBy:'Admin YK',updatedAt:'8 Jul 2026'},
+  {id:'10000006',name:'75$ Divicoins',price:75,origPrice:90,divicoins:75,bonus:25,lp:null,xp:null,ratioVisible:true,pack:'Begginer Pack',
+    frame:{visible:true,color:'#fbbf24',asset:''},badge:{visible:false,text:'',color:'#f59e0b',asset:''},bg:{asset:''},updatedBy:'Admin YK',updatedAt:'8 Jul 2026'},
+  {id:'10000007',name:'80$ Divicoins',price:80,origPrice:null,divicoins:80,bonus:50,lp:null,xp:null,ratioVisible:false,pack:'Master Pack',
+    frame:{visible:false,color:'#7c3aed',asset:''},badge:{visible:false,text:'',color:'#f59e0b',asset:''},bg:{asset:''},updatedBy:'Admin MB',updatedAt:'7 Jul 2026'},
+  {id:'10000008',name:'100$ Divicoins',price:100,origPrice:null,divicoins:100,bonus:20,lp:null,xp:null,ratioVisible:false,pack:'Fox Pack',
+    frame:{visible:false,color:'#7c3aed',asset:''},badge:{visible:false,text:'',color:'#f59e0b',asset:''},bg:{asset:''},updatedBy:'Admin MB',updatedAt:'7 Jul 2026'},
+  {id:'10000009',name:'200$ Divicoins',price:200,origPrice:null,divicoins:200,bonus:50,lp:2000,xp:null,ratioVisible:true,pack:'Starter Pack',
+    frame:{visible:true,color:'#22c55e',asset:''},badge:{visible:true,text:'Most Popular',color:'#ef4444',asset:''},bg:{asset:''},updatedBy:'Admin YK',updatedAt:'6 Jul 2026'},
+  {id:'10000010',name:'250$ Divicoins',price:250,origPrice:null,divicoins:250,bonus:50,lp:2500,xp:null,ratioVisible:true,pack:'Begginer Pack',
+    frame:{visible:false,color:'#7c3aed',asset:''},badge:{visible:false,text:'',color:'#f59e0b',asset:''},bg:{asset:''},updatedBy:'Admin MB',updatedAt:'5 Jul 2026'},
+  {id:'10000011',name:'400$ Divicoins',price:400,origPrice:null,divicoins:400,bonus:50,lp:4000,xp:null,ratioVisible:true,pack:'Master Pack',
+    frame:{visible:false,color:'#7c3aed',asset:''},badge:{visible:false,text:'',color:'#f59e0b',asset:''},bg:{asset:''},updatedBy:'Admin YK',updatedAt:'4 Jul 2026'},
+  {id:'10000012',name:'1000$ Divicoins',price:1000,origPrice:null,divicoins:1000,bonus:70,lp:10000,xp:null,ratioVisible:false,pack:'Fox Pack',
+    frame:{visible:false,color:'#7c3aed',asset:''},badge:{visible:false,text:'',color:'#f59e0b',asset:''},bg:{asset:''},updatedBy:'Admin MB',updatedAt:'3 Jul 2026'},
+  {id:'10000013',name:'7$ Divicoins',price:7,origPrice:null,divicoins:7,bonus:3,lp:70,xp:null,ratioVisible:true,pack:'Master Pack',
+    frame:{visible:false,color:'#7c3aed',asset:''},badge:{visible:false,text:'',color:'#f59e0b',asset:''},bg:{asset:''},updatedBy:'Admin YK',updatedAt:'2 Jul 2026'}
+];
+
+var STORES = [
+  {id:'STR-100001',name:'Regular FTD Shop',geo:['Brazil','Chile','Colombia'],segmentIds:['SEG-003'],
+    startDate:'2025-01-01',endDate:'2099-01-01',itemIds:['10000001','10000002'],published:true,priority:1},
+  {id:'STR-100002',name:'Cool name',geo:[],segmentIds:['SEG-000','SEG-001'],
+    startDate:'2025-01-14',endDate:'2099-01-15',itemIds:['10000001','10000002','10000003'],published:true,priority:2},
+  {id:'STR-100003',name:'Halloween LatAm 2026',geo:['Brazil','Chile'],segmentIds:['SEG-002'],
+    startDate:'2026-10-15',endDate:'2026-11-05',itemIds:['10000009','10000010'],published:true,priority:3},
+  {id:'STR-100004',name:'Black Friday Mexico 2025',geo:['Mexico'],segmentIds:['SEG-004'],
+    startDate:'2025-11-20',endDate:'2025-11-30',itemIds:['10000005','10000006'],published:true,priority:4}
+];
+
+function itemById(id){ return SHOP_ITEMS.find(function(i){return i.id===id;}); }
+function segById(id){ return SEG_DATA.find(function(s){return s.id===id;}); }
+function ratioPct(it){ if(!it.divicoins) return 0; return Math.round((it.bonus/it.divicoins)*100); }
+function fmtUSD(v){ return v==null?'':'$'+Number(v).toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:2}); }
+function fmtDateShort(iso){ if(!iso) return '—'; var d=new Date(iso+'T00:00:00'); return d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}); }
+var BG_GRADIENTS=['linear-gradient(160deg,#4c1d95,#7c3aed)','linear-gradient(160deg,#0f766e,#14b8a6)','linear-gradient(160deg,#9d174d,#f43f5e)','linear-gradient(160deg,#1e3a8a,#3b82f6)','linear-gradient(160deg,#78350f,#f59e0b)','linear-gradient(160deg,#312e81,#6366f1)'];
+function bgGradientFor(seed){ var s=String(seed||''); var h=0; for(var i=0;i<s.length;i++){h=(h*31+s.charCodeAt(i))>>>0;} return BG_GRADIENTS[h%BG_GRADIENTS.length]; }
+
+// ─── ITEM CARD RENDERING (shared: catalog thumbs + live preview + item picker) ───
+function itemCardStyle(it){
+  var bg = it.bg && it.bg.asset ? ("url('"+esc(it.bg.asset)+"') center/cover no-repeat, ") : '';
+  return 'background:'+bg+bgGradientFor(it.pack+it.id)+';border-color:'+(it.frame&&it.frame.visible?(it.frame.color||'#7c3aed'):'transparent')+';'+
+    (it.frame&&it.frame.visible&&it.frame.asset?("border-image:url('"+esc(it.frame.asset)+"') 30 / 3px stretch;"):'');
+}
+function renderItemCardInner(it, prefix){
+  var badge=document.getElementById(prefix+'-badge'), ratio=document.getElementById(prefix+'-ratio'),
+      name=document.getElementById(prefix+'-name'), coins=document.getElementById(prefix+'-coins'),
+      bonus=document.getElementById(prefix+'-bonus'), lpxp=document.getElementById(prefix+'-lpxp'),
+      pb=document.getElementById(prefix+'-pricebefore'), price=document.getElementById(prefix+'-price'),
+      card=document.getElementById(prefix+'-card');
+  if(card) card.setAttribute('style', (card.getAttribute('style')||'').replace(/background:[^;]+;?|border-color:[^;]+;?|border-image:[^;]+;?/g,'')+';'+itemCardStyle(it));
+  if(badge){
+    if(it.badge&&it.badge.visible&&it.badge.text){ badge.style.display='flex'; badge.textContent=it.badge.text;
+      badge.style.background = it.badge.asset? ("url('"+esc(it.badge.asset)+"') center/cover no-repeat") : (it.badge.color||'#f59e0b'); }
+    else badge.style.display='none';
+  }
+  if(ratio){
+    if(it.ratioVisible && it.divicoins){ ratio.style.display='block'; ratio.textContent='+'+ratioPct(it)+'% Extra'; }
+    else ratio.style.display='none';
+  }
+  if(name) name.textContent = it.name||'Item name';
+  if(coins) coins.innerHTML = (it.divicoins||0).toLocaleString()+' <span style="font-size:12px">Đ</span>';
+  if(bonus){
+    if(it.bonus){ bonus.style.display='block'; bonus.textContent='Get '+it.bonus+' Đ Bonus'; }
+    else bonus.style.display='none';
+  }
+  if(lpxp){
+    var parts=[];
+    if(it.lp) parts.push('+'+it.lp+' LP');
+    if(it.xp) parts.push('+'+it.xp+' XP');
+    lpxp.innerHTML = parts.join(' &nbsp; ');
+  }
+  if(pb){
+    if(it.origPrice){ pb.style.display='block'; pb.textContent=fmtUSD(it.origPrice); }
+    else pb.style.display='none';
+  }
+  if(price) price.textContent = fmtUSD(it.price)||'$0';
+}
+
+// ─── STORE ITEMS SCREEN ───
+function populateItemFilters(){
+  var packs = Array.from(new Set(SHOP_ITEMS.map(function(i){return i.pack;}).filter(Boolean))).sort();
+  var sel = document.getElementById('si-pack');
+  if(sel) sel.innerHTML = '<option value="">All packs</option>' + packs.map(function(p){return '<option>'+esc(p)+'</option>';}).join('');
+  var dl = document.getElementById('item-pack-list');
+  if(dl) dl.innerHTML = packs.map(function(p){return '<option value="'+esc(p)+'">';}).join('');
+}
+function renderItemsTable(){
+  var q=(document.getElementById('si-search')||{}).value||'', pack=(document.getElementById('si-pack')||{}).value||'', rt=(document.getElementById('si-ratio')||{}).value||'';
+  var filtered = SHOP_ITEMS.filter(function(it){
+    var mq = !q || it.name.toLowerCase().includes(q.toLowerCase()) || it.id.includes(q);
+    var mp = !pack || it.pack===pack;
+    var mr = !rt || (rt==='Y'?it.ratioVisible:!it.ratioVisible);
+    return mq&&mp&&mr;
+  });
+  var tb=document.getElementById('si-tbody');
+  if(!tb) return;
+  tb.innerHTML = filtered.map(function(it){
+    var usedIn = STORES.filter(function(s){return s.itemIds.includes(it.id);}).length;
+    return '<tr>'+
+      '<td><div class="item-card-mini-wrap"><div class="item-card item-card-mini" id="mini-card-'+it.id+'" style="'+itemCardStyle(it)+'"></div></div></td>'+
+      '<td><div style="font-weight:600;color:#1a1a2e">'+esc(it.name)+'</div><div style="font-size:11px;color:#9ca3af">'+it.id+'</div></td>'+
+      '<td>'+fmtUSD(it.price)+(it.origPrice?' <span style="color:#9ca3af;text-decoration:line-through;font-size:11px">'+fmtUSD(it.origPrice)+'</span>':'')+'</td>'+
+      '<td>'+it.divicoins+' Đ <span style="color:#10b981">+'+it.bonus+'</span></td>'+
+      '<td style="color:#6b7280">'+(it.lp?it.lp+' LP':'—')+' / '+(it.xp?it.xp+' XP':'—')+'</td>'+
+      '<td>'+(it.ratioVisible?'<span class="store-state state-active">'+ratioPct(it)+'%</span>':'<span class="store-state state-expired">Hidden</span>')+'</td>'+
+      '<td style="color:#6b7280">'+esc(it.pack)+'</td>'+
+      '<td style="color:#6b7280">'+usedIn+' store'+(usedIn===1?'':'s')+'</td>'+
+      '<td style="color:#9ca3af;font-size:11px">'+it.updatedBy+'<br>'+it.updatedAt+'</td>'+
+      '<td><div class="ra2"><button class="ab2" onclick="openItemDrw(\''+it.id+'\')">Edit</button><button class="ab2" onclick="duplicateItem(\''+it.id+'\')">Duplicate</button></div></td>'+
+      '</tr>';
+  }).join('');
+  document.getElementById('si-count').textContent = filtered.length+' items';
+}
+
+var _itemDrwId = null;
+function switchItemTab(name){
+  document.querySelectorAll('#item-drw .drw2-tab').forEach(function(t,i){ t.classList.toggle('active', ['details','visual'][i]===name); });
+  document.getElementById('item-tab-details').classList.toggle('active', name==='details');
+  document.getElementById('item-tab-visual').classList.toggle('active', name==='visual');
+}
+function syncHex(colorId,hexId){ document.getElementById(hexId).value = document.getElementById(colorId).value; }
+function syncColor(hexId,colorId){ var v=document.getElementById(hexId).value; if(/^#[0-9a-fA-F]{6}$/.test(v)) document.getElementById(colorId).value=v; }
+function readItemForm(){
+  return {
+    id: _itemDrwId || ('1000'+String(Math.floor(1000+Math.random()*8999))),
+    name: document.getElementById('item-name').value||'Untitled item',
+    pack: document.getElementById('item-pack').value||'—',
+    price: parseFloat(document.getElementById('item-price').value)||0,
+    origPrice: document.getElementById('item-origprice').value ? parseFloat(document.getElementById('item-origprice').value) : null,
+    divicoins: parseInt(document.getElementById('item-divicoins').value)||0,
+    bonus: parseInt(document.getElementById('item-bonus').value)||0,
+    lp: document.getElementById('item-lp').value ? parseInt(document.getElementById('item-lp').value) : null,
+    xp: document.getElementById('item-xp').value ? parseInt(document.getElementById('item-xp').value) : null,
+    ratioVisible: document.getElementById('item-ratio-toggle').checked,
+    frame:{visible:document.getElementById('item-frame-toggle').checked, color:document.getElementById('item-frame-hex').value, asset:document.getElementById('item-frame-asset').value},
+    badge:{visible:document.getElementById('item-badge-toggle').checked, text:document.getElementById('item-badge-text').value, color:document.getElementById('item-badge-hex').value, asset:document.getElementById('item-badge-asset').value},
+    bg:{asset:document.getElementById('item-bg-asset').value},
+    updatedBy:'Admin YK', updatedAt:'Today'
+  };
+}
+function updateItemPreview(){
+  var it = readItemForm();
+  document.getElementById('item-ratio-readout').textContent = it.divicoins ? ('+'+ratioPct(it)+'% Extra') : '—';
+  renderItemCardInner(it,'item-prev');
+}
+function fillItemForm(it){
+  document.getElementById('item-name').value = it.name;
+  document.getElementById('item-pack').value = it.pack;
+  document.getElementById('item-price').value = it.price;
+  document.getElementById('item-origprice').value = it.origPrice!=null?it.origPrice:'';
+  document.getElementById('item-divicoins').value = it.divicoins;
+  document.getElementById('item-bonus').value = it.bonus;
+  document.getElementById('item-lp').value = it.lp!=null?it.lp:'';
+  document.getElementById('item-xp').value = it.xp!=null?it.xp:'';
+  document.getElementById('item-ratio-toggle').checked = !!it.ratioVisible;
+  document.getElementById('item-frame-toggle').checked = !!(it.frame&&it.frame.visible);
+  document.getElementById('item-frame-color').value = (it.frame&&it.frame.color)||'#7c3aed';
+  document.getElementById('item-frame-hex').value = (it.frame&&it.frame.color)||'#7c3aed';
+  document.getElementById('item-frame-asset').value = (it.frame&&it.frame.asset)||'';
+  document.getElementById('item-badge-toggle').checked = !!(it.badge&&it.badge.visible);
+  document.getElementById('item-badge-text').value = (it.badge&&it.badge.text)||'';
+  document.getElementById('item-badge-color').value = (it.badge&&it.badge.color)||'#f59e0b';
+  document.getElementById('item-badge-hex').value = (it.badge&&it.badge.color)||'#f59e0b';
+  document.getElementById('item-badge-asset').value = (it.badge&&it.badge.asset)||'';
+  document.getElementById('item-bg-asset').value = (it.bg&&it.bg.asset)||'';
+}
+function openItemDrw(id){
+  _itemDrwId = id;
+  populateItemFilters();
+  if(id){
+    var it = itemById(id);
+    document.getElementById('item-drw-title').textContent = 'Edit Store Item';
+    document.getElementById('item-drw-sub').textContent = it.id;
+    fillItemForm(it);
+  } else {
+    document.getElementById('item-drw-title').textContent = 'New Store Item';
+    document.getElementById('item-drw-sub').textContent = 'Auto-generated ID on save';
+    fillItemForm({name:'',pack:'',price:'',origPrice:null,divicoins:'',bonus:'',lp:null,xp:null,ratioVisible:true,
+      frame:{visible:false,color:'#7c3aed',asset:''},badge:{visible:false,color:'#f59e0b',text:'',asset:''},bg:{asset:''}});
+  }
+  switchItemTab('details');
+  updateItemPreview();
+  document.getElementById('item-drw-saved').textContent='Unsaved';
+  document.getElementById('item-drw-ov').classList.add('open');
+  document.getElementById('item-drw').classList.add('open');
+  setTimeout(function(){document.getElementById('item-drw').style.right='0';},10);
+}
+function closeItemDrw(){
+  document.getElementById('item-drw-ov').classList.remove('open');
+  document.getElementById('item-drw').classList.remove('open');
+  document.getElementById('item-drw').style.right='-860px';
+}
+function saveItemDrw(){
+  var it = readItemForm();
+  if(_itemDrwId){
+    var idx = SHOP_ITEMS.findIndex(function(x){return x.id===_itemDrwId;});
+    if(idx>=0) SHOP_ITEMS[idx]=it;
+  } else {
+    SHOP_ITEMS.push(it);
+  }
+  closeItemDrw();
+  renderItemsTable();
+  showToast2('Item saved');
+}
+function duplicateItem(id){
+  var it = itemById(id);
+  var clone = JSON.parse(JSON.stringify(it));
+  clone.id = '1000'+String(Math.floor(1000+Math.random()*8999));
+  clone.name = it.name + ' (Copy)';
+  SHOP_ITEMS.push(clone);
+  renderItemsTable();
+  showToast2('Item duplicated');
+}
+
+// ─── STORES SCREEN ───
+function storeState(s){
+  var today = new Date(); today.setHours(0,0,0,0);
+  var start = new Date(s.startDate+'T00:00:00');
+  var end = new Date(s.endDate+'T00:00:00');
+  if(end < today) return 'Expired';
+  if(start > today) return 'Scheduled';
+  return s.published ? 'Active' : 'Draft';
+}
+function storeStateBadge(st){
+  var cls = {Active:'state-active',Scheduled:'state-scheduled',Expired:'state-expired',Draft:'state-draft'};
+  return '<span class="store-state '+(cls[st]||'state-draft')+'">'+st+'</span>';
+}
+function geoLabel(geo){ return (!geo||!geo.length) ? '<span style="color:#9ca3af">All countries</span>' : geo.join(', '); }
+function segLabel(segmentIds){
+  return segmentIds.map(function(id){
+    var s=segById(id); if(!s) return id;
+    return esc(s.name) + (s.allPlayers?'<span class="default-tag">Default</span>':'');
+  }).join(', ');
+}
+function populateStoreFilters(){
+  var sel = document.getElementById('sr-segment');
+  if(sel) sel.innerHTML = '<option value="">All segments</option>' + SEG_DATA.slice().reverse().map(function(s){return '<option value="'+s.id+'">'+esc(s.name)+'</option>';}).join('');
+}
+function renderStoresTable(){
+  var live = STORES.filter(function(s){return storeState(s)!=='Expired';}).sort(function(a,b){return a.priority-b.priority;});
+  var expired = STORES.filter(function(s){return storeState(s)==='Expired';}).sort(function(a,b){return b.endDate.localeCompare(a.endDate);});
+
+  var qLive=(document.getElementById('sr-search')||{}).value||'', segF=(document.getElementById('sr-segment')||{}).value||'';
+  var qExp=(document.getElementById('sre-search')||{}).value||'';
+
+  var liveFiltered = live.filter(function(s){
+    var mq = !qLive || s.name.toLowerCase().includes(qLive.toLowerCase()) || s.id.includes(qLive);
+    var ms = !segF || s.segmentIds.includes(segF);
+    return mq&&ms;
+  });
+  var expFiltered = expired.filter(function(s){
+    return !qExp || s.name.toLowerCase().includes(qExp.toLowerCase()) || s.id.includes(qExp);
+  });
+
+  var tbLive = document.getElementById('sr-tbody-live');
+  tbLive.innerHTML = liveFiltered.map(function(s,idx){
+    var st = storeState(s);
+    return '<tr draggable="true" data-id="'+s.id+'">'+
+      '<td><span class="drag-handle"><i class="ti ti-grip-vertical"></i></span> <span class="priority-badge">'+(idx+1)+'</span></td>'+
+      '<td><div style="font-weight:600;color:#1a1a2e">'+esc(s.name)+'</div><div style="font-size:11px;color:#9ca3af">'+s.id+' · '+s.itemIds.length+' items</div></td>'+
+      '<td style="font-size:12px">'+geoLabel(s.geo)+'</td>'+
+      '<td style="font-size:12px">'+segLabel(s.segmentIds)+'</td>'+
+      '<td style="color:#6b7280">'+s.itemIds.length+'</td>'+
+      '<td style="font-size:12px;color:#6b7280">'+fmtDateShort(s.startDate)+' → '+fmtDateShort(s.endDate)+'</td>'+
+      '<td>'+storeStateBadge(st)+'</td>'+
+      '<td><div class="ra2"><button class="ab2" onclick="openStoreDrw(\''+s.id+'\')">Edit</button><button class="ab2" onclick="duplicateStore(\''+s.id+'\')">Duplicate</button></div></td>'+
+      '</tr>';
+  }).join('');
+  document.getElementById('sr-count').textContent = liveFiltered.length+' stores';
+
+  var tbExp = document.getElementById('sr-tbody-expired');
+  tbExp.innerHTML = expFiltered.map(function(s){
+    return '<tr>'+
+      '<td><div style="font-weight:600;color:#1a1a2e">'+esc(s.name)+'</div><div style="font-size:11px;color:#9ca3af">'+s.id+'</div></td>'+
+      '<td style="font-size:12px">'+geoLabel(s.geo)+'</td>'+
+      '<td style="font-size:12px">'+segLabel(s.segmentIds)+'</td>'+
+      '<td style="color:#6b7280">'+s.itemIds.length+'</td>'+
+      '<td style="font-size:12px;color:#6b7280">'+fmtDateShort(s.startDate)+' → '+fmtDateShort(s.endDate)+'</td>'+
+      '<td>'+storeStateBadge('Expired')+'</td>'+
+      '<td><div class="ra2"><button class="ab2" onclick="openStoreDrw(\''+s.id+'\')">View</button><button class="ab2" onclick="duplicateStore(\''+s.id+'\')">Reactivate copy</button></div></td>'+
+      '</tr>';
+  }).join('');
+  document.getElementById('sre-count').textContent = expFiltered.length+' expired stores';
+
+  makeSortable(tbLive, 'tr', onStorePriorityReorder);
+}
+function onStorePriorityReorder(){
+  var ids = Array.from(document.getElementById('sr-tbody-live').querySelectorAll('tr')).map(function(r){return r.getAttribute('data-id');});
+  ids.forEach(function(id,i){ var s=STORES.find(function(x){return x.id===id;}); if(s) s.priority=i+1; });
+  renderStoresTable();
+  showToast2('Priority order updated');
+}
+function switchStoreTab(name){
+  document.querySelectorAll('#screen-stores .pg-tab').forEach(function(t,i){ t.classList.toggle('active', ['live','expired'][i]===name); });
+  document.getElementById('store-panel-live').classList.toggle('active', name==='live');
+  document.getElementById('store-panel-expired').classList.toggle('active', name==='expired');
+}
+
+function makeSortable(container, selector, onReorder){
+  var dragEl=null;
+  container.querySelectorAll(selector).forEach(function(el){
+    el.addEventListener('dragstart', function(){ dragEl=el; el.classList.add('dragging'); });
+    el.addEventListener('dragend', function(){ el.classList.remove('dragging'); if(onReorder) onReorder(); });
+    el.addEventListener('dragover', function(e){
+      e.preventDefault();
+      if(!dragEl || el===dragEl) return;
+      var rect=el.getBoundingClientRect();
+      var after=(e.clientY-rect.top)/rect.height>0.5;
+      container.insertBefore(dragEl, after? el.nextSibling : el);
+    });
+  });
+}
+
+// ─── STORE DRAWER ───
+var _storeDrwId=null, _storeDrwGeo=[], _storeDrwSegIds=[], _storeDrwItemIds=[];
+function switchStoreDrwTab(name){
+  document.querySelectorAll('#store-drw .drw2-tab').forEach(function(t,i){ t.classList.toggle('active', ['details','items'][i]===name); });
+  document.getElementById('store-drw-tab-details').classList.toggle('active', name==='details');
+  document.getElementById('store-drw-tab-items').classList.toggle('active', name==='items');
+}
+function renderGeoChips(){
+  var box = document.getElementById('store-geo-chips');
+  box.innerHTML = SS_C.map(function(c){
+    var on = _storeDrwGeo.includes(c.n);
+    return '<span class="chip-sel '+(on?'on':'off')+'" onclick="toggleGeoChip(\''+c.n+'\')">'+c.f+' '+c.n+'</span>';
+  }).join('');
+}
+function toggleGeoChip(name){
+  var i=_storeDrwGeo.indexOf(name);
+  if(i>=0) _storeDrwGeo.splice(i,1); else _storeDrwGeo.push(name);
+  renderGeoChips();
+}
+function renderSegPicker(){
+  var box = document.getElementById('store-seg-list');
+  box.innerHTML = SEG_DATA.slice().reverse().map(function(s){
+    var on = _storeDrwSegIds.includes(s.id);
+    return '<label style="display:flex;align-items:center;gap:10px;padding:8px 10px;border:1px solid '+(on?'#7c3aed':'#e8e8ec')+';background:'+(on?'#f3f0ff':'#fff')+';border-radius:8px;cursor:pointer">'+
+      '<input type="checkbox" '+(on?'checked':'')+' onchange="toggleSegSel(\''+s.id+'\')">'+
+      '<span style="font-size:12.5px;color:#374151;font-weight:500">'+esc(s.name)+(s.allPlayers?'<span class="default-tag">Default</span>':'')+'</span>'+
+      '<span style="margin-left:auto">'+segStatusBadge(s.status)+'</span>'+
+      '</label>';
+  }).join('');
+}
+function toggleSegSel(id){
+  var i=_storeDrwSegIds.indexOf(id);
+  if(i>=0) _storeDrwSegIds.splice(i,1); else _storeDrwSegIds.push(id);
+  renderSegPicker();
+}
+function renderItemSlots(){
+  var box = document.getElementById('store-item-slots');
+  box.innerHTML = _storeDrwItemIds.map(function(id,idx){
+    var it = itemById(id); if(!it) return '';
+    return '<div class="item-slot" draggable="true" data-item-id="'+id+'">'+
+      '<span class="item-slot-num">'+(idx+1)+'</span>'+
+      '<div class="item-card-mini-wrap" style="width:44px;height:62px"><div class="item-card item-card-mini" style="transform:scale(.28);'+itemCardStyle(it)+'"></div></div>'+
+      '<div><div style="font-size:12.5px;font-weight:600;color:#374151">'+esc(it.name)+'</div><div style="font-size:11px;color:#9ca3af">'+fmtUSD(it.price)+' · '+it.divicoins+' Đ</div></div>'+
+      '<span class="item-slot-remove" onclick="removeItemSlot(\''+id+'\')">&times;</span>'+
+      '</div>';
+  }).join('') || '<div style="font-size:12px;color:#9ca3af;text-align:center;padding:20px">No items yet — add at least one from the catalog below.</div>';
+  document.getElementById('store-items-limit-note').textContent = _storeDrwItemIds.length+' / 8 — drag to reorder, first item shows first';
+  document.getElementById('store-drw-items-count').textContent = '('+_storeDrwItemIds.length+')';
+  makeSortable(box, '.item-slot', function(){
+    _storeDrwItemIds = Array.from(box.querySelectorAll('.item-slot')).map(function(el){return el.getAttribute('data-item-id');});
+    renderItemSlots();
+  });
+}
+function removeItemSlot(id){
+  _storeDrwItemIds = _storeDrwItemIds.filter(function(x){return x!==id;});
+  renderItemSlots();
+  renderItemPicker();
+}
+function addItemToStore(id){
+  if(_storeDrwItemIds.includes(id)) return;
+  if(_storeDrwItemIds.length>=8){ showToast2('Maximum 8 items per store'); return; }
+  _storeDrwItemIds.push(id);
+  renderItemSlots();
+  renderItemPicker();
+}
+function renderItemPicker(){
+  var box = document.getElementById('store-item-picker');
+  box.innerHTML = SHOP_ITEMS.map(function(it){
+    var sel = _storeDrwItemIds.includes(it.id);
+    return '<div class="item-pick-card '+(sel?'sel':'')+'" onclick="addItemToStore(\''+it.id+'\')">'+
+      '<div class="item-card-mini-wrap" style="width:34px;height:48px"><div class="item-card item-card-mini" style="transform:scale(.22);'+itemCardStyle(it)+'"></div></div>'+
+      '<div style="min-width:0"><div style="font-size:12px;font-weight:600;color:#374151;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+esc(it.name)+'</div><div style="font-size:10.5px;color:#9ca3af">'+fmtUSD(it.price)+'</div></div>'+
+      (sel?'<i class="ti ti-check" style="margin-left:auto;color:#7c3aed"></i>':'')+
+      '</div>';
+  }).join('');
+}
+function openStoreDrw(id){
+  _storeDrwId = id;
+  populateStoreFilters();
+  if(id){
+    var s = STORES.find(function(x){return x.id===id;});
+    document.getElementById('store-drw-title').textContent = 'Edit Store';
+    document.getElementById('store-drw-sub').textContent = s.id;
+    document.getElementById('store-name').value = s.name;
+    document.getElementById('store-start').value = s.startDate;
+    document.getElementById('store-end').value = s.endDate;
+    _storeDrwGeo = s.geo.slice();
+    _storeDrwSegIds = s.segmentIds.slice();
+    _storeDrwItemIds = s.itemIds.slice();
+    document.getElementById('store-drw-state').innerHTML = storeStateBadge(storeState(s));
+  } else {
+    document.getElementById('store-drw-title').textContent = 'New Store';
+    document.getElementById('store-drw-sub').textContent = 'Auto-generated ID on save';
+    document.getElementById('store-name').value = '';
+    document.getElementById('store-start').value = '';
+    document.getElementById('store-end').value = '';
+    _storeDrwGeo = []; _storeDrwSegIds = []; _storeDrwItemIds = [];
+    document.getElementById('store-drw-state').innerHTML = '';
+  }
+  renderGeoChips();
+  renderSegPicker();
+  renderItemSlots();
+  renderItemPicker();
+  switchStoreDrwTab('details');
+  document.getElementById('store-drw-saved').textContent='Unsaved';
+  document.getElementById('store-drw-ov').classList.add('open');
+  document.getElementById('store-drw').classList.add('open');
+  setTimeout(function(){document.getElementById('store-drw').style.right='0';},10);
+}
+function closeStoreDrw(){
+  document.getElementById('store-drw-ov').classList.remove('open');
+  document.getElementById('store-drw').classList.remove('open');
+  document.getElementById('store-drw').style.right='-780px';
+}
+function saveStoreDrw(publish){
+  if(!_storeDrwItemIds.length){ showToast2('Add at least one item before saving'); return; }
+  var maxPriority = STORES.reduce(function(m,s){return Math.max(m,s.priority);},0);
+  var data = {
+    id: _storeDrwId || ('STR-'+String(100000+STORES.length+1)),
+    name: document.getElementById('store-name').value || 'Untitled store',
+    geo: _storeDrwGeo.slice(),
+    segmentIds: _storeDrwSegIds.slice(),
+    startDate: document.getElementById('store-start').value || new Date().toISOString().slice(0,10),
+    endDate: document.getElementById('store-end').value || '2099-01-01',
+    itemIds: _storeDrwItemIds.slice(),
+    published: !!publish,
+    priority: _storeDrwId ? (STORES.find(function(x){return x.id===_storeDrwId;})||{}).priority||(maxPriority+1) : maxPriority+1
+  };
+  if(_storeDrwId){
+    var idx = STORES.findIndex(function(x){return x.id===_storeDrwId;});
+    if(idx>=0) STORES[idx]=data;
+  } else {
+    STORES.push(data);
+  }
+  closeStoreDrw();
+  renderStoresTable();
+  showToast2(publish ? 'Store saved & published' : 'Store saved as draft');
+}
+function duplicateStore(id){
+  var s = STORES.find(function(x){return x.id===id;});
+  var clone = JSON.parse(JSON.stringify(s));
+  clone.id = 'STR-'+String(100000+STORES.length+1);
+  clone.name = s.name + ' (Copy)';
+  clone.published = false;
+  clone.priority = STORES.reduce(function(m,x){return Math.max(m,x.priority);},0)+1;
+  STORES.push(clone);
+  renderStoresTable();
+  showToast2('Store duplicated as draft');
+}
+
+function initShopItems(){ populateItemFilters(); renderItemsTable(); }
+function initStores(){ populateStoreFilters(); renderStoresTable(); }
+
+// ═══════════════════════════════════════════
+// OFFERS (independent promos — no Campaign grouping yet)
+// ═══════════════════════════════════════════
+var OFFERS = [
+  {id:'10000001',name:'FTD_Offer_5usd',segmentId:'SEG-003',geo:[],price:5,origPrice:null,divicoins:5,bonus:1,lp:50,xp:null,ratioVisible:true,title:'',
+    badge:{visible:true,text:'Special for you',color:'#f59e0b',asset:''},frame:{visible:true,color:'#a3e635',asset:''},bg:{asset:''},
+    start:'2025-01-01T00:00',end:'2025-01-16T00:00',published:true,linkedStoreIds:['STR-100001']},
+  {id:'10000002',name:'FTD_Offer_10usd',segmentId:'SEG-003',geo:[],price:10,origPrice:null,divicoins:10,bonus:3,lp:100,xp:null,ratioVisible:true,title:'',
+    badge:{visible:false,text:'',color:'#f59e0b',asset:''},frame:{visible:false,color:'#a3e635',asset:''},bg:{asset:''},
+    start:'2025-01-01T00:00',end:'2025-01-16T00:00',published:true,linkedStoreIds:[]},
+  {id:'10000003',name:'Xmas_Offer_241225',segmentId:'SEG-003',geo:[],price:20,origPrice:null,divicoins:20,bonus:7,lp:200,xp:5,ratioVisible:false,title:'',
+    badge:{visible:false,text:'',color:'#f59e0b',asset:''},frame:{visible:false,color:'#a3e635',asset:''},bg:{asset:''},
+    start:'2025-01-01T00:00',end:'2025-01-16T00:00',published:true,linkedStoreIds:[]},
+  {id:'10000004',name:'25$ Divicoins',segmentId:'SEG-007',geo:['Brazil','Chile','Colombia'],price:25,origPrice:null,divicoins:25,bonus:10,lp:250,xp:4,ratioVisible:false,title:'',
+    badge:{visible:false,text:'',color:'#f59e0b',asset:''},frame:{visible:false,color:'#a3e635',asset:''},bg:{asset:''},
+    start:'2025-01-01T00:00',end:'2025-01-16T00:00',published:true,linkedStoreIds:[]},
+  {id:'10000005',name:'50$ Divicoins',segmentId:'SEG-001',geo:[],price:50,origPrice:60,divicoins:50,bonus:15,lp:500,xp:10,ratioVisible:true,title:'',
+    badge:{visible:false,text:'',color:'#f59e0b',asset:''},frame:{visible:false,color:'#a3e635',asset:''},bg:{asset:''},
+    start:'',end:'',published:true,linkedStoreIds:[]},
+  {id:'10000006',name:'75$ Divicoins',segmentId:'SEG-001',geo:[],price:75,origPrice:90,divicoins:75,bonus:25,lp:750,xp:null,ratioVisible:true,title:'',
+    badge:{visible:false,text:'',color:'#f59e0b',asset:''},frame:{visible:true,color:'#a3e635',asset:''},bg:{asset:''},
+    start:'',end:'',published:true,linkedStoreIds:[]},
+  {id:'10000007',name:'80$ Divicoins',segmentId:'SEG-001',geo:[],price:80,origPrice:null,divicoins:80,bonus:50,lp:800,xp:null,ratioVisible:false,title:'',
+    badge:{visible:true,text:'Most Popular',color:'#ef4444',asset:''},frame:{visible:false,color:'#a3e635',asset:''},bg:{asset:''},
+    start:'',end:'',published:true,linkedStoreIds:[]},
+  {id:'10000008',name:'100$ Divicoins',segmentId:'SEG-008',geo:['Brazil','Chile','Colombia'],price:100,origPrice:null,divicoins:100,bonus:20,lp:1000,xp:null,ratioVisible:false,title:'',
+    badge:{visible:true,text:'Best Value',color:'#22c55e',asset:''},frame:{visible:false,color:'#a3e635',asset:''},bg:{asset:''},
+    start:'',end:'',published:true,linkedStoreIds:[]},
+  {id:'10000009',name:'200$ Divicoins',segmentId:'SEG-008',geo:['Brazil','Chile','Colombia'],price:200,origPrice:null,divicoins:200,bonus:50,lp:2000,xp:null,ratioVisible:true,title:'',
+    badge:{visible:false,text:'',color:'#f59e0b',asset:''},frame:{visible:true,color:'#a3e635',asset:''},bg:{asset:''},
+    start:'',end:'',published:true,linkedStoreIds:[]},
+  {id:'10000010',name:'250$ Divicoins',segmentId:'SEG-008',geo:['Brazil','Chile','Colombia'],price:250,origPrice:null,divicoins:250,bonus:50,lp:2500,xp:null,ratioVisible:true,title:'',
+    badge:{visible:false,text:'',color:'#f59e0b',asset:''},frame:{visible:false,color:'#a3e635',asset:''},bg:{asset:''},
+    start:'2025-01-01T00:00',end:'2025-01-16T00:00',published:true,linkedStoreIds:[]},
+  {id:'10000011',name:'400$ Divicoins',segmentId:'SEG-009',geo:[],price:400,origPrice:null,divicoins:400,bonus:50,lp:4000,xp:null,ratioVisible:true,title:'',
+    badge:{visible:false,text:'',color:'#f59e0b',asset:''},frame:{visible:false,color:'#a3e635',asset:''},bg:{asset:''},
+    start:'2025-01-01T00:00',end:'2025-01-16T00:00',published:true,linkedStoreIds:[]},
+  {id:'10000012',name:'1000$ Divicoins',segmentId:'SEG-009',geo:[],price:1000,origPrice:null,divicoins:1000,bonus:70,lp:10000,xp:null,ratioVisible:false,title:'',
+    badge:{visible:false,text:'',color:'#f59e0b',asset:''},frame:{visible:false,color:'#a3e635',asset:''},bg:{asset:''},
+    start:'2025-01-01T00:00',end:'2025-01-16T00:00',published:true,linkedStoreIds:[]},
+  {id:'10000013',name:'7$ Divicoins',segmentId:'SEG-009',geo:[],price:7,origPrice:null,divicoins:7,bonus:3,lp:70,xp:null,ratioVisible:true,title:'',
+    badge:{visible:false,text:'',color:'#f59e0b',asset:''},frame:{visible:false,color:'#a3e635',asset:''},bg:{asset:''},
+    start:'',end:'',published:true,linkedStoreIds:[]},
+  {id:'10000014',name:'Halloween_Offer_2026',segmentId:'SEG-002',geo:['Brazil','Chile'],price:15,origPrice:20,divicoins:150,bonus:30,lp:300,xp:10,ratioVisible:true,title:'Starter Pack',
+    badge:{visible:true,text:'Limited offer',color:'#f97316',asset:''},frame:{visible:true,color:'#f97316',asset:''},bg:{asset:''},
+    start:'2026-10-15T00:00',end:'2026-11-05T00:00',published:true,linkedStoreIds:['STR-100003']}
+];
+
+function offerById(id){ return OFFERS.find(function(o){return o.id===id;}); }
+function offerState(o){
+  var now=new Date();
+  if(o.end){ var end=new Date(o.end); if(end<now) return 'Expired'; }
+  if(o.start){ var start=new Date(o.start); if(start>now) return 'Scheduled'; }
+  return o.published ? 'Active' : 'Draft';
+}
+function countdownText(endIso){
+  if(!endIso) return '';
+  var end=new Date(endIso), now=new Date(), diff=end-now;
+  if(diff<=0) return '';
+  var h=Math.floor(diff/3600000), m=Math.floor((diff%3600000)/60000);
+  if(h>=24){ var d=Math.floor(h/24); return 'Ends in '+d+'d '+(h%24)+'h'; }
+  return 'Ends in '+h+'h '+m+'m';
+}
+function offerCardStyle(o){
+  var bg = o.bg && o.bg.asset ? ("url('"+esc(o.bg.asset)+"') center/cover no-repeat, ") : '';
+  return 'background:'+bg+bgGradientFor(o.name+o.id)+';border-color:'+(o.frame&&o.frame.visible?(o.frame.color||'#a3e635'):'transparent')+';'+
+    (o.frame&&o.frame.visible&&o.frame.asset?("border-image:url('"+esc(o.frame.asset)+"') 30 / 3px stretch;"):'');
+}
+function renderOfferCardInner(o, prefix){
+  var badge=document.getElementById(prefix+'-badge'), ratio=document.getElementById(prefix+'-ratio'),
+      title=document.getElementById(prefix+'-title'), coins=document.getElementById(prefix+'-coins'),
+      bonus=document.getElementById(prefix+'-bonus'), lpxp=document.getElementById(prefix+'-lpxp'),
+      pb=document.getElementById(prefix+'-pricebefore'), price=document.getElementById(prefix+'-price'),
+      card=document.getElementById(prefix+'-card');
+  if(card) card.setAttribute('style', (card.getAttribute('style')||'').replace(/background:[^;]+;?|border-color:[^;]+;?|border-image:[^;]+;?/g,'')+';'+offerCardStyle(o));
+  var parts=[];
+  if(o.badge && o.badge.visible && o.badge.text) parts.push('🔥 '+o.badge.text);
+  var timer = countdownText(o.end);
+  if(timer) parts.push(timer);
+  if(badge){
+    if(parts.length){ badge.style.display='flex'; badge.textContent=parts.join(' · ');
+      badge.style.background = o.badge&&o.badge.asset ? ("url('"+esc(o.badge.asset)+"') center/cover no-repeat") : ((o.badge&&o.badge.color)||'#f59e0b');
+    } else badge.style.display='none';
+  }
+  if(ratio){
+    if(o.ratioVisible && o.divicoins){ ratio.style.display='block'; ratio.textContent='+'+ratioPct(o)+'% Extra'; }
+    else ratio.style.display='none';
+  }
+  if(title){
+    if(o.title){ title.style.display='block'; title.textContent=o.title; } else title.style.display='none';
+  }
+  if(coins) coins.innerHTML = (o.divicoins||0).toLocaleString()+' <span style="font-size:14px">Đ</span>';
+  if(bonus){
+    if(o.bonus){ bonus.style.display='block'; bonus.textContent='+'+o.bonus+' Bonus Đ'; }
+    else bonus.style.display='none';
+  }
+  if(lpxp){
+    var lpxpParts=[];
+    if(o.lp) lpxpParts.push('+'+o.lp+' LP');
+    if(o.xp) lpxpParts.push('+'+o.xp+' XP');
+    lpxp.innerHTML = lpxpParts.join(' &nbsp; ');
+  }
+  if(pb){
+    if(o.origPrice){ pb.style.display='block'; pb.textContent=fmtUSD(o.origPrice); }
+    else pb.style.display='none';
+  }
+  if(price) price.textContent = fmtUSD(o.price)||'$0';
+}
+function fmtDateTimeShort(iso){ if(!iso) return '—'; var d=new Date(iso); return d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})+' '+d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}); }
+
+function populateOfferFilters(){
+  var sel=document.getElementById('of-segment');
+  if(sel) sel.innerHTML='<option value="">All segments</option>'+SEG_DATA.slice().reverse().map(function(s){return '<option value="'+s.id+'">'+esc(s.name)+'</option>';}).join('');
+}
+function renderOffersTable(){
+  var q=(document.getElementById('of-search')||{}).value||'', segF=(document.getElementById('of-segment')||{}).value||'', stF=(document.getElementById('of-state')||{}).value||'';
+  var filtered = OFFERS.filter(function(o){
+    var mq = !q || o.name.toLowerCase().includes(q.toLowerCase()) || o.id.includes(q);
+    var ms = !segF || o.segmentId===segF;
+    var mstate = !stF || offerState(o)===stF;
+    return mq&&ms&&mstate;
+  });
+  var tb=document.getElementById('of-tbody');
+  if(!tb) return;
+  tb.innerHTML = filtered.map(function(o){
+    var seg = segById(o.segmentId);
+    var linkedNames = o.linkedStoreIds.map(function(sid){ var s=STORES.find(function(x){return x.id===sid;}); return s?s.name:sid; });
+    return '<tr>'+
+      '<td><div class="offer-card-mini-wrap"><div class="offer-card offer-card-mini" id="mini-offer-'+o.id+'" style="'+offerCardStyle(o)+'"></div></div></td>'+
+      '<td><div style="font-weight:600;color:#1a1a2e">'+esc(o.name)+'</div><div style="font-size:11px;color:#9ca3af">'+o.id+'</div></td>'+
+      '<td style="font-size:12px">'+(seg?esc(seg.name):'—')+(seg&&seg.allPlayers?'<span class="default-tag">Default</span>':'')+'</td>'+
+      '<td style="font-size:12px">'+geoLabel(o.geo)+'</td>'+
+      '<td>'+fmtUSD(o.price)+(o.origPrice?' <span style="color:#9ca3af;text-decoration:line-through;font-size:11px">'+fmtUSD(o.origPrice)+'</span>':'')+'</td>'+
+      '<td>'+o.divicoins+' Đ <span style="color:#10b981">+'+o.bonus+'</span></td>'+
+      '<td style="font-size:12px;color:#6b7280">'+(linkedNames.length?esc(linkedNames.join(', ')):'<span style="color:#9ca3af">Standalone popup</span>')+'</td>'+
+      '<td style="font-size:12px;color:#6b7280">'+(o.start||o.end ? (fmtDateTimeShort(o.start)+' → '+fmtDateTimeShort(o.end)) : '<span style="color:#9ca3af">No expiration</span>')+'</td>'+
+      '<td>'+storeStateBadge(offerState(o))+'</td>'+
+      '<td><div class="ra2"><button class="ab2" onclick="openOfferDrw(\''+o.id+'\')">Edit</button><button class="ab2" onclick="duplicateOffer(\''+o.id+'\')">Duplicate</button></div></td>'+
+      '</tr>';
+  }).join('');
+  document.getElementById('of-count').textContent = filtered.length+' offers';
+}
+function switchOffersTab(name){
+  document.querySelectorAll('#screen-offers .pg-tab').forEach(function(t,i){ t.classList.toggle('active', ['offers','campaigns'][i]===name); });
+  document.getElementById('offers-panel-offers').classList.toggle('active', name==='offers');
+  document.getElementById('offers-panel-campaigns').classList.toggle('active', name==='campaigns');
+}
+
+// ─── OFFER DRAWER ───
+var _offerDrwId=null, _offerDrwGeo=[], _offerDrwStoreIds=[];
+function switchOfferTab(name){
+  document.querySelectorAll('#offer-drw .drw2-tab').forEach(function(t,i){ t.classList.toggle('active', ['details','visual','stores'][i]===name); });
+  document.getElementById('offer-tab-details').classList.toggle('active', name==='details');
+  document.getElementById('offer-tab-visual').classList.toggle('active', name==='visual');
+  document.getElementById('offer-tab-stores').classList.toggle('active', name==='stores');
+}
+function renderOfferGeoChips(){
+  var box=document.getElementById('offer-geo-chips');
+  box.innerHTML = SS_C.map(function(c){
+    var on=_offerDrwGeo.includes(c.n);
+    return '<span class="chip-sel '+(on?'on':'off')+'" onclick="toggleOfferGeoChip(\''+c.n+'\')">'+c.f+' '+c.n+'</span>';
+  }).join('');
+}
+function toggleOfferGeoChip(name){
+  var i=_offerDrwGeo.indexOf(name);
+  if(i>=0) _offerDrwGeo.splice(i,1); else _offerDrwGeo.push(name);
+  renderOfferGeoChips();
+}
+function renderStoreLinks(){
+  var box=document.getElementById('offer-store-links');
+  box.innerHTML = STORES.map(function(s){
+    var on=_offerDrwStoreIds.includes(s.id);
+    return '<span class="store-link-chip '+(on?'on':'')+'" onclick="toggleStoreLink(\''+s.id+'\')">'+(on?'<i class="ti ti-check"></i> ':'')+esc(s.name)+'</span>';
+  }).join('') || '<div style="font-size:12px;color:#9ca3af">No stores available yet.</div>';
+  var m=document.getElementById('offer-prev-display-mode');
+  if(m) m.textContent = _offerDrwStoreIds.length ? ('Banner above '+_offerDrwStoreIds.length+' store'+(_offerDrwStoreIds.length>1?'s':'')) : 'Standalone popup';
+}
+function toggleStoreLink(id){
+  var i=_offerDrwStoreIds.indexOf(id);
+  if(i>=0) _offerDrwStoreIds.splice(i,1); else _offerDrwStoreIds.push(id);
+  renderStoreLinks();
+}
+function readOfferForm(){
+  return {
+    id: _offerDrwId || String(Math.floor(10000000+Math.random()*89999999)),
+    name: document.getElementById('offer-name').value||'Untitled offer',
+    segmentId: document.getElementById('offer-segment').value||(SEG_DATA[SEG_DATA.length-1]||{}).id,
+    geo: _offerDrwGeo.slice(),
+    title: document.getElementById('offer-title').value||'',
+    price: parseFloat(document.getElementById('offer-price').value)||0,
+    origPrice: document.getElementById('offer-origprice').value ? parseFloat(document.getElementById('offer-origprice').value) : null,
+    divicoins: parseInt(document.getElementById('offer-divicoins').value)||0,
+    bonus: parseInt(document.getElementById('offer-bonus').value)||0,
+    lp: document.getElementById('offer-lp').value ? parseInt(document.getElementById('offer-lp').value) : null,
+    xp: document.getElementById('offer-xp').value ? parseInt(document.getElementById('offer-xp').value) : null,
+    ratioVisible: document.getElementById('offer-ratio-toggle').checked,
+    start: document.getElementById('offer-start').value||'',
+    end: document.getElementById('offer-end').value||'',
+    frame:{visible:document.getElementById('offer-frame-toggle').checked, color:document.getElementById('offer-frame-hex').value, asset:document.getElementById('offer-frame-asset').value},
+    badge:{visible:document.getElementById('offer-badge-toggle').checked, text:document.getElementById('offer-badge-text').value, color:document.getElementById('offer-badge-hex').value, asset:document.getElementById('offer-badge-asset').value},
+    bg:{asset:document.getElementById('offer-bg-asset').value},
+    published: true,
+    linkedStoreIds: _offerDrwStoreIds.slice()
+  };
+}
+function updateOfferPreview(){
+  var o = readOfferForm();
+  document.getElementById('offer-ratio-readout').textContent = o.divicoins ? ('+'+ratioPct(o)+'% Extra') : '—';
+  renderOfferCardInner(o,'offer-prev');
+}
+function fillOfferForm(o){
+  document.getElementById('offer-name').value = o.name;
+  document.getElementById('offer-title').value = o.title||'';
+  document.getElementById('offer-price').value = o.price;
+  document.getElementById('offer-origprice').value = o.origPrice!=null?o.origPrice:'';
+  document.getElementById('offer-divicoins').value = o.divicoins;
+  document.getElementById('offer-bonus').value = o.bonus;
+  document.getElementById('offer-lp').value = o.lp!=null?o.lp:'';
+  document.getElementById('offer-xp').value = o.xp!=null?o.xp:'';
+  document.getElementById('offer-ratio-toggle').checked = !!o.ratioVisible;
+  document.getElementById('offer-start').value = o.start||'';
+  document.getElementById('offer-end').value = o.end||'';
+  document.getElementById('offer-frame-toggle').checked = !!(o.frame&&o.frame.visible);
+  document.getElementById('offer-frame-color').value = (o.frame&&o.frame.color)||'#a3e635';
+  document.getElementById('offer-frame-hex').value = (o.frame&&o.frame.color)||'#a3e635';
+  document.getElementById('offer-frame-asset').value = (o.frame&&o.frame.asset)||'';
+  document.getElementById('offer-badge-toggle').checked = !!(o.badge&&o.badge.visible);
+  document.getElementById('offer-badge-text').value = (o.badge&&o.badge.text)||'';
+  document.getElementById('offer-badge-color').value = (o.badge&&o.badge.color)||'#f59e0b';
+  document.getElementById('offer-badge-hex').value = (o.badge&&o.badge.color)||'#f59e0b';
+  document.getElementById('offer-badge-asset').value = (o.badge&&o.badge.asset)||'';
+  document.getElementById('offer-bg-asset').value = (o.bg&&o.bg.asset)||'';
+  var segSel = document.getElementById('offer-segment');
+  segSel.innerHTML = SEG_DATA.slice().reverse().map(function(s){return '<option value="'+s.id+'">'+esc(s.name)+(s.allPlayers?' (Default)':'')+'</option>';}).join('');
+  segSel.value = o.segmentId || (SEG_DATA[SEG_DATA.length-1]||{}).id;
+}
+function openOfferDrw(id){
+  _offerDrwId = id;
+  if(id){
+    var o = offerById(id);
+    document.getElementById('offer-drw-title').textContent = 'Edit Offer';
+    document.getElementById('offer-drw-sub').textContent = o.id;
+    fillOfferForm(o);
+    _offerDrwGeo = o.geo.slice();
+    _offerDrwStoreIds = o.linkedStoreIds.slice();
+  } else {
+    document.getElementById('offer-drw-title').textContent = 'New Offer';
+    document.getElementById('offer-drw-sub').textContent = 'Auto-generated ID on save';
+    fillOfferForm({name:'',title:'',price:'',origPrice:null,divicoins:'',bonus:'',lp:null,xp:null,ratioVisible:true,start:'',end:'',
+      frame:{visible:false,color:'#a3e635',asset:''},badge:{visible:false,color:'#f59e0b',text:'',asset:''},bg:{asset:''},segmentId:null});
+    _offerDrwGeo = []; _offerDrwStoreIds = [];
+  }
+  renderOfferGeoChips();
+  renderStoreLinks();
+  switchOfferTab('details');
+  updateOfferPreview();
+  document.getElementById('offer-drw-saved').textContent='Unsaved';
+  document.getElementById('offer-drw-ov').classList.add('open');
+  document.getElementById('offer-drw').classList.add('open');
+  setTimeout(function(){document.getElementById('offer-drw').style.right='0';},10);
+}
+function closeOfferDrw(){
+  document.getElementById('offer-drw-ov').classList.remove('open');
+  document.getElementById('offer-drw').classList.remove('open');
+  document.getElementById('offer-drw').style.right='-900px';
+}
+function saveOfferDrw(publish){
+  var o = readOfferForm();
+  o.published = !!publish;
+  if(_offerDrwId){
+    var idx = OFFERS.findIndex(function(x){return x.id===_offerDrwId;});
+    if(idx>=0) OFFERS[idx]=o;
+  } else {
+    OFFERS.push(o);
+  }
+  closeOfferDrw();
+  renderOffersTable();
+  showToast2(publish ? 'Offer saved & published' : 'Offer saved as draft');
+}
+function duplicateOffer(id){
+  var o = offerById(id);
+  var clone = JSON.parse(JSON.stringify(o));
+  clone.id = String(Math.floor(10000000+Math.random()*89999999));
+  clone.name = o.name + ' (Copy)';
+  clone.published = false;
+  OFFERS.push(clone);
+  renderOffersTable();
+  showToast2('Offer duplicated as draft');
+}
+
+function initOffers(){ populateOfferFilters(); renderOffersTable(); }
+
 </script>
 
 <div class="drw2-ov" id="edit-drw-ov" onclick="closeEditDrw()"></div>
@@ -5909,6 +6887,365 @@ function initSegments() {
     <button class="btn2 bo" onclick="closeSegDrw()">Cancel</button>
     <button class="btn2 bo" style="border-color:#7c3aed;color:#7c3aed" onclick="saveSegDrw('Draft')">Save as draft</button>
     <button class="btn2 bp" onclick="saveSegDrw('Active')">Save &amp; Activate</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- Store Item Drawer -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="drw2-ov" id="item-drw-ov" onclick="closeItemDrw()"></div>
+<div class="drw2" id="item-drw" style="width:860px;right:-860px">
+  <div class="drw2-hdr">
+    <div style="flex:1">
+      <div style="font-size:16px;font-weight:700;color:#1a1a2e" id="item-drw-title">New Store Item</div>
+      <div style="font-size:12px;color:#9ca3af;margin-top:2px" id="item-drw-sub">Define pricing, rewards and visual presentation</div>
+    </div>
+    <button class="drw2-cls" onclick="closeItemDrw()"><svg viewBox="0 0 24 24" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+  </div>
+  <div class="drw2-tabs">
+    <div class="drw2-tab active" onclick="switchItemTab('details')">Details</div>
+    <div class="drw2-tab" onclick="switchItemTab('visual')">Visual</div>
+  </div>
+  <div class="drw2-body">
+    <div style="display:flex;gap:22px;align-items:flex-start">
+      <div style="flex:1;min-width:0">
+
+        <div class="tpnl active" id="item-tab-details">
+          <div class="csec2">
+            <div class="csec2-h"><span class="csec2-t">Basic info</span></div>
+            <div class="fg2" style="margin-bottom:12px">
+              <div class="fi2"><span class="fl2">Item name</span><input type="text" class="finp2" id="item-name" placeholder="e.g. 50$ Divicoins" oninput="updateItemPreview()"></div>
+              <div class="fi2"><span class="fl2">Pack name <span style="text-transform:none;font-weight:400">(internal grouping)</span></span><input type="text" class="finp2" id="item-pack" list="item-pack-list" placeholder="e.g. Starter Pack" oninput="updateItemPreview()"></div>
+            </div>
+            <datalist id="item-pack-list"></datalist>
+          </div>
+
+          <div class="csec2">
+            <div class="csec2-h"><span class="csec2-t">Pricing (USD)</span></div>
+            <div class="fg2">
+              <div class="fi2"><span class="fl2">Price $</span><input type="number" min="0" step="0.01" class="finp2" id="item-price" oninput="updateItemPreview()"></div>
+              <div class="fi2"><span class="fl2">Original price $ <span style="text-transform:none;font-weight:400">(optional — shown with strike-through)</span></span><input type="number" min="0" step="0.01" class="finp2" id="item-origprice" placeholder="Empty = hide" oninput="updateItemPreview()"></div>
+            </div>
+          </div>
+
+          <div class="csec2">
+            <div class="csec2-h"><span class="csec2-t">Rewards</span></div>
+            <div class="fg2" style="margin-bottom:12px">
+              <div class="fi2"><span class="fl2">DiviCoins (Đ)</span><input type="number" min="0" class="finp2" id="item-divicoins" oninput="updateItemPreview()"></div>
+              <div class="fi2"><span class="fl2">Bonus DiviCoins</span><input type="number" min="0" class="finp2" id="item-bonus" oninput="updateItemPreview()"></div>
+            </div>
+            <div class="fg2">
+              <div class="fi2"><span class="fl2">Base Loyalty Points <span style="text-transform:none;font-weight:400">(optional)</span></span><input type="number" min="0" class="finp2" id="item-lp" placeholder="Empty = hide" oninput="updateItemPreview()"></div>
+              <div class="fi2"><span class="fl2">XP <span style="text-transform:none;font-weight:400">(optional)</span></span><input type="number" min="0" class="finp2" id="item-xp" placeholder="Empty = hide" oninput="updateItemPreview()"></div>
+            </div>
+          </div>
+
+          <div class="csec2">
+            <div class="csec2-h"><span class="csec2-t">Ratio badge</span></div>
+            <label style="display:flex;align-items:center;gap:10px;cursor:pointer">
+              <label class="tgl2"><input type="checkbox" id="item-ratio-toggle" onchange="updateItemPreview()"><span class="tgl2-sl"></span></label>
+              <span style="font-size:12.5px;color:#374151">Show ratio badge (auto-calculated: Bonus ÷ DiviCoins)</span>
+            </label>
+            <div style="font-size:11px;color:#9ca3af;margin-top:8px">Current value: <b id="item-ratio-readout" style="color:#7c3aed">—</b></div>
+          </div>
+        </div>
+
+        <div class="tpnl" id="item-tab-visual">
+          <div class="csec2">
+            <div class="vis-toggle-row">
+              <span class="csec2-t" style="text-transform:uppercase;font-size:11px;color:#9ca3af;font-weight:600;letter-spacing:.4px">Frame (border)</span>
+              <label class="tgl2"><input type="checkbox" id="item-frame-toggle" onchange="updateItemPreview()"><span class="tgl2-sl"></span></label>
+            </div>
+            <div class="fi2"><span class="fl2">Frame color</span>
+              <div class="color-field">
+                <input type="color" class="color-swatch-inp" id="item-frame-color" value="#7c3aed" oninput="syncHex('item-frame-color','item-frame-hex');updateItemPreview()">
+                <input type="text" class="color-hex-inp" id="item-frame-hex" value="#7c3aed" oninput="syncColor('item-frame-hex','item-frame-color');updateItemPreview()">
+              </div>
+            </div>
+            <div class="asset-row">
+              <input type="text" class="asset-inp" id="item-frame-asset" placeholder="Optional — media asset URL overrides color" oninput="updateItemPreview()">
+              <span class="asset-clear" onclick="document.getElementById('item-frame-asset').value='';updateItemPreview()">Clear</span>
+            </div>
+          </div>
+
+          <div class="csec2">
+            <div class="vis-toggle-row">
+              <span class="csec2-t" style="text-transform:uppercase;font-size:11px;color:#9ca3af;font-weight:600;letter-spacing:.4px">Badge</span>
+              <label class="tgl2"><input type="checkbox" id="item-badge-toggle" onchange="updateItemPreview()"><span class="tgl2-sl"></span></label>
+            </div>
+            <div class="fi2" style="margin-bottom:10px"><span class="fl2">Badge text</span><input type="text" class="finp2" id="item-badge-text" placeholder="e.g. Special for you" oninput="updateItemPreview()"></div>
+            <div class="fi2"><span class="fl2">Badge color</span>
+              <div class="color-field">
+                <input type="color" class="color-swatch-inp" id="item-badge-color" value="#f59e0b" oninput="syncHex('item-badge-color','item-badge-hex');updateItemPreview()">
+                <input type="text" class="color-hex-inp" id="item-badge-hex" value="#f59e0b" oninput="syncColor('item-badge-hex','item-badge-color');updateItemPreview()">
+              </div>
+            </div>
+            <div class="asset-row">
+              <input type="text" class="asset-inp" id="item-badge-asset" placeholder="Optional — media asset URL overrides color" oninput="updateItemPreview()">
+              <span class="asset-clear" onclick="document.getElementById('item-badge-asset').value='';updateItemPreview()">Clear</span>
+            </div>
+          </div>
+
+          <div class="csec2">
+            <div class="csec2-h"><span class="csec2-t">Background</span><span style="font-size:11px;color:#9ca3af">No image = default background</span></div>
+            <div class="asset-row" style="margin-top:0">
+              <input type="text" class="asset-inp" id="item-bg-asset" placeholder="Media asset URL" oninput="updateItemPreview()">
+              <span class="asset-clear" onclick="document.getElementById('item-bg-asset').value='';updateItemPreview()">Clear</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div style="width:172px;flex-shrink:0;position:sticky;top:0">
+        <div style="font-size:10.5px;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px;text-align:center">Live preview</div>
+        <div class="item-card-wrap">
+          <div class="item-card" id="item-prev-card">
+            <span class="ic-badge" id="item-prev-badge" style="display:none"></span>
+            <span class="ic-ratio" id="item-prev-ratio" style="display:none"></span>
+            <div class="ic-name" id="item-prev-name">Item name</div>
+            <div class="ic-coins" id="item-prev-coins">0 Đ</div>
+            <div class="ic-bonus" id="item-prev-bonus" style="display:none"></div>
+            <div class="ic-lpxp" id="item-prev-lpxp"></div>
+            <div class="ic-bottom">
+              <div class="ic-price-before" id="item-prev-pricebefore" style="display:none"></div>
+              <div class="ic-price" id="item-prev-price">$0</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="drw2-ft">
+    <span style="font-size:11px;color:#9ca3af;margin-right:auto" id="item-drw-saved">Unsaved</span>
+    <button class="btn2 bo" onclick="closeItemDrw()">Cancel</button>
+    <button class="btn2 bp" onclick="saveItemDrw()">Save item</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- Store Drawer -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="drw2-ov" id="store-drw-ov" onclick="closeStoreDrw()"></div>
+<div class="drw2" id="store-drw" style="width:780px;right:-780px">
+  <div class="drw2-hdr">
+    <div style="flex:1">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div style="font-size:16px;font-weight:700;color:#1a1a2e" id="store-drw-title">New Store</div>
+        <span id="store-drw-state"></span>
+      </div>
+      <div style="font-size:12px;color:#9ca3af;margin-top:2px" id="store-drw-sub">Define geo, segments and item selection</div>
+    </div>
+    <button class="drw2-cls" onclick="closeStoreDrw()"><svg viewBox="0 0 24 24" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+  </div>
+  <div class="drw2-tabs">
+    <div class="drw2-tab active" onclick="switchStoreDrwTab('details')">Details</div>
+    <div class="drw2-tab" onclick="switchStoreDrwTab('items')">Items <span id="store-drw-items-count" style="font-size:10px;color:#9ca3af"></span></div>
+  </div>
+  <div class="drw2-body">
+
+    <div class="tpnl active" id="store-drw-tab-details">
+      <div class="csec2">
+        <div class="csec2-h"><span class="csec2-t">Store details</span></div>
+        <div class="fi2"><span class="fl2">Store name <span style="text-transform:none;font-weight:400">(internal, not shown to players)</span></span><input type="text" class="finp2" id="store-name" placeholder="e.g. Regular FTD Shop"></div>
+      </div>
+
+      <div class="csec2">
+        <div class="csec2-h"><span class="csec2-t">Geo</span><span style="font-size:11px;color:#9ca3af">Optional — not mandatory</span></div>
+        <div id="store-geo-chips" style="display:flex;flex-wrap:wrap;gap:6px"></div>
+        <div class="geo-empty-note">No countries selected = the store is available in every country (still filtered by segment).</div>
+      </div>
+
+      <div class="csec2">
+        <div class="csec2-h"><span class="csec2-t">Segments</span><span style="font-size:11px;color:#9ca3af">Player must belong to at least one selected segment</span></div>
+        <div id="store-seg-list" style="display:flex;flex-direction:column;gap:6px;max-height:220px;overflow:auto"></div>
+      </div>
+
+      <div class="csec2">
+        <div class="csec2-h"><span class="csec2-t">Active period</span></div>
+        <div class="fg2">
+          <div class="fi2"><span class="fl2">Start date</span><input type="date" class="finp2" id="store-start"></div>
+          <div class="fi2"><span class="fl2">End date</span><input type="date" class="finp2" id="store-end"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tpnl" id="store-drw-tab-items">
+      <div class="csec2">
+        <div class="csec2-h"><span class="csec2-t">Selected items</span><span style="font-size:11px;color:#9ca3af" id="store-items-limit-note">0 / 8 — drag to reorder, first item shows first</span></div>
+        <div id="store-item-slots"></div>
+      </div>
+      <div class="csec2">
+        <div class="csec2-h"><span class="csec2-t">Add from catalog</span></div>
+        <div id="store-item-picker" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;max-height:280px;overflow:auto"></div>
+      </div>
+    </div>
+
+  </div>
+  <div class="drw2-ft">
+    <span style="font-size:11px;color:#9ca3af;margin-right:auto" id="store-drw-saved">Unsaved</span>
+    <button class="btn2 bo" onclick="closeStoreDrw()">Cancel</button>
+    <button class="btn2 bo" style="border-color:#7c3aed;color:#7c3aed" onclick="saveStoreDrw(false)">Save as draft</button>
+    <button class="btn2 bp" onclick="saveStoreDrw(true)">Save &amp; publish</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- Offer Drawer -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="drw2-ov" id="offer-drw-ov" onclick="closeOfferDrw()"></div>
+<div class="drw2" id="offer-drw" style="width:900px;right:-900px">
+  <div class="drw2-hdr">
+    <div style="flex:1">
+      <div style="font-size:16px;font-weight:700;color:#1a1a2e" id="offer-drw-title">New Offer</div>
+      <div style="font-size:12px;color:#9ca3af;margin-top:2px" id="offer-drw-sub">Independent purchasable promo — its own price &amp; rewards</div>
+    </div>
+    <button class="drw2-cls" onclick="closeOfferDrw()"><svg viewBox="0 0 24 24" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+  </div>
+  <div class="drw2-tabs">
+    <div class="drw2-tab active" onclick="switchOfferTab('details')">Details</div>
+    <div class="drw2-tab" onclick="switchOfferTab('visual')">Visual</div>
+    <div class="drw2-tab" onclick="switchOfferTab('stores')">Stores &amp; Popup</div>
+  </div>
+  <div class="drw2-body">
+    <div style="display:flex;gap:22px;align-items:flex-start">
+      <div style="flex:1;min-width:0">
+
+        <div class="tpnl active" id="offer-tab-details">
+          <div class="csec2">
+            <div class="csec2-h"><span class="csec2-t">Basic info</span></div>
+            <div class="fi2" style="margin-bottom:12px"><span class="fl2">Offer name <span style="text-transform:none;font-weight:400">(internal, not shown to players)</span></span><input type="text" class="finp2" id="offer-name" placeholder="e.g. FTD_Offer_5usd" oninput="updateOfferPreview()"></div>
+            <div class="fg2">
+              <div class="fi2"><span class="fl2">Segment <span style="text-transform:none;font-weight:400">(single — eligibility)</span></span><select class="fsel2" id="offer-segment"></select></div>
+              <div class="fi2"><span class="fl2">Offer title <span style="text-transform:none;font-weight:400">(optional, if background has no name)</span></span><input type="text" class="finp2" id="offer-title" placeholder="Empty = hide" oninput="updateOfferPreview()"></div>
+            </div>
+          </div>
+
+          <div class="csec2">
+            <div class="csec2-h"><span class="csec2-t">Geo</span><span style="font-size:11px;color:#9ca3af">Optional — not mandatory</span></div>
+            <div id="offer-geo-chips" style="display:flex;flex-wrap:wrap;gap:6px"></div>
+            <div class="geo-empty-note">No countries selected = the offer is eligible in every country.</div>
+          </div>
+
+          <div class="csec2">
+            <div class="csec2-h"><span class="csec2-t">Pricing (USD)</span></div>
+            <div class="fg2">
+              <div class="fi2"><span class="fl2">Price $</span><input type="number" min="0" step="0.01" class="finp2" id="offer-price" oninput="updateOfferPreview()"></div>
+              <div class="fi2"><span class="fl2">Original price $ <span style="text-transform:none;font-weight:400">(optional — strike-through)</span></span><input type="number" min="0" step="0.01" class="finp2" id="offer-origprice" placeholder="Empty = hide" oninput="updateOfferPreview()"></div>
+            </div>
+          </div>
+
+          <div class="csec2">
+            <div class="csec2-h"><span class="csec2-t">Rewards</span></div>
+            <div class="fg2" style="margin-bottom:12px">
+              <div class="fi2"><span class="fl2">DiviCoins (Đ)</span><input type="number" min="0" class="finp2" id="offer-divicoins" oninput="updateOfferPreview()"></div>
+              <div class="fi2"><span class="fl2">Bonus DiviCoins</span><input type="number" min="0" class="finp2" id="offer-bonus" oninput="updateOfferPreview()"></div>
+            </div>
+            <div class="fg2">
+              <div class="fi2"><span class="fl2">Base Loyalty Points <span style="text-transform:none;font-weight:400">(optional)</span></span><input type="number" min="0" class="finp2" id="offer-lp" placeholder="Empty = hide" oninput="updateOfferPreview()"></div>
+              <div class="fi2"><span class="fl2">XP <span style="text-transform:none;font-weight:400">(optional)</span></span><input type="number" min="0" class="finp2" id="offer-xp" placeholder="Empty = hide" oninput="updateOfferPreview()"></div>
+            </div>
+          </div>
+
+          <div class="csec2">
+            <div class="csec2-h"><span class="csec2-t">Ratio badge</span></div>
+            <label style="display:flex;align-items:center;gap:10px;cursor:pointer">
+              <label class="tgl2"><input type="checkbox" id="offer-ratio-toggle" onchange="updateOfferPreview()"><span class="tgl2-sl"></span></label>
+              <span style="font-size:12.5px;color:#374151">Show ratio badge (auto-calculated: Bonus ÷ DiviCoins), top-left</span>
+            </label>
+            <div style="font-size:11px;color:#9ca3af;margin-top:8px">Current value: <b id="offer-ratio-readout" style="color:#7c3aed">—</b></div>
+          </div>
+
+          <div class="csec2">
+            <div class="csec2-h"><span class="csec2-t">Active period</span><span style="font-size:11px;color:#9ca3af">Optional — empty = no expiration &amp; no countdown</span></div>
+            <div class="fg2">
+              <div class="fi2"><span class="fl2">Start</span><input type="datetime-local" class="finp2" id="offer-start" oninput="updateOfferPreview()"></div>
+              <div class="fi2"><span class="fl2">End</span><input type="datetime-local" class="finp2" id="offer-end" oninput="updateOfferPreview()"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tpnl" id="offer-tab-visual">
+          <div class="csec2">
+            <div class="vis-toggle-row">
+              <span class="csec2-t" style="text-transform:uppercase;font-size:11px;color:#9ca3af;font-weight:600;letter-spacing:.4px">Frame (border)</span>
+              <label class="tgl2"><input type="checkbox" id="offer-frame-toggle" onchange="updateOfferPreview()"><span class="tgl2-sl"></span></label>
+            </div>
+            <div class="fi2"><span class="fl2">Frame color</span>
+              <div class="color-field">
+                <input type="color" class="color-swatch-inp" id="offer-frame-color" value="#a3e635" oninput="syncHex('offer-frame-color','offer-frame-hex');updateOfferPreview()">
+                <input type="text" class="color-hex-inp" id="offer-frame-hex" value="#a3e635" oninput="syncColor('offer-frame-hex','offer-frame-color');updateOfferPreview()">
+              </div>
+            </div>
+            <div class="asset-row">
+              <input type="text" class="asset-inp" id="offer-frame-asset" placeholder="Optional — media asset URL overrides color" oninput="updateOfferPreview()">
+              <span class="asset-clear" onclick="document.getElementById('offer-frame-asset').value='';updateOfferPreview()">Clear</span>
+            </div>
+          </div>
+
+          <div class="csec2">
+            <div class="vis-toggle-row">
+              <span class="csec2-t" style="text-transform:uppercase;font-size:11px;color:#9ca3af;font-weight:600;letter-spacing:.4px">Badge name</span>
+              <label class="tgl2"><input type="checkbox" id="offer-badge-toggle" onchange="updateOfferPreview()"><span class="tgl2-sl"></span></label>
+            </div>
+            <div class="fi2" style="margin-bottom:10px"><span class="fl2">Badge text</span><input type="text" class="finp2" id="offer-badge-text" placeholder="e.g. Limited offer" oninput="updateOfferPreview()"></div>
+            <div class="fi2"><span class="fl2">Badge color</span>
+              <div class="color-field">
+                <input type="color" class="color-swatch-inp" id="offer-badge-color" value="#f59e0b" oninput="syncHex('offer-badge-color','offer-badge-hex');updateOfferPreview()">
+                <input type="text" class="color-hex-inp" id="offer-badge-hex" value="#f59e0b" oninput="syncColor('offer-badge-hex','offer-badge-color');updateOfferPreview()">
+              </div>
+            </div>
+            <div class="asset-row">
+              <input type="text" class="asset-inp" id="offer-badge-asset" placeholder="Optional — media asset URL overrides color" oninput="updateOfferPreview()">
+              <span class="asset-clear" onclick="document.getElementById('offer-badge-asset').value='';updateOfferPreview()">Clear</span>
+            </div>
+            <div style="font-size:11px;color:#9ca3af;margin-top:8px">If both the badge name and the countdown timer are visible, they're shown combined in one pill. If only one is visible, it centers alone.</div>
+          </div>
+
+          <div class="csec2">
+            <div class="csec2-h"><span class="csec2-t">Background</span><span style="font-size:11px;color:#9ca3af">No image = default background</span></div>
+            <div class="asset-row" style="margin-top:0">
+              <input type="text" class="asset-inp" id="offer-bg-asset" placeholder="Media asset URL" oninput="updateOfferPreview()">
+              <span class="asset-clear" onclick="document.getElementById('offer-bg-asset').value='';updateOfferPreview()">Clear</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="tpnl" id="offer-tab-stores">
+          <div class="csec2">
+            <div class="csec2-h"><span class="csec2-t">Linked stores</span><span style="font-size:11px;color:#9ca3af">Optional</span></div>
+            <div style="font-size:12px;color:#6b7280;margin-bottom:10px">Select one or more Stores to show this Offer as a banner above them. Leave empty to show it as a standalone popup to matching segment members instead.</div>
+            <div id="offer-store-links"></div>
+          </div>
+        </div>
+
+      </div>
+
+      <div style="width:340px;flex-shrink:0;position:sticky;top:0">
+        <div style="font-size:10.5px;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px;text-align:center">Live preview</div>
+        <div class="offer-card-wrap">
+          <div class="offer-card" id="offer-prev-card">
+            <span class="oc-badge" id="offer-prev-badge" style="display:none"></span>
+            <span class="oc-ratio" id="offer-prev-ratio" style="display:none"></span>
+            <div class="oc-title" id="offer-prev-title" style="display:none"></div>
+            <div class="oc-coins" id="offer-prev-coins">0 <span style="font-size:14px">Đ</span></div>
+            <div class="oc-bonus" id="offer-prev-bonus" style="display:none"></div>
+            <div class="oc-lpxp" id="offer-prev-lpxp"></div>
+            <div class="oc-bottom">
+              <div class="oc-price-before" id="offer-prev-pricebefore" style="display:none"></div>
+              <div class="oc-price" id="offer-prev-price">$0</div>
+            </div>
+          </div>
+        </div>
+        <div style="font-size:11px;color:#9ca3af;text-align:center;margin-top:8px" id="offer-prev-display-mode">Standalone popup</div>
+      </div>
+    </div>
+  </div>
+  <div class="drw2-ft">
+    <span style="font-size:11px;color:#9ca3af;margin-right:auto" id="offer-drw-saved">Unsaved</span>
+    <button class="btn2 bo" onclick="closeOfferDrw()">Cancel</button>
+    <button class="btn2 bo" style="border-color:#7c3aed;color:#7c3aed" onclick="saveOfferDrw(false)">Save as draft</button>
+    <button class="btn2 bp" onclick="saveOfferDrw(true)">Save &amp; publish</button>
   </div>
 </div>
 
