@@ -655,6 +655,11 @@ input[readonly]{background:#f9fafb;color:#6b7280}
 
 .store-link-chip{display:inline-flex;align-items:center;gap:5px;padding:6px 10px;border:1.5px solid #e5e7eb;border-radius:8px;font-size:12px;color:#374151;cursor:pointer;margin:0 6px 6px 0}
 .store-link-chip.on{border-color:#7c3aed;background:#f3f0ff;color:#5b21b6;font-weight:600}
+
+.item-slot-custom{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.item-slot-inp{flex:1;min-width:110px;padding:4px 8px;border:1px solid #e5e7eb;border-radius:6px;font-size:11px;color:#374151;outline:none;background:#fff}
+.item-slot-inp:focus{border-color:#7c3aed}
+.item-slot-custom .chip-sel{font-size:10px;padding:2px 7px}
 </style>
 </head>
 <body>
@@ -720,7 +725,7 @@ input[readonly]{background:#f9fafb;color:#6b7280}
           <a class="nav-item-new" id="ni-shop-items" onclick="navigateNew('shop-items');initShopItems()"><i class="ti ti-coin"></i>Store Items</a>
           <a class="nav-item-new" id="ni-stores" onclick="navigateNew('stores');initStores()"><i class="ti ti-building-store"></i>Stores</a>
       <a class="nav-item-new" id="ni-store-settings" onclick="navigateNew('store-settings')"><i class="ti ti-sliders"></i>Store Settings</a>
-          <a class="nav-item-new" id="ni-offers" onclick="navigateNew('offers');initOffers()"><i class="ti ti-tag"></i>Offers &amp; Campaigns</a>
+          <a class="nav-item-new" id="ni-offers" onclick="navigateNew('offers');initOffers()"><i class="ti ti-tag"></i>Offers</a>
         </div>
       </div>
       <!-- NEW: NOTIFICATIONS -->
@@ -2279,7 +2284,7 @@ input[readonly]{background:#f9fafb;color:#6b7280}
     <div style="flex:1;overflow:auto">
       <table class="tbl2" id="sr-table-live">
         <thead><tr>
-          <th style="width:50px">Priority</th><th>Store</th><th>Geo</th><th>Segments</th><th>Items</th><th>Active period</th><th>State</th><th></th>
+          <th style="width:50px">Priority</th><th>Store</th><th>Env</th><th>Geo</th><th>Segments</th><th>Items</th><th>Active period</th><th>State</th><th></th>
         </tr></thead>
         <tbody id="sr-tbody-live"></tbody>
       </table>
@@ -2293,7 +2298,7 @@ input[readonly]{background:#f9fafb;color:#6b7280}
     <div style="flex:1;overflow:auto">
       <table class="tbl2" id="sr-table-expired">
         <thead><tr>
-          <th>Store</th><th>Geo</th><th>Segments</th><th>Items</th><th>Active period</th><th>State</th><th></th>
+          <th>Store</th><th>Env</th><th>Geo</th><th>Segments</th><th>Items</th><th>Active period</th><th>State</th><th></th>
         </tr></thead>
         <tbody id="sr-tbody-expired"></tbody>
       </table>
@@ -2307,16 +2312,12 @@ input[readonly]{background:#f9fafb;color:#6b7280}
 <div class="screen" id="screen-offers">
   <div class="page-hdr">
     <div class="page-hdr-top">
-      <div><div class="page-title2">Offers &amp; Campaigns</div><div class="page-sub">Standalone purchase promos shown above the store or as a popup — targeted by segment, geo &amp; timing</div></div>
+      <div><div class="page-title2">Offers</div><div class="page-sub">Standalone purchase promos shown above the store or as a popup — targeted by segment, geo &amp; timing</div></div>
       <div class="hdr-actions" id="offers-hdr-actions">
         <button class="btn2 bo" onclick="showToast2('Exported to CSV')"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Export</button>
         <button class="btn2 bp" onclick="openOfferDrw(null)"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Create new offer</button>
       </div>
     </div>
-  </div>
-  <div class="pg-tabs">
-    <div class="pg-tab active" onclick="switchOffersTab('offers')">Offers</div>
-    <div class="pg-tab" onclick="switchOffersTab('campaigns')">Campaigns <span class="not-mvp-tag" style="margin-left:4px">Coming soon</span></div>
   </div>
   <div class="pg-panel active" id="offers-panel-offers">
     <div class="tb2" style="flex-shrink:0">
@@ -2333,13 +2334,6 @@ input[readonly]{background:#f9fafb;color:#6b7280}
         </tr></thead>
         <tbody id="of-tbody"></tbody>
       </table>
-    </div>
-  </div>
-  <div class="pg-panel" id="offers-panel-campaigns">
-    <div style="flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;color:#9ca3af;padding:80px 0">
-      <i class="ti ti-stack-2" style="font-size:48px;color:#e5e7eb"></i>
-      <div style="font-size:15px;font-weight:600;color:#d1d5db">Campaigns — coming soon</div>
-      <div style="font-size:12px;max-width:360px;text-align:center">Campaigns will group Offers under a shared schedule, trigger type, recurrence and frequency cap. Offer Items built here can already be reused inside Campaigns once available.</div>
     </div>
   </div>
 </div>
@@ -3742,7 +3736,7 @@ function navigateNew(screen) {
 
   // Update breadcrumb
   const bc = document.getElementById('breadcrumb');
-  const labels = {'users':'Players › User Management','store-settings':'Storefront › Store Settings','offers':'Storefront › Offers & Campaigns','geo':'Players › Geo & Session','shop-items':'Storefront › Store Items','stores':'Storefront › Stores'};
+  const labels = {'users':'Players › User Management','store-settings':'Storefront › Store Settings','offers':'Storefront › Offers','geo':'Players › Geo & Session','shop-items':'Storefront › Store Items','stores':'Storefront › Stores'};
   if (bc) bc.innerHTML = '<span class="bc-cur">' + (labels[screen]||screen) + '</span>';
 
   document.querySelector('.main').scrollTop = 0;
@@ -5893,15 +5887,24 @@ var SHOP_ITEMS = [
     frame:{visible:false,color:'#7c3aed',asset:''},badge:{visible:false,text:'',color:'#f59e0b',asset:''},bg:{asset:''},updatedBy:'Admin YK',updatedAt:'2 Jul 2026'}
 ];
 
+function mkStoreItem(id, over){ return Object.assign({id:id, shopTitleText:'', priceTitleText:'', mostPopular:false, bestValue:false}, over||{}); }
 var STORES = [
-  {id:'STR-100001',name:'Regular FTD Shop',geo:['Brazil','Chile','Colombia'],segmentIds:['SEG-003'],
-    startDate:'2025-01-01',endDate:'2099-01-01',itemIds:['10000001','10000002'],published:true,priority:1},
-  {id:'STR-100002',name:'Cool name',geo:[],segmentIds:['SEG-000','SEG-001'],
-    startDate:'2025-01-14',endDate:'2099-01-15',itemIds:['10000001','10000002','10000003'],published:true,priority:2},
-  {id:'STR-100003',name:'Halloween LatAm 2026',geo:['Brazil','Chile'],segmentIds:['SEG-002'],
-    startDate:'2026-10-15',endDate:'2026-11-05',itemIds:['10000009','10000010'],published:true,priority:3},
-  {id:'STR-100004',name:'Black Friday Mexico 2025',geo:['Mexico'],segmentIds:['SEG-004'],
-    startDate:'2025-11-20',endDate:'2025-11-30',itemIds:['10000005','10000006'],published:true,priority:4}
+  {id:'STR-100001',name:'Regular FTD Shop',geo:['Brazil','Chile','Colombia'],segmentIds:['SEG-003'],environment:'Both',
+    startDate:'2025-01-01',endDate:'2099-01-01',
+    items:[mkStoreItem('10000001',{shopTitleText:'First-time special price',mostPopular:true}), mkStoreItem('10000002')],
+    bg:{asset:''}, priceBg:{asset:''}, published:true,priority:1},
+  {id:'STR-100002',name:'Cool name',geo:[],segmentIds:['SEG-000','SEG-001'],environment:'Both',
+    startDate:'2025-01-14',endDate:'2099-01-15',
+    items:[mkStoreItem('10000001'), mkStoreItem('10000002',{bestValue:true}), mkStoreItem('10000003')],
+    bg:{asset:''}, priceBg:{asset:''}, published:true,priority:2},
+  {id:'STR-100003',name:'Halloween LatAm 2026',geo:['Brazil','Chile'],segmentIds:['SEG-002'],environment:'Mobile',
+    startDate:'2026-10-15',endDate:'2026-11-05',
+    items:[mkStoreItem('10000009',{shopTitleText:'Spooky savings'}), mkStoreItem('10000010')],
+    bg:{asset:''}, priceBg:{asset:''}, published:true,priority:3},
+  {id:'STR-100004',name:'Black Friday Mexico 2025',geo:['Mexico'],segmentIds:['SEG-004'],environment:'Web',
+    startDate:'2025-11-20',endDate:'2025-11-30',
+    items:[mkStoreItem('10000005',{bestValue:true}), mkStoreItem('10000006')],
+    bg:{asset:''}, priceBg:{asset:''}, published:true,priority:4}
 ];
 
 function itemById(id){ return SHOP_ITEMS.find(function(i){return i.id===id;}); }
@@ -5972,7 +5975,7 @@ function renderItemsTable(){
   var tb=document.getElementById('si-tbody');
   if(!tb) return;
   tb.innerHTML = filtered.map(function(it){
-    var usedIn = STORES.filter(function(s){return s.itemIds.includes(it.id);}).length;
+    var usedIn = STORES.filter(function(s){return s.items.some(function(x){return x.id===it.id;});}).length;
     return '<tr>'+
       '<td><div class="item-card-mini-wrap"><div class="item-card item-card-mini" id="mini-card-'+it.id+'" style="'+itemCardStyle(it)+'"></div></div></td>'+
       '<td><div style="font-weight:600;color:#1a1a2e">'+esc(it.name)+'</div><div style="font-size:11px;color:#9ca3af">'+it.id+'</div></td>'+
@@ -6134,10 +6137,11 @@ function renderStoresTable(){
     var st = storeState(s);
     return '<tr draggable="true" data-id="'+s.id+'">'+
       '<td><span class="drag-handle"><i class="ti ti-grip-vertical"></i></span> <span class="priority-badge">'+(idx+1)+'</span></td>'+
-      '<td><div style="font-weight:600;color:#1a1a2e">'+esc(s.name)+'</div><div style="font-size:11px;color:#9ca3af">'+s.id+' · '+s.itemIds.length+' items</div></td>'+
+      '<td><div style="font-weight:600;color:#1a1a2e">'+esc(s.name)+'</div><div style="font-size:11px;color:#9ca3af">'+s.id+' · '+s.items.length+' items</div></td>'+
+      '<td style="font-size:11.5px;color:#6b7280">'+(s.environment||'Both')+'</td>'+
       '<td style="font-size:12px">'+geoLabel(s.geo)+'</td>'+
       '<td style="font-size:12px">'+segLabel(s.segmentIds)+'</td>'+
-      '<td style="color:#6b7280">'+s.itemIds.length+'</td>'+
+      '<td style="color:#6b7280">'+s.items.length+'</td>'+
       '<td style="font-size:12px;color:#6b7280">'+fmtDateShort(s.startDate)+' → '+fmtDateShort(s.endDate)+'</td>'+
       '<td>'+storeStateBadge(st)+'</td>'+
       '<td><div class="ra2"><button class="ab2" onclick="openStoreDrw(\''+s.id+'\')">Edit</button><button class="ab2" onclick="duplicateStore(\''+s.id+'\')">Duplicate</button></div></td>'+
@@ -6149,9 +6153,10 @@ function renderStoresTable(){
   tbExp.innerHTML = expFiltered.map(function(s){
     return '<tr>'+
       '<td><div style="font-weight:600;color:#1a1a2e">'+esc(s.name)+'</div><div style="font-size:11px;color:#9ca3af">'+s.id+'</div></td>'+
+      '<td style="font-size:11.5px;color:#6b7280">'+(s.environment||'Both')+'</td>'+
       '<td style="font-size:12px">'+geoLabel(s.geo)+'</td>'+
       '<td style="font-size:12px">'+segLabel(s.segmentIds)+'</td>'+
-      '<td style="color:#6b7280">'+s.itemIds.length+'</td>'+
+      '<td style="color:#6b7280">'+s.items.length+'</td>'+
       '<td style="font-size:12px;color:#6b7280">'+fmtDateShort(s.startDate)+' → '+fmtDateShort(s.endDate)+'</td>'+
       '<td>'+storeStateBadge('Expired')+'</td>'+
       '<td><div class="ra2"><button class="ab2" onclick="openStoreDrw(\''+s.id+'\')">View</button><button class="ab2" onclick="duplicateStore(\''+s.id+'\')">Reactivate copy</button></div></td>'+
@@ -6189,10 +6194,11 @@ function makeSortable(container, selector, onReorder){
 }
 
 // ─── STORE DRAWER ───
-var _storeDrwId=null, _storeDrwGeo=[], _storeDrwSegIds=[], _storeDrwItemIds=[];
+var _storeDrwId=null, _storeDrwGeo=[], _storeDrwSegIds=[], _storeDrwItems=[];
 function switchStoreDrwTab(name){
-  document.querySelectorAll('#store-drw .drw2-tab').forEach(function(t,i){ t.classList.toggle('active', ['details','items'][i]===name); });
+  document.querySelectorAll('#store-drw .drw2-tab').forEach(function(t,i){ t.classList.toggle('active', ['details','visual','items'][i]===name); });
   document.getElementById('store-drw-tab-details').classList.toggle('active', name==='details');
+  document.getElementById('store-drw-tab-visual').classList.toggle('active', name==='visual');
   document.getElementById('store-drw-tab-items').classList.toggle('active', name==='items');
 }
 function renderGeoChips(){
@@ -6225,38 +6231,60 @@ function toggleSegSel(id){
 }
 function renderItemSlots(){
   var box = document.getElementById('store-item-slots');
-  box.innerHTML = _storeDrwItemIds.map(function(id,idx){
-    var it = itemById(id); if(!it) return '';
-    return '<div class="item-slot" draggable="true" data-item-id="'+id+'">'+
+  box.innerHTML = _storeDrwItems.map(function(row,idx){
+    var it = itemById(row.id); if(!it) return '';
+    return '<div class="item-slot" draggable="true" data-item-id="'+row.id+'" style="align-items:flex-start">'+
       '<span class="item-slot-num">'+(idx+1)+'</span>'+
       '<div class="item-card-mini-wrap" style="width:44px;height:62px"><div class="item-card item-card-mini" style="transform:scale(.28);'+itemCardStyle(it)+'"></div></div>'+
-      '<div><div style="font-size:12.5px;font-weight:600;color:#374151">'+esc(it.name)+'</div><div style="font-size:11px;color:#9ca3af">'+fmtUSD(it.price)+' · '+it.divicoins+' Đ</div></div>'+
-      '<span class="item-slot-remove" onclick="removeItemSlot(\''+id+'\')">&times;</span>'+
+      '<div style="flex:1;min-width:0">'+
+        '<div style="font-size:12.5px;font-weight:600;color:#374151">'+esc(it.name)+'</div><div style="font-size:11px;color:#9ca3af;margin-bottom:6px">'+fmtUSD(it.price)+' · '+it.divicoins+' Đ</div>'+
+        '<div class="item-slot-custom">'+
+          '<input type="text" class="item-slot-inp" placeholder="Shop title override" value="'+esc(row.shopTitleText)+'" oninput="updateItemSlotField(\''+row.id+'\',\'shopTitleText\',this.value)">'+
+          '<input type="text" class="item-slot-inp" placeholder="Price title override" value="'+esc(row.priceTitleText)+'" oninput="updateItemSlotField(\''+row.id+'\',\'priceTitleText\',this.value)">'+
+          '<span class="chip-sel '+(row.mostPopular?'on':'off')+'" onclick="toggleItemFlag(\''+row.id+'\',\'mostPopular\')">★ Most Popular</span>'+
+          '<span class="chip-sel '+(row.bestValue?'on':'off')+'" onclick="toggleItemFlag(\''+row.id+'\',\'bestValue\')">🏆 Best Value</span>'+
+        '</div>'+
+      '</div>'+
+      '<span class="item-slot-remove" onclick="removeItemSlot(\''+row.id+'\')">&times;</span>'+
       '</div>';
   }).join('') || '<div style="font-size:12px;color:#9ca3af;text-align:center;padding:20px">No items yet — add at least one from the catalog below.</div>';
-  document.getElementById('store-items-limit-note').textContent = _storeDrwItemIds.length+' / 8 — drag to reorder, first item shows first';
-  document.getElementById('store-drw-items-count').textContent = '('+_storeDrwItemIds.length+')';
+  document.getElementById('store-items-limit-note').textContent = _storeDrwItems.length+' / 8 — drag to reorder, first item shows first. "Best Value" recommended on max one item per store.';
+  document.getElementById('store-drw-items-count').textContent = '('+_storeDrwItems.length+')';
   makeSortable(box, '.item-slot', function(){
-    _storeDrwItemIds = Array.from(box.querySelectorAll('.item-slot')).map(function(el){return el.getAttribute('data-item-id');});
+    var order = Array.from(box.querySelectorAll('.item-slot')).map(function(el){return el.getAttribute('data-item-id');});
+    _storeDrwItems = order.map(function(id){return _storeDrwItems.find(function(r){return r.id===id;});});
     renderItemSlots();
   });
 }
+function updateItemSlotField(id, field, value){
+  var row = _storeDrwItems.find(function(r){return r.id===id;});
+  if(row) row[field] = value;
+}
+function toggleItemFlag(id, field){
+  var row = _storeDrwItems.find(function(r){return r.id===id;});
+  if(!row) return;
+  row[field] = !row[field];
+  if(field==='bestValue' && row.bestValue){
+    _storeDrwItems.forEach(function(r){ if(r.id!==id) r.bestValue=false; });
+  }
+  renderItemSlots();
+}
 function removeItemSlot(id){
-  _storeDrwItemIds = _storeDrwItemIds.filter(function(x){return x!==id;});
+  _storeDrwItems = _storeDrwItems.filter(function(x){return x.id!==id;});
   renderItemSlots();
   renderItemPicker();
 }
 function addItemToStore(id){
-  if(_storeDrwItemIds.includes(id)) return;
-  if(_storeDrwItemIds.length>=8){ showToast2('Maximum 8 items per store'); return; }
-  _storeDrwItemIds.push(id);
+  if(_storeDrwItems.some(function(x){return x.id===id;})) return;
+  if(_storeDrwItems.length>=8){ showToast2('Maximum 8 items per store'); return; }
+  _storeDrwItems.push(mkStoreItem(id));
   renderItemSlots();
   renderItemPicker();
 }
 function renderItemPicker(){
   var box = document.getElementById('store-item-picker');
   box.innerHTML = SHOP_ITEMS.map(function(it){
-    var sel = _storeDrwItemIds.includes(it.id);
+    var sel = _storeDrwItems.some(function(x){return x.id===it.id;});
     return '<div class="item-pick-card '+(sel?'sel':'')+'" onclick="addItemToStore(\''+it.id+'\')">'+
       '<div class="item-card-mini-wrap" style="width:34px;height:48px"><div class="item-card item-card-mini" style="transform:scale(.22);'+itemCardStyle(it)+'"></div></div>'+
       '<div style="min-width:0"><div style="font-size:12px;font-weight:600;color:#374151;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+esc(it.name)+'</div><div style="font-size:10.5px;color:#9ca3af">'+fmtUSD(it.price)+'</div></div>'+
@@ -6274,9 +6302,12 @@ function openStoreDrw(id){
     document.getElementById('store-name').value = s.name;
     document.getElementById('store-start').value = s.startDate;
     document.getElementById('store-end').value = s.endDate;
+    document.getElementById('store-environment').value = s.environment || 'Both';
+    document.getElementById('store-bg-asset').value = (s.bg&&s.bg.asset)||'';
+    document.getElementById('store-pricebg-asset').value = (s.priceBg&&s.priceBg.asset)||'';
     _storeDrwGeo = s.geo.slice();
     _storeDrwSegIds = s.segmentIds.slice();
-    _storeDrwItemIds = s.itemIds.slice();
+    _storeDrwItems = JSON.parse(JSON.stringify(s.items));
     document.getElementById('store-drw-state').innerHTML = storeStateBadge(storeState(s));
   } else {
     document.getElementById('store-drw-title').textContent = 'New Store';
@@ -6284,7 +6315,10 @@ function openStoreDrw(id){
     document.getElementById('store-name').value = '';
     document.getElementById('store-start').value = '';
     document.getElementById('store-end').value = '';
-    _storeDrwGeo = []; _storeDrwSegIds = []; _storeDrwItemIds = [];
+    document.getElementById('store-environment').value = 'Both';
+    document.getElementById('store-bg-asset').value = '';
+    document.getElementById('store-pricebg-asset').value = '';
+    _storeDrwGeo = []; _storeDrwSegIds = []; _storeDrwItems = [];
     document.getElementById('store-drw-state').innerHTML = '';
   }
   renderGeoChips();
@@ -6303,16 +6337,19 @@ function closeStoreDrw(){
   document.getElementById('store-drw').style.right='-780px';
 }
 function saveStoreDrw(publish){
-  if(!_storeDrwItemIds.length){ showToast2('Add at least one item before saving'); return; }
+  if(!_storeDrwItems.length){ showToast2('Add at least one item before saving'); return; }
   var maxPriority = STORES.reduce(function(m,s){return Math.max(m,s.priority);},0);
   var data = {
     id: _storeDrwId || ('STR-'+String(100000+STORES.length+1)),
     name: document.getElementById('store-name').value || 'Untitled store',
     geo: _storeDrwGeo.slice(),
     segmentIds: _storeDrwSegIds.slice(),
+    environment: document.getElementById('store-environment').value || 'Both',
     startDate: document.getElementById('store-start').value || new Date().toISOString().slice(0,10),
     endDate: document.getElementById('store-end').value || '2099-01-01',
-    itemIds: _storeDrwItemIds.slice(),
+    items: _storeDrwItems.map(function(r){return Object.assign({},r);}),
+    bg:{asset: document.getElementById('store-bg-asset').value||''},
+    priceBg:{asset: document.getElementById('store-pricebg-asset').value||''},
     published: !!publish,
     priority: _storeDrwId ? (STORES.find(function(x){return x.id===_storeDrwId;})||{}).priority||(maxPriority+1) : maxPriority+1
   };
@@ -6483,12 +6520,6 @@ function renderOffersTable(){
   }).join('');
   document.getElementById('of-count').textContent = filtered.length+' offers';
 }
-function switchOffersTab(name){
-  document.querySelectorAll('#screen-offers .pg-tab').forEach(function(t,i){ t.classList.toggle('active', ['offers','campaigns'][i]===name); });
-  document.getElementById('offers-panel-offers').classList.toggle('active', name==='offers');
-  document.getElementById('offers-panel-campaigns').classList.toggle('active', name==='campaigns');
-}
-
 // ─── OFFER DRAWER ───
 var _offerDrwId=null, _offerDrwGeo=[], _offerDrwStoreIds=[];
 function switchOfferTab(name){
@@ -7040,6 +7071,7 @@ function initOffers(){ populateOfferFilters(); renderOffersTable(); }
   </div>
   <div class="drw2-tabs">
     <div class="drw2-tab active" onclick="switchStoreDrwTab('details')">Details</div>
+    <div class="drw2-tab" onclick="switchStoreDrwTab('visual')">Visual</div>
     <div class="drw2-tab" onclick="switchStoreDrwTab('items')">Items <span id="store-drw-items-count" style="font-size:10px;color:#9ca3af"></span></div>
   </div>
   <div class="drw2-body">
@@ -7047,7 +7079,10 @@ function initOffers(){ populateOfferFilters(); renderOffersTable(); }
     <div class="tpnl active" id="store-drw-tab-details">
       <div class="csec2">
         <div class="csec2-h"><span class="csec2-t">Store details</span></div>
-        <div class="fi2"><span class="fl2">Store name <span style="text-transform:none;font-weight:400">(internal, not shown to players)</span></span><input type="text" class="finp2" id="store-name" placeholder="e.g. Regular FTD Shop"></div>
+        <div class="fg2">
+          <div class="fi2"><span class="fl2">Store name <span style="text-transform:none;font-weight:400">(internal, not shown to players)</span></span><input type="text" class="finp2" id="store-name" placeholder="e.g. Regular FTD Shop"></div>
+          <div class="fi2"><span class="fl2">Environment</span><select class="fsel2" id="store-environment"><option>Web</option><option>Mobile</option><option selected>Both</option></select></div>
+        </div>
       </div>
 
       <div class="csec2">
@@ -7066,6 +7101,23 @@ function initOffers(){ populateOfferFilters(); renderOffersTable(); }
         <div class="fg2">
           <div class="fi2"><span class="fl2">Start date</span><input type="date" class="finp2" id="store-start"></div>
           <div class="fi2"><span class="fl2">End date</span><input type="date" class="finp2" id="store-end"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tpnl" id="store-drw-tab-visual">
+      <div class="csec2">
+        <div class="csec2-h"><span class="csec2-t">Store background</span><span style="font-size:11px;color:#9ca3af">No image = default background</span></div>
+        <div class="asset-row" style="margin-top:0">
+          <input type="text" class="asset-inp" id="store-bg-asset" placeholder="Media asset URL">
+          <span class="asset-clear" onclick="document.getElementById('store-bg-asset').value=''">Clear</span>
+        </div>
+      </div>
+      <div class="csec2">
+        <div class="csec2-h"><span class="csec2-t">Price area background</span><span style="font-size:11px;color:#9ca3af">Optional</span></div>
+        <div class="asset-row" style="margin-top:0">
+          <input type="text" class="asset-inp" id="store-pricebg-asset" placeholder="Media asset URL">
+          <span class="asset-clear" onclick="document.getElementById('store-pricebg-asset').value=''">Clear</span>
         </div>
       </div>
     </div>
