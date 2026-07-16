@@ -5909,19 +5909,19 @@ var STORES = [
   {id:'STR-100001',name:'Regular FTD Shop',geo:['Brazil','Chile','Colombia'],segmentIds:['SEG-003'],environment:'Both',
     startDate:'2025-01-01T00:00',endDate:'2099-01-01T00:00',
     items:[mkStoreItem('10000001',{shopTitleText:'First-time special price',mostPopular:true}), mkStoreItem('10000002')],
-    bg:{asset:''}, priceBg:{asset:''}, defaultRatioColor:'#22c55e', defaultItemBg:'', published:true,priority:1},
+    bg:{asset:''}, published:true,priority:1},
   {id:'STR-100002',name:'Cool name',geo:[],segmentIds:['SEG-000','SEG-001'],environment:'Both',
     startDate:'2025-01-14T00:00',endDate:'2099-01-15T00:00',
     items:[mkStoreItem('10000001'), mkStoreItem('10000002',{bestValue:true}), mkStoreItem('10000003')],
-    bg:{asset:''}, priceBg:{asset:''}, defaultRatioColor:'#22c55e', defaultItemBg:'', published:true,priority:2},
+    bg:{asset:''}, published:true,priority:2},
   {id:'STR-100003',name:'Halloween LatAm 2026',geo:['Brazil','Chile'],segmentIds:['SEG-002'],environment:'Mobile',
     startDate:'2026-10-15T00:00',endDate:'2026-11-05T00:00',
     items:[mkStoreItem('10000009',{shopTitleText:'Spooky savings'}), mkStoreItem('10000010')],
-    bg:{asset:''}, priceBg:{asset:''}, defaultRatioColor:'#f97316', defaultItemBg:'', published:true,priority:3},
+    bg:{asset:''}, published:true,priority:3},
   {id:'STR-100004',name:'Black Friday Mexico 2025',geo:['Mexico'],segmentIds:['SEG-004'],environment:'Web',
     startDate:'2025-11-20T00:00',endDate:'2025-11-30T00:00',
     items:[mkStoreItem('10000005',{bestValue:true}), mkStoreItem('10000006')],
-    bg:{asset:''}, priceBg:{asset:''}, defaultRatioColor:'#22c55e', defaultItemBg:'', published:true,priority:4}
+    bg:{asset:''}, published:true,priority:4}
 ];
 
 function itemById(id){ return SHOP_ITEMS.find(function(i){return i.id===id;}); }
@@ -5933,31 +5933,28 @@ var BG_GRADIENTS=['linear-gradient(160deg,#4c1d95,#7c3aed)','linear-gradient(160
 function bgGradientFor(seed){ var s=String(seed||''); var h=0; for(var i=0;i<s.length;i++){h=(h*31+s.charCodeAt(i))>>>0;} return BG_GRADIENTS[h%BG_GRADIENTS.length]; }
 
 // ─── ITEM CARD RENDERING (shared: catalog thumbs + live preview + item picker) ───
-// storeCtx (optional) = {defaultRatioColor, defaultItemBg} from the Store currently being edited.
-// When rendering an item's card inside a specific Store's context, the item's own
-// ratioColor/bg.asset take precedence; if absent, fall back to the Store's defaults.
-function itemCardStyle(it, storeCtx){
-  var bgAsset = (it.bg && it.bg.asset) || (storeCtx && storeCtx.defaultItemBg) || '';
+function itemCardStyle(it){
+  var bgAsset = (it.bg && it.bg.asset) || '';
   var bg = bgAsset ? ("url('"+esc(bgAsset)+"') center/cover no-repeat, ") : '';
   return 'background:'+bg+bgGradientFor((it.name||'')+it.id)+';border-color:'+(it.frame&&it.frame.visible?(it.frame.color||'#7c3aed'):'transparent')+';';
 }
-function itemRatioColor(it, storeCtx){
-  return it.ratioColor || (storeCtx && storeCtx.defaultRatioColor) || '#fbbf24';
+function itemRatioColor(it){
+  return it.ratioColor || '#fbbf24';
 }
-function renderItemCardInner(it, prefix, storeCtx){
+function renderItemCardInner(it, prefix){
   var badge=document.getElementById(prefix+'-badge'), ratio=document.getElementById(prefix+'-ratio'),
       name=document.getElementById(prefix+'-name'), coins=document.getElementById(prefix+'-coins'),
       bonus=document.getElementById(prefix+'-bonus'), lpxp=document.getElementById(prefix+'-lpxp'),
       pb=document.getElementById(prefix+'-pricebefore'), price=document.getElementById(prefix+'-price'),
       card=document.getElementById(prefix+'-card');
-  if(card) card.setAttribute('style', (card.getAttribute('style')||'').replace(/background:[^;]+;?|border-color:[^;]+;?|border-image:[^;]+;?/g,'')+';'+itemCardStyle(it, storeCtx));
+  if(card) card.setAttribute('style', (card.getAttribute('style')||'').replace(/background:[^;]+;?|border-color:[^;]+;?|border-image:[^;]+;?/g,'')+';'+itemCardStyle(it));
   if(badge){
     if(it.badge&&it.badge.visible&&it.badge.text){ badge.style.display='flex'; badge.textContent=it.badge.text;
       badge.style.background = it.badge.color||'#f59e0b'; }
     else badge.style.display='none';
   }
   if(ratio){
-    if(it.ratioVisible && it.divicoins){ ratio.style.display='block'; ratio.textContent='+'+ratioPct(it)+'% Extra'; ratio.style.color=itemRatioColor(it, storeCtx); }
+    if(it.ratioVisible && it.divicoins){ ratio.style.display='block'; ratio.textContent='+'+ratioPct(it)+'% Extra'; ratio.style.color=itemRatioColor(it); }
     else ratio.style.display='none';
   }
   if(name) name.textContent = it.externalName || it.name || 'Item name';
@@ -6287,21 +6284,13 @@ function makeSortable(container, selector, onReorder){
 
 // ─── STORE DRAWER ───
 var _storeDrwId=null, _storeDrwGeo=[], _storeDrwSegIds=[], _storeDrwItems=[];
-var _storeDrwDefaultRatioColor='#22c55e', _storeDrwDefaultItemBg='', _storeDrwPriorityMax=1;
+var _storeDrwPriorityMax=1;
 function updateStorePriorityLabel(){
   var lbl = document.getElementById('store-priority-label');
   var inp = document.getElementById('store-priority');
   if(!lbl || !inp) return;
   var v = Math.max(1, Math.min(parseInt(inp.value)||1, _storeDrwPriorityMax));
   lbl.textContent = 'Priority '+v+' of '+_storeDrwPriorityMax;
-}
-function onStoreDefaultRatioColorChange(){
-  _storeDrwDefaultRatioColor = document.getElementById('store-default-ratio-hex').value || '#22c55e';
-  renderItemSlots(); renderItemPicker();
-}
-function onStoreDefaultItemBgChange(){
-  _storeDrwDefaultItemBg = document.getElementById('store-default-item-bg').value || '';
-  renderItemSlots(); renderItemPicker();
 }
 function switchStoreDrwTab(name){
   document.querySelectorAll('#store-drw .drw2-tab').forEach(function(t,i){ t.classList.toggle('active', ['details','visual','items'][i]===name); });
@@ -6344,12 +6333,11 @@ function toggleSegSel(id){
 }
 function renderItemSlots(){
   var box = document.getElementById('store-item-slots');
-  var storeCtx = {defaultRatioColor:_storeDrwDefaultRatioColor, defaultItemBg:_storeDrwDefaultItemBg};
   box.innerHTML = _storeDrwItems.map(function(row,idx){
     var it = itemById(row.id); if(!it) return '';
     return '<div class="item-slot" draggable="true" data-item-id="'+row.id+'" style="align-items:flex-start">'+
       '<span class="item-slot-num">'+(idx+1)+'</span>'+
-      '<div class="item-card-mini-wrap" style="width:44px;height:62px"><div class="item-card item-card-mini" style="transform:scale(.28);'+itemCardStyle(it, storeCtx)+'"></div></div>'+
+      '<div class="item-card-mini-wrap" style="width:44px;height:62px"><div class="item-card item-card-mini" style="transform:scale(.28);'+itemCardStyle(it)+'"></div></div>'+
       '<div style="flex:1;min-width:0">'+
         '<div style="font-size:12.5px;font-weight:600;color:#374151">'+esc(it.name)+'</div><div style="font-size:11px;color:#9ca3af;margin-bottom:6px">'+fmtUSD(it.price)+' · '+it.divicoins+' Đ</div>'+
         '<div class="item-slot-custom">'+
@@ -6397,7 +6385,6 @@ function addItemToStore(id){
 }
 function renderItemPicker(){
   var box = document.getElementById('store-item-picker');
-  var storeCtx = {defaultRatioColor:_storeDrwDefaultRatioColor, defaultItemBg:_storeDrwDefaultItemBg};
   var q = (document.getElementById('store-item-picker-search')||{}).value||'';
   var list = SHOP_ITEMS.filter(function(it){
     return !q || it.name.toLowerCase().includes(q.toLowerCase()) || it.id.includes(q);
@@ -6405,7 +6392,7 @@ function renderItemPicker(){
   box.innerHTML = list.map(function(it){
     var sel = _storeDrwItems.some(function(x){return x.id===it.id;});
     return '<div class="item-pick-card '+(sel?'sel':'')+'" onclick="addItemToStore(\''+it.id+'\')">'+
-      '<div class="item-card-mini-wrap" style="width:34px;height:48px"><div class="item-card item-card-mini" style="transform:scale(.22);'+itemCardStyle(it, storeCtx)+'"></div></div>'+
+      '<div class="item-card-mini-wrap" style="width:34px;height:48px"><div class="item-card item-card-mini" style="transform:scale(.22);'+itemCardStyle(it)+'"></div></div>'+
       '<div style="min-width:0"><div style="font-size:12px;font-weight:600;color:#374151;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+esc(it.name)+'</div><div style="font-size:10.5px;color:#9ca3af">'+fmtUSD(it.price)+'</div></div>'+
       (sel?'<i class="ti ti-check" style="margin-left:auto;color:#7c3aed"></i>':'')+
       '</div>';
@@ -6423,12 +6410,6 @@ function openStoreDrw(id){
     document.getElementById('store-end').value = s.endDate||'';
     document.getElementById('store-environment').value = s.environment || 'Both';
     document.getElementById('store-bg-asset').value = (s.bg&&s.bg.asset)||'';
-    document.getElementById('store-pricebg-asset').value = (s.priceBg&&s.priceBg.asset)||'';
-    document.getElementById('store-default-ratio-color').value = s.defaultRatioColor||'#22c55e';
-    document.getElementById('store-default-ratio-hex').value = s.defaultRatioColor||'#22c55e';
-    document.getElementById('store-default-item-bg').value = s.defaultItemBg||'';
-    _storeDrwDefaultRatioColor = s.defaultRatioColor||'#22c55e';
-    _storeDrwDefaultItemBg = s.defaultItemBg||'';
     _storeDrwGeo = s.geo.slice();
     _storeDrwSegIds = (s.segmentIds||[]).slice();
     _storeDrwItems = JSON.parse(JSON.stringify(s.items));
@@ -6444,12 +6425,6 @@ function openStoreDrw(id){
     document.getElementById('store-end').value = '';
     document.getElementById('store-environment').value = 'Both';
     document.getElementById('store-bg-asset').value = '';
-    document.getElementById('store-pricebg-asset').value = '';
-    document.getElementById('store-default-ratio-color').value = '#22c55e';
-    document.getElementById('store-default-ratio-hex').value = '#22c55e';
-    document.getElementById('store-default-item-bg').value = '';
-    _storeDrwDefaultRatioColor = '#22c55e';
-    _storeDrwDefaultItemBg = '';
     _storeDrwGeo = []; _storeDrwSegIds = []; _storeDrwItems = [];
     document.getElementById('store-drw-state').innerHTML = '';
     _storeDrwPriorityMax = STORES.length+1;
@@ -6497,9 +6472,6 @@ function saveStoreDrw(publish){
     endDate: document.getElementById('store-end').value || '',
     items: _storeDrwItems.map(function(r){return Object.assign({},r);}),
     bg:{asset: document.getElementById('store-bg-asset').value||''},
-    priceBg:{asset: document.getElementById('store-pricebg-asset').value||''},
-    defaultRatioColor: document.getElementById('store-default-ratio-hex').value || '#22c55e',
-    defaultItemBg: document.getElementById('store-default-item-bg').value || '',
     published: !!publish,
     priority: 1
   };
@@ -7364,27 +7336,6 @@ function initOffers(){ populateOfferFilters(); renderOffersTable(); }
         <div class="asset-row" style="margin-top:0">
           <input type="text" class="asset-inp" id="store-bg-asset" placeholder="Media asset URL">
           <span class="asset-clear" onclick="document.getElementById('store-bg-asset').value=''">Clear</span>
-        </div>
-      </div>
-      <div class="csec2">
-        <div class="csec2-h"><span class="csec2-t">Price area background</span><span style="font-size:11px;color:#9ca3af">Optional</span></div>
-        <div class="asset-row" style="margin-top:0">
-          <input type="text" class="asset-inp" id="store-pricebg-asset" placeholder="Media asset URL">
-          <span class="asset-clear" onclick="document.getElementById('store-pricebg-asset').value=''">Clear</span>
-        </div>
-      </div>
-      <div class="csec2">
-        <div class="csec2-h"><span class="csec2-t">Default item ratio-badge color</span><span style="font-size:11px;color:#9ca3af">Fallback when an item has no ratio color of its own</span></div>
-        <div class="color-field">
-          <input type="color" class="color-swatch-inp" id="store-default-ratio-color" value="#22c55e" oninput="syncHex('store-default-ratio-color','store-default-ratio-hex');onStoreDefaultRatioColorChange()">
-          <input type="text" class="color-hex-inp" id="store-default-ratio-hex" value="#22c55e" oninput="syncColor('store-default-ratio-hex','store-default-ratio-color');onStoreDefaultRatioColorChange()">
-        </div>
-      </div>
-      <div class="csec2">
-        <div class="csec2-h"><span class="csec2-t">Default item background</span><span style="font-size:11px;color:#9ca3af">Fallback when an item has no background of its own</span></div>
-        <div class="asset-row" style="margin-top:0">
-          <input type="text" class="asset-inp" id="store-default-item-bg" placeholder="Media asset URL" oninput="onStoreDefaultItemBgChange()">
-          <span class="asset-clear" onclick="document.getElementById('store-default-item-bg').value='';onStoreDefaultItemBgChange()">Clear</span>
         </div>
       </div>
     </div>
