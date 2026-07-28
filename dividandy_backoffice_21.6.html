@@ -776,7 +776,7 @@ input[readonly]{background:#f9fafb;color:#6b7280}
       <div class="nav-group-header"><div class="nav-group-label"><i class="ti ti-cards"></i>Cards</div><i class="ti ti-chevron-down nav-arrow"></i></div>
       <div class="nav-group-header"><div class="nav-group-label"><i class="ti ti-medal"></i>Quests</div><i class="ti ti-chevron-down nav-arrow"></i></div>
       <div class="nav-group-header"><div class="nav-group-label"><i class="ti ti-shopping-bag"></i>Catalog</div><i class="ti ti-chevron-down nav-arrow"></i></div>
-      <div class="nav-group-header"><div class="nav-group-label"><i class="ti ti-browser"></i>CMS</div><i class="ti ti-chevron-down nav-arrow"></i></div>
+      <div class="nav-group-header" onclick="toggleNav('nav-cms')"><div class="nav-group-label"><i class="ti ti-browser"></i>CMS</div><i class="ti ti-chevron-down nav-arrow" id="arr-cms"></i></div><div id="nav-cms" style="display: none;"><a class="nav-item" id="ni-cms-support" onclick="navigateSupport('support-list')"><i class="ti ti-headset"></i>Support</a></div>
       <div class="nav-group-header"><div class="nav-group-label"><i class="ti ti-receipt"></i>Sales</div><i class="ti ti-chevron-down nav-arrow"></i></div>
       <div class="nav-group-header"><div class="nav-group-label"><i class="ti ti-settings"></i>Settings</div><i class="ti ti-chevron-down nav-arrow"></i></div>
     </div><!-- /sidebar -->
@@ -3850,6 +3850,8 @@ input[readonly]{background:#f9fafb;color:#6b7280}
   </div>
 </div>
 
+<div class="screen" id="screen-support-list"><div class="page-hdr"><div class="page-hdr-top"><div><div class="page-title2">Support</div><div class="page-sub">Player-submitted support tickets — prioritize, respond, and track status.</div></div><div class="hdr-actions"><button class="btn2 bo" onclick="showToast2('Exported')"><i class="ti ti-download"></i> Export</button></div></div></div><div class="tb2"><div class="sw2"><i class="ti ti-search"></i><input class="si2" type="text" placeholder="Search ticket ID, player name, or player ID..." id="sup-search" oninput="renderSupportTable()"></div><select class="fs2" id="sup-status-f" onchange="renderSupportTable()"><option value="">All statuses</option><option>Waiting for Support</option><option>Waiting for You</option><option>Resolved</option></select><select class="fs2" id="sup-severity-f" onchange="renderSupportTable()"><option value="">All severities</option><option>Critical</option><option>High</option><option>Medium</option><option>Low</option></select><select class="fs2" id="sup-category-f" onchange="renderSupportTable()"><option value="">All categories</option><option>Trading</option><option>Tournaments</option><option>Wallet</option><option>Account</option><option>Other</option></select><select class="fs2" id="sup-vip-f" onchange="renderSupportTable()"><option value="">All players</option><option value="vip">VIP only</option></select><span class="rl2" id="sup-count">0 tickets</span></div><div style="flex:1;overflow:auto"><table class="tbl2" id="sup-table"><thead><tr><th>Ticket ID</th><th>Player</th><th>Category</th><th style="cursor:pointer" onclick="sortSupport('severity')">Severity ↕</th><th>VIP</th><th>Status</th><th style="cursor:pointer" onclick="sortSupport('updatedAt')">Last Update ↕</th><th></th></tr></thead><tbody id="sup-tbody"></tbody></table></div></div></div><!-- /main -->
+
 </div><!-- /main -->
   </div><!-- /layout -->
 </div><!-- /app -->
@@ -3870,6 +3872,7 @@ input[readonly]{background:#f9fafb;color:#6b7280}
     <div class="drw2-tab" onclick="switchUTab(&#39;wallet&#39;)">Wallet</div>
     <div class="drw2-tab" onclick="switchUTab(&#39;tournaments&#39;)">Tournaments</div>
     <div class="drw2-tab" onclick="switchUTab(&#39;notifications&#39;)">Notifications</div>
+    <div class="drw2-tab" onclick="switchUTab(&#39;support&#39;)">Support</div>
   </div>
   <div class="drw2-body">
     <!-- Profile -->
@@ -4034,6 +4037,17 @@ input[readonly]{background:#f9fafb;color:#6b7280}
           <div class="ntfr"><span class="ntfl">Market data</span><label class="tgl2"><input type="checkbox"><span class="tgl2-sl"></span></label></div>
         </div>
       </div>
+    </div>
+    <!-- Support (player support ticket history — DIVI-514) -->
+    <div class="tpnl" id="u-tab-support">
+      <div class="csec2-h" style="padding:0 0 10px 0;border:0"><span class="csec2-t">Support tickets</span><span style="font-size:11px;color:#9ca3af" id="u-support-count"></span></div>
+      <div class="csec2" id="u-support-tblwrap" style="padding:0;overflow:hidden">
+        <table class="mt2">
+          <thead><tr><th>Ticket ID</th><th>Category</th><th>Severity</th><th>Status</th><th>Last update</th><th></th></tr></thead>
+          <tbody id="u-support-tbody"></tbody>
+        </table>
+      </div>
+      <div id="u-support-empty" style="display:none;padding:30px 0;text-align:center;color:#9ca3af;font-size:12.5px">No support tickets from this player yet.</div>
     </div>
   </div>
   <div class="drw2-ft">
@@ -5127,14 +5141,42 @@ function openUDrw(idx){
   const km={'Approved':'kyc-a','Pending':'kyc-p','Not started':'kyc-n','Rejected':'kyc-r'};
   const kb=document.getElementById('u-kyc-bdg');kb.className=km[u.ky]||'kyc-n';kb.textContent=u.ky;
   switchUTab('profile');
+  if(typeof renderUserSupportTab==='function') renderUserSupportTab(u.id);
   document.getElementById('u-drw-ov').classList.add('open');
   document.getElementById('u-drw').classList.add('open');
 }
 function closeUDrw(){document.getElementById('u-drw-ov').classList.remove('open');document.getElementById('u-drw').classList.remove('open');}
 function switchUTab(name){
-  const tabs=['profile','kyc','wallet','tournaments','notifications'];
+  const tabs=['profile','kyc','wallet','tournaments','notifications','support'];
   document.querySelectorAll('#u-drw .drw2-tab').forEach((t,i)=>t.classList.toggle('active',tabs[i]===name));
   tabs.forEach(t=>{const p=document.getElementById('u-tab-'+t);if(p)p.classList.toggle('active',t===name);});
+}
+// Player Support History tab (DIVI-514: Back Office — Player Support History).
+// Shows this player's full ticket history and reuses the main Support module's
+// own ticket drawer (openSupportDrw) so agents review it without leaving the profile.
+function renderUserSupportTab(userId){
+  var tbody=document.getElementById('u-support-tbody');
+  if(!tbody) return;
+  var tickets=(typeof SUPPORT_TICKETS!=='undefined'?SUPPORT_TICKETS:[]).filter(function(t){return t.userId===userId;});
+  tickets=tickets.slice().sort(function(a,b){return a.updatedAt<b.updatedAt?1:a.updatedAt>b.updatedAt?-1:0;});
+  var countEl=document.getElementById('u-support-count');
+  if(countEl) countEl.textContent=tickets.length+' ticket'+(tickets.length===1?'':'s');
+  var wrap=document.getElementById('u-support-tblwrap');
+  var empty=document.getElementById('u-support-empty');
+  if(wrap) wrap.style.display=tickets.length?'':'none';
+  if(empty) empty.style.display=tickets.length?'none':'';
+  tbody.innerHTML=tickets.map(function(t){
+    var sevStyle=(typeof chipColor==='function')?chipColor('severity',t.severity):'';
+    var stStyle=(typeof chipColor==='function')?chipColor('status',t.status):'';
+    return '<tr>'+
+      '<td>'+t.id+'</td>'+
+      '<td>'+t.category+'</td>'+
+      '<td><span class="chip" style="'+sevStyle+'">'+t.severity+'</span></td>'+
+      '<td><span class="chip" style="'+stStyle+'">'+t.status+'</span></td>'+
+      '<td>'+t.updatedAt+'</td>'+
+      '<td><button class="act-btn" onclick="openSupportDrw(\''+t.id+'\')">View</button></td>'+
+    '</tr>';
+  }).join('');
 }
 
 // ═══════════════════════════════════════════
@@ -10627,4 +10669,188 @@ function initOffers(){ populateOfferFilters(); renderOffersTable(); }
 </html>
 
 </script>
+
+
+<script id="support-module-script">
+window.SUPPORT_TICKETS = [
+  {id:'SUP-1042', player:'Jake Peralta', userId:'USR-1000', vip:true, category:'Wallet', severity:'Critical', status:'Waiting for Support', sessionId:'sess_8f2a1c', appVersion:'2.4.1', device:'iOS 18 · iPhone 15', createdAt:'2026-07-18 09:12', updatedAt:'2026-07-18 09:12',
+    thread:[{from:'player', text:'My withdrawal has been pending for 2 days and the app shows an error when I try to cancel it.', at:'2026-07-18 09:12'}]},
+  {id:'SUP-1041', player:'John Cena', userId:'USR-1317', vip:false, category:'Tournaments', severity:'High', status:'Waiting for You', sessionId:'sess_11de44', appVersion:'2.4.1', device:'Android 14 · Pixel 8', createdAt:'2026-07-17 18:40', updatedAt:'2026-07-18 08:05',
+    thread:[{from:'player', text:'I got disconnected mid-tournament and lost my position.', at:'2026-07-17 18:40'},{from:'agent', text:'Hi John, thanks for the report — looking into the tournament logs now.', at:'2026-07-18 08:05'}]},
+  {id:'SUP-1039', player:'Amy Santiago', userId:'USR-2268', vip:false, category:'Trading', severity:'Medium', status:'Waiting for You', sessionId:'sess_99ab02', appVersion:'2.3.9', device:'iOS 17 · iPhone 13', createdAt:'2026-07-16 14:02', updatedAt:'2026-07-17 10:15',
+    thread:[{from:'player', text:'A trade I closed still shows as open in my portfolio.', at:'2026-07-16 14:02'},{from:'agent', text:'Could you share the asset name and approximate time of the trade?', at:'2026-07-17 10:15'}]},
+  {id:'SUP-1035', player:'Raymond Holt', userId:'USR-2585', vip:true, category:'Account', severity:'High', status:'Waiting for Support', sessionId:'sess_55cd10', appVersion:'2.4.0', device:'Android 13 · Galaxy S22', createdAt:'2026-07-15 11:20', updatedAt:'2026-07-15 11:20',
+    thread:[{from:'player', text:'I can’t log back in after deleting my account by mistake within the 24h window.', at:'2026-07-15 11:20'}]},
+  {id:'SUP-1030', player:'Rosa Diaz', userId:'USR-3219', vip:false, category:'Other', severity:'Low', status:'Resolved', sessionId:'sess_20ff31', appVersion:'2.3.8', device:'iOS 17 · iPhone 12', createdAt:'2026-07-12 09:00', updatedAt:'2026-07-13 16:44',
+    thread:[{from:'player', text:'Just a suggestion — the buy sound effect is a bit stressful.', at:'2026-07-12 09:00'},{from:'agent', text:'Thanks for the feedback, passed it to the product team!', at:'2026-07-13 16:44'}]},
+  {id:'SUP-1024', player:'Michael Scott', userId:'USR-4170', vip:false, category:'Trading', severity:'Low', status:'Resolved', sessionId:'sess_77aa88', appVersion:'2.3.7', device:'Android 14 · OnePlus 11', createdAt:'2026-07-10 12:30', updatedAt:'2026-07-11 09:10',
+    thread:[{from:'player', text:'Numeric keypad covers the Modify/Close buttons.', at:'2026-07-10 12:30'},{from:'agent', text:'Fixed in the latest release, please update the app.', at:'2026-07-11 09:10'}]}
+];
+
+window._supSort = {key:'updatedAt', dir:'desc'};
+
+window.getSuggestedAnswer = function(category){
+  var map = {
+    'Trading': 'Thanks for reaching out about a trading issue. Could you confirm the asset and approximate time of the trade? (Suggested from FAQ/T&C — source content pending)',
+    'Tournaments': 'Sorry about the tournament issue. We are checking the tournament logs for your session now. (Suggested from FAQ/T&C — source content pending)',
+    'Wallet': 'Thanks for flagging this wallet issue. Withdrawals/deposits can take up to 24-48h to process — if it has been longer, we are escalating this now. (Suggested from FAQ/T&C — source content pending)',
+    'Account': 'Thanks for reaching out about your account. For account access issues we may need to verify a few details before re-enabling access. (Suggested from FAQ/T&C — source content pending)',
+    'Other': 'Thanks for your message — our team is reviewing this now. (Suggested from FAQ/T&C — source content pending)'
+  };
+  return map[category] || map['Other'];
+};
+
+window.chipColor = function(kind, value){
+  var m = {
+    severity:{Critical:['#fee2e2','#991b1b'],High:['#ffedd5','#9a3412'],Medium:['#fef9c3','#854d0e'],Low:['#e5e7eb','#374151']},
+    status:{'Waiting for Support':['#ede9fe','#7c3aed'],'Waiting for You':['#fef9c3','#854d0e'],Resolved:['#d1fae5','#065f46']}
+  };
+  var c = (m[kind] && m[kind][value]) || ['#e5e7eb','#374151'];
+  return 'background:'+c[0]+';color:'+c[1];
+};
+
+window.sortSupport = function(key){
+  if(_supSort.key===key){ _supSort.dir = _supSort.dir==='asc'?'desc':'asc'; } else { _supSort = {key:key, dir:'desc'}; }
+  renderSupportTable();
+};
+
+window.goToPlayerView = function(userId, evt){
+  if(evt) evt.stopPropagation();
+  closeSupportDrw();
+  navigateNew('users');
+  var search = document.getElementById('u-search');
+  if(search){
+    search.value = userId;
+    if(typeof filterUsers==='function') filterUsers();
+  }
+  setTimeout(function(){
+    var rows = [].slice.call(document.querySelectorAll('#u-tbody tr'));
+    var match = rows.find(function(r){
+      var idEl = r.querySelector('.uid2');
+      return idEl && idEl.textContent.indexOf(userId) === 0;
+    });
+    if(match) match.click();
+  }, 30);
+};
+
+window.renderSupportTable = function(){
+  var q = (document.getElementById('sup-search').value||'').toLowerCase();
+  var st = document.getElementById('sup-status-f').value;
+  var sv = document.getElementById('sup-severity-f').value;
+  var ct = document.getElementById('sup-category-f').value;
+  var vip = document.getElementById('sup-vip-f').value;
+  var sevOrder = {Critical:4,High:3,Medium:2,Low:1};
+  var rows = SUPPORT_TICKETS.filter(function(t){
+    if(q && t.id.toLowerCase().indexOf(q)===-1 && t.player.toLowerCase().indexOf(q)===-1 && t.userId.toLowerCase().indexOf(q)===-1) return false;
+    if(st && t.status!==st) return false;
+    if(sv && t.severity!==sv) return false;
+    if(ct && t.category!==ct) return false;
+    if(vip==='vip' && !t.vip) return false;
+    return true;
+  });
+  rows.sort(function(a,b){
+    var k=_supSort.key, dir=_supSort.dir==='asc'?1:-1;
+    var av = k==='severity'? sevOrder[a.severity] : a[k];
+    var bv = k==='severity'? sevOrder[b.severity] : b[k];
+    return av>bv?dir:av<bv?-dir:0;
+  });
+  document.getElementById('sup-count').textContent = rows.length + ' ticket' + (rows.length===1?'':'s');
+  document.getElementById('sup-tbody').innerHTML = rows.map(function(t){
+    return '<tr>'+
+      '<td>'+t.id+'</td>'+
+      '<td><div style="cursor:pointer" onclick="goToPlayerView(\''+t.userId+'\', event)"><div style="font-weight:500;color:#111827">'+t.player+'</div><div style="font-size:11px;color:#6b7280">'+t.userId+'</div></div></td>'+
+      '<td>'+t.category+'</td>'+
+      '<td><span class="chip" style="'+chipColor('severity',t.severity)+'">'+t.severity+'</span></td>'+
+      '<td>'+(t.vip?'<span class="chip" style="background:#fef3c7;color:#92400e">VIP</span>':'')+'</td>'+
+      '<td><span class="chip" style="'+chipColor('status',t.status)+'">'+t.status+'</span></td>'+
+      '<td>'+t.updatedAt+'</td>'+
+      '<td><button class="act-btn" onclick="openSupportDrw(\''+t.id+'\')">View</button></td>'+
+    '</tr>';
+  }).join('');
+};
+
+window.navigateSupport = function(screenId){
+  navigate(screenId);
+  document.querySelectorAll('.nav-item').forEach(function(n){n.classList.remove('active');});
+  var ni = document.getElementById('ni-cms-support');
+  if(ni) ni.classList.add('active');
+  var bc = document.getElementById('breadcrumb');
+  if(bc) bc.textContent = 'CMS › Support';
+  if(screenId==='support-list') renderSupportTable();
+};
+
+window._supCurrentId = null;
+
+window.openSupportDrw = function(id){
+  var t = SUPPORT_TICKETS.find(function(x){return x.id===id;});
+  if(!t) return;
+  _supCurrentId = id;
+  document.getElementById('sup-drw-title').textContent = t.id + ' · ' + t.player + (t.vip?' ★ VIP':'');
+  document.getElementById('sup-drw-sub').textContent = t.category + ' · Submitted ' + t.createdAt;
+  var threadHtml = t.thread.map(function(m){
+    var isAgent = m.from==='agent';
+    return '<div style="margin-bottom:10px;padding:10px 12px;border-radius:8px;max-width:85%;'+
+      (isAgent? 'margin-left:auto;background:#ede9fe;color:#4c1d95;' : 'background:#f9fafb;border:1px solid #e5e7eb;color:#374151;')+'">'+
+      '<div style="font-size:11px;color:#6b7280;margin-bottom:3px">'+(isAgent?'Support Agent':t.player)+' · '+m.at+'</div>'+
+      '<div style="font-size:12.5px">'+m.text+'</div></div>';
+  }).join('');
+  document.getElementById('sup-drw-body').innerHTML =
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px 16px;margin-bottom:16px;font-size:12.5px">'+
+      '<div><div style="color:#6b7280;font-size:11px">Player</div><span style="color:#7c3aed;cursor:pointer;font-weight:500" onclick="goToPlayerView(\''+t.userId+'\')">'+t.player+' ('+t.userId+') <i class="ti ti-external-link" style="font-size:11px"></i></span></div>'+
+      '<div><div style="color:#6b7280;font-size:11px">Session ID</div>'+t.sessionId+'</div>'+
+      '<div><div style="color:#6b7280;font-size:11px">App Version</div>'+t.appVersion+'</div>'+
+      '<div><div style="color:#6b7280;font-size:11px">Device</div>'+t.device+'</div>'+
+    '</div>'+
+    '<div style="display:flex;gap:10px;margin-bottom:16px">'+
+      '<div><div style="color:#6b7280;font-size:11px;margin-bottom:3px">Category</div>'+
+        '<select class="fs2" id="sup-drw-category" onchange="updateSupportField(\'category\')">'+
+          ['Trading','Tournaments','Wallet','Account','Other'].map(function(c){return '<option'+(c===t.category?' selected':'')+'>'+c+'</option>';}).join('')+
+        '</select></div>'+
+      '<div><div style="color:#6b7280;font-size:11px;margin-bottom:3px">Severity</div>'+
+        '<select class="fs2" id="sup-drw-severity" onchange="updateSupportField(\'severity\')">'+
+          ['Critical','High','Medium','Low'].map(function(c){return '<option'+(c===t.severity?' selected':'')+'>'+c+'</option>';}).join('')+
+        '</select></div>'+
+      '<div><div style="color:#6b7280;font-size:11px;margin-bottom:3px">Status</div>'+
+        '<select class="fs2" id="sup-drw-status" onchange="updateSupportField(\'status\')">'+
+          ['Waiting for Support','Waiting for You','Resolved'].map(function(c){return '<option'+(c===t.status?' selected':'')+'>'+c+'</option>';}).join('')+
+        '</select></div>'+
+    '</div>'+
+    '<div style="font-size:11px;color:#6b7280;margin-bottom:6px;font-weight:500">CONVERSATION</div>'+
+    '<div style="max-height:220px;overflow:auto;margin-bottom:14px">'+threadHtml+'</div>'+
+    '<div style="background:#f5f3ff;border:1px solid #ddd6fe;border-radius:8px;padding:10px 12px;margin-bottom:12px">'+
+      '<div style="font-size:11px;color:#6d28d9;font-weight:500;margin-bottom:4px"><i class="ti ti-bulb"></i> Suggested answer</div>'+
+      '<div style="font-size:12px;color:#4c1d95;margin-bottom:8px" id="sup-suggested-text">'+getSuggestedAnswer(t.category)+'</div>'+
+      '<button class="act-btn" onclick="document.getElementById(\'sup-reply\').value = document.getElementById(\'sup-suggested-text\').textContent">Insert into reply</button>'+
+    '</div>'+
+    '<div style="font-size:11px;color:#6b7280;margin-bottom:6px;font-weight:500">REPLY (sent from support@dividandy.com)</div>'+
+    '<textarea id="sup-reply" placeholder="Write a reply to the player..." style="width:100%;min-height:80px;border:1px solid #d1d5db;border-radius:6px;padding:8px 10px;font-family:Inter,sans-serif;font-size:12.5px"></textarea>';
+  document.getElementById('sup-drw').style.right = '0';
+  document.getElementById('sup-drw-overlay').style.display = 'block';
+  document.getElementById('sup-drw-overlay').style.zIndex = '200';
+};
+
+window.updateSupportField = function(field){
+  var t = SUPPORT_TICKETS.find(function(x){return x.id===_supCurrentId;});
+  if(!t) return;
+  var el = document.getElementById('sup-drw-'+field);
+  t[field] = el.value;
+  t.updatedAt = new Date().toISOString().slice(0,16).replace('T',' ');
+};
+
+window.sendSupportReply = function(){
+  var t = SUPPORT_TICKETS.find(function(x){return x.id===_supCurrentId;});
+  if(!t) return;
+  var val = document.getElementById('sup-reply').value.trim();
+  if(!val){ closeSupportDrw(); return; }
+  t.thread.push({from:'agent', text:val, at:new Date().toISOString().slice(0,16).replace('T',' ')});
+  t.updatedAt = t.thread[t.thread.length-1].at;
+  if(typeof showToast2==='function') showToast2('Reply sent via support@dividandy.com');
+  openSupportDrw(t.id);
+};
+
+window.closeSupportDrw = function(){
+  document.getElementById('sup-drw').style.right = '-780px';
+  document.getElementById('sup-drw-overlay').style.display = 'none';
+};
+</script><div class="drw2" id="sup-drw" style="width:780px;right:-780px"><div class="drw2-hdr"><div><div id="sup-drw-title" style="font-weight:600;font-size:15px"></div><div id="sup-drw-sub" style="color:#6b7280;font-size:12px"></div></div><i class="ti ti-x" style="cursor:pointer;font-size:18px" onclick="closeSupportDrw()"></i></div><div class="drw2-body" id="sup-drw-body" style="padding:16px;overflow:auto;flex:1"></div><div class="drw2-ft" style="padding:12px 16px;border-top:1px solid #e5e7eb;display:flex;justify-content:flex-end;gap:8px"><button class="btn2 bo" onclick="closeSupportDrw()">Close</button><button class="btn2 bp" onclick="sendSupportReply()"><i class="ti ti-send"></i> Send Reply</button></div></div><div id="sup-drw-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:200" onclick="closeSupportDrw()"></div>
 </body></html>
