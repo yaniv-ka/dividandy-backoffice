@@ -387,7 +387,7 @@ input[readonly]{background:#f9fafb;color:#6b7280}
 .drw2-ov{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:200;display:none;backdrop-filter:blur(2px)}
 .drw2-ov.open{display:block}
 .drw2{position:fixed;top:0;right:-720px;width:720px;height:100vh;background:#fff;z-index:201;display:flex;flex-direction:column;box-shadow:-8px 0 40px rgba(0,0,0,.12);transition:right .3s cubic-bezier(.25,.8,.25,1)}
-.drw2.open{right:0}
+.drw2.open{right:0!important}
 .drw2-hdr{padding:16px 24px;border-bottom:1px solid #e8e8ec;display:flex;align-items:center;gap:14px;flex-shrink:0}
 .drw2-cls{width:32px;height:32px;border-radius:8px;background:#f3f4f6;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none}
 .drw2-cls svg{width:16px;height:16px;stroke:#374151;fill:none}
@@ -760,6 +760,16 @@ input[readonly]{background:#f9fafb;color:#6b7280}
           <a class="nav-item-new" id="ni-notifications" onclick="navigateNew(&#39;notifications&#39;);initNotifications()"><i class="ti ti-bell-ringing"></i>Notification Center</a>
         </div>
       </div>
+      <!-- NEW: WITHDRAWALS -->
+      <div class="nav-group-new">
+        <div class="nav-gh-new" onclick="toggleNav2(&#39;nav-withdrawals&#39;)">
+          <div class="nav-gl-new"><i class="ti ti-cash"></i>Withdrawals</div>
+          <i class="ti ti-chevron-down nav-arrow" id="arr-withdrawals"></i>
+        </div>
+        <div id="nav-withdrawals" style="display:block">
+          <a class="nav-item-new" id="ni-withdrawals" onclick="navigateNew(&#39;withdrawals&#39;);initWithdrawals()"><i class="ti ti-list-check"></i>Withdrawal Requests</a>
+        </div>
+      </div>
       <!-- NEW: PLAYERS -->
       <div class="nav-group-new">
         <div class="nav-gh-new" onclick="toggleNav2(&#39;nav-players&#39;)">
@@ -776,7 +786,13 @@ input[readonly]{background:#f9fafb;color:#6b7280}
       <div class="nav-group-header"><div class="nav-group-label"><i class="ti ti-cards"></i>Cards</div><i class="ti ti-chevron-down nav-arrow"></i></div>
       <div class="nav-group-header"><div class="nav-group-label"><i class="ti ti-medal"></i>Quests</div><i class="ti ti-chevron-down nav-arrow"></i></div>
       <div class="nav-group-header"><div class="nav-group-label"><i class="ti ti-shopping-bag"></i>Catalog</div><i class="ti ti-chevron-down nav-arrow"></i></div>
-      <div class="nav-group-header" onclick="toggleNav('nav-cms')"><div class="nav-group-label"><i class="ti ti-browser"></i>CMS</div><i class="ti ti-chevron-down nav-arrow" id="arr-cms"></i></div><div id="nav-cms" style="display: none;"><a class="nav-item" id="ni-cms-support" onclick="navigateSupport('support-list')"><i class="ti ti-headset"></i>Support</a></div>
+      <div class="nav-group-header" onclick="toggleNav('nav-cms')">
+        <div class="nav-group-label"><i class="ti ti-browser"></i>CMS</div>
+        <i class="ti ti-chevron-down nav-arrow" id="arr-cms"></i>
+      </div>
+      <div id="nav-cms" style="display:none">
+        <a class="nav-item" id="ni-cms-support" onclick="navigateSupport('support-list')"><i class="ti ti-headset"></i>Support</a>
+      </div>
       <div class="nav-group-header"><div class="nav-group-label"><i class="ti ti-receipt"></i>Sales</div><i class="ti ti-chevron-down nav-arrow"></i></div>
       <div class="nav-group-header"><div class="nav-group-label"><i class="ti ti-settings"></i>Settings</div><i class="ti ti-chevron-down nav-arrow"></i></div>
     </div><!-- /sidebar -->
@@ -3634,7 +3650,7 @@ input[readonly]{background:#f9fafb;color:#6b7280}
 <div class="screen" id="screen-notifications">
   <div class="page-hdr">
     <div class="page-hdr-top">
-      <div><div class="page-title2">Notification Center</div><div class="page-sub">Manage content, channels, and settings for all 35 notification types across Firebase, SendGrid &amp; Amazon SNS</div></div>
+      <div><div class="page-title2">Notification Center</div><div class="page-sub">Manage content, channels, and settings for all 36 notification types across Firebase, SendGrid &amp; Amazon SNS</div></div>
       <div class="hdr-actions">
         <button class="btn2 bo" onclick="showToast2(&#39;Exported&#39;)"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>Export</button>
         <button class="btn2 bp" onclick="showToast2(&#39;All changes saved&#39;)"><svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline></svg>Save all changes</button>
@@ -3799,6 +3815,58 @@ input[readonly]{background:#f9fafb;color:#6b7280}
   </div>
 </div>
 
+<div class="screen" id="screen-withdrawals">
+  <div class="page-hdr">
+    <div class="page-hdr-top">
+      <div><div class="page-title2">Withdrawal Requests</div><div class="page-sub">Track every withdrawal through identity verification, payment-method check, AML re-screen &amp; payout — Sumsub automated steps vs. manual operator steps</div></div>
+      <div class="hdr-actions">
+        <button class="btn2 bo" onclick="showToast2(&#39;Exported&#39;)"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>Export</button>
+      </div>
+    </div>
+  </div>
+  <div class="tb2">
+    <div class="sw2"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg><input class="si2" type="text" placeholder="Search by Request ID, player, User ID…" id="wd-search" oninput="filterWD()"></div>
+    <select class="fs2" id="wd-status" onchange="filterWD()"><option value="">All statuses</option><option>Awaiting Verification</option><option>Ready for Payout</option><option>Processing</option><option>Completed</option><option>On Hold — AML</option><option>Technical Issue</option><option>Canceled</option></select>
+    <select class="fs2" id="wd-method" onchange="filterWD()"><option value="">All methods</option><option>Card</option><option>Bank Transfer</option><option>Crypto</option></select>
+    <span class="rl2" id="wd-count">Showing 8 requests</span>
+  </div>
+  <div style="padding:10px 20px 0;flex-shrink:0">
+    <div style="font-size:11.5px;color:#6b7280;background:#f3f0ff;border:1px solid #ddd6fe;border-radius:8px;padding:9px 12px;display:flex;gap:14px;flex-wrap:wrap">
+      <span><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#7c3aed;margin-right:5px"></span><strong>Automatic (Sumsub)</strong> — steps 1–4, no operator action</span>
+      <span><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#f59e0b;margin-right:5px"></span><strong>Manual (Operator)</strong> — step 5, payment execution only</span>
+    </div>
+  </div>
+  <div style="flex:1;overflow:auto">
+    <table class="tbl2"><thead><tr>
+      <th>Request</th><th>Player</th><th>Amount</th><th>Method</th><th>Submitted</th><th>Status</th><th></th>
+    </tr></thead><tbody id="wd-tbody"></tbody></table>
+  </div>
+</div>
+
+<div class="screen" id="screen-support-list">
+  <div class="page-hdr">
+    <div class="page-hdr-top">
+      <div><div class="page-title2">Support</div><div class="page-sub">Player-submitted support tickets — prioritize, respond, and track status.</div></div>
+      <div class="hdr-actions">
+        <button class="btn2 bo" onclick="showToast2('Exported')"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>Export</button>
+      </div>
+    </div>
+  </div>
+  <div class="tb2">
+    <div class="sw2"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg><input class="si2" type="text" placeholder="Search ticket ID, player name, or player ID…" id="sup-search" oninput="renderSupportTable()"></div>
+    <select class="fs2" id="sup-status-f" onchange="renderSupportTable()"><option value="">All statuses</option><option>Waiting for Support</option><option>Waiting for You</option><option>Resolved</option></select>
+    <select class="fs2" id="sup-severity-f" onchange="renderSupportTable()"><option value="">All severities</option><option>Critical</option><option>High</option><option>Medium</option><option>Low</option></select>
+    <select class="fs2" id="sup-category-f" onchange="renderSupportTable()"><option value="">All categories</option><option>Trading</option><option>Tournaments</option><option>Wallet</option><option>Account</option><option>Other</option></select>
+    <select class="fs2" id="sup-vip-f" onchange="renderSupportTable()"><option value="">All players</option><option value="vip">VIP only</option></select>
+    <span class="rl2" id="sup-count">0 tickets</span>
+  </div>
+  <div style="flex:1;overflow:auto">
+    <table class="tbl2" id="sup-table"><thead><tr>
+      <th>Ticket ID</th><th>Player</th><th>Category</th><th style="cursor:pointer" onclick="sortSupport('severity')">Severity ↕</th><th>VIP</th><th>Status</th><th style="cursor:pointer" onclick="sortSupport('updatedAt')">Last Update ↕</th><th></th>
+    </tr></thead><tbody id="sup-tbody"></tbody></table>
+  </div>
+</div>
+
 <div class="screen" id="screen-segments">
   <div class="page-hdr">
     <div class="page-hdr-top">
@@ -3850,8 +3918,6 @@ input[readonly]{background:#f9fafb;color:#6b7280}
   </div>
 </div>
 
-<div class="screen" id="screen-support-list"><div class="page-hdr"><div class="page-hdr-top"><div><div class="page-title2">Support</div><div class="page-sub">Player-submitted support tickets — prioritize, respond, and track status.</div></div><div class="hdr-actions"><button class="btn2 bo" onclick="showToast2('Exported')"><i class="ti ti-download"></i> Export</button></div></div></div><div class="tb2"><div class="sw2"><i class="ti ti-search"></i><input class="si2" type="text" placeholder="Search ticket ID, player name, or player ID..." id="sup-search" oninput="renderSupportTable()"></div><select class="fs2" id="sup-status-f" onchange="renderSupportTable()"><option value="">All statuses</option><option>Waiting for Support</option><option>Waiting for You</option><option>Resolved</option></select><select class="fs2" id="sup-severity-f" onchange="renderSupportTable()"><option value="">All severities</option><option>Critical</option><option>High</option><option>Medium</option><option>Low</option></select><select class="fs2" id="sup-category-f" onchange="renderSupportTable()"><option value="">All categories</option><option>Trading</option><option>Tournaments</option><option>Wallet</option><option>Account</option><option>Other</option></select><select class="fs2" id="sup-vip-f" onchange="renderSupportTable()"><option value="">All players</option><option value="vip">VIP only</option></select><span class="rl2" id="sup-count">0 tickets</span></div><div style="flex:1;overflow:auto"><table class="tbl2" id="sup-table"><thead><tr><th>Ticket ID</th><th>Player</th><th>Category</th><th style="cursor:pointer" onclick="sortSupport('severity')">Severity ↕</th><th>VIP</th><th>Status</th><th style="cursor:pointer" onclick="sortSupport('updatedAt')">Last Update ↕</th><th></th></tr></thead><tbody id="sup-tbody"></tbody></table></div></div></div><!-- /main -->
-
 </div><!-- /main -->
   </div><!-- /layout -->
 </div><!-- /app -->
@@ -3872,7 +3938,6 @@ input[readonly]{background:#f9fafb;color:#6b7280}
     <div class="drw2-tab" onclick="switchUTab(&#39;wallet&#39;)">Wallet</div>
     <div class="drw2-tab" onclick="switchUTab(&#39;tournaments&#39;)">Tournaments</div>
     <div class="drw2-tab" onclick="switchUTab(&#39;notifications&#39;)">Notifications</div>
-    <div class="drw2-tab" onclick="switchUTab(&#39;support&#39;)">Support</div>
   </div>
   <div class="drw2-body">
     <!-- Profile -->
@@ -3942,11 +4007,19 @@ input[readonly]{background:#f9fafb;color:#6b7280}
       </div>
       <div class="csec2"><div class="csec2-h"><span class="csec2-t">Risk &amp; compliance</span></div>
         <div class="fg2 fg2-3">
-          <div class="fi2"><span class="fl2">AML flag</span><span class="fv2" style="color:#10b981">Clear</span></div>
-          <div class="fi2"><span class="fl2">Fraud flag</span><span class="fv2" style="color:#10b981">Clear</span></div>
-          <div class="fi2"><span class="fl2">Risk score</span><span class="fv2">12 / Low</span></div>
+          <div class="fi2"><span class="fl2">AML flag</span><select class="fsel2" id="u-risk-aml" style="width:120px"><option value="Clear">Clear</option><option value="Flagged">Flagged</option></select></div>
+          <div class="fi2"><span class="fl2">Fraud flag</span><select class="fsel2" id="u-risk-fraud" style="width:120px"><option value="Clear">Clear</option><option value="Flagged">Flagged</option></select></div>
+          <div class="fi2"><span class="fl2">Risk score</span><span class="fv2" id="u-risk-score">12 / Low</span></div>
         </div>
-        <div style="margin-top:12px"><label style="font-size:11px;color:#6b7280;font-weight:500;display:block;margin-bottom:5px">Admin override reason</label><textarea class="ta2" style="min-height:55px" placeholder="Reason for manual override (if any)…"></textarea></div>
+        <div style="margin-top:12px">
+          <label style="font-size:11px;color:#6b7280;font-weight:500;display:block;margin-bottom:5px">Admin override reason</label>
+          <textarea class="ta2" id="u-risk-reason" style="min-height:55px" placeholder="Reason for manual override (required to save)…"></textarea>
+          <div style="display:flex;justify-content:flex-end;margin-top:8px"><button class="btn2 bp" style="padding:5px 12px;font-size:12px" onclick="saveRiskOverride()">Save override</button></div>
+        </div>
+        <div style="margin-top:14px">
+          <div style="font-size:11px;color:#6b7280;font-weight:600;margin-bottom:6px">Override history</div>
+          <div id="u-risk-history" style="font-size:11.5px;color:#6b7280"></div>
+        </div>
       </div>
     </div>
     <!-- Wallet -->
@@ -4037,17 +4110,6 @@ input[readonly]{background:#f9fafb;color:#6b7280}
           <div class="ntfr"><span class="ntfl">Market data</span><label class="tgl2"><input type="checkbox"><span class="tgl2-sl"></span></label></div>
         </div>
       </div>
-    </div>
-    <!-- Support (player support ticket history — DIVI-514) -->
-    <div class="tpnl" id="u-tab-support">
-      <div class="csec2-h" style="padding:0 0 10px 0;border:0"><span class="csec2-t">Support tickets</span><span style="font-size:11px;color:#9ca3af" id="u-support-count"></span></div>
-      <div class="csec2" id="u-support-tblwrap" style="padding:0;overflow:hidden">
-        <table class="mt2">
-          <thead><tr><th>Ticket ID</th><th>Category</th><th>Severity</th><th>Status</th><th>Last update</th><th></th></tr></thead>
-          <tbody id="u-support-tbody"></tbody>
-        </table>
-      </div>
-      <div id="u-support-empty" style="display:none;padding:30px 0;text-align:center;color:#9ca3af;font-size:12.5px">No support tickets from this player yet.</div>
     </div>
   </div>
   <div class="drw2-ft">
@@ -4234,8 +4296,10 @@ const navMap={
   'assets-exchanges-create':'ni-assets-exchanges',
   'assets-bundles-create':'ni-assets-bundles',
   'assets-market-detail':'ni-assets-market',
+  'support-list':'ni-cms-support',
 };
 const bcMap={
+  'support-list':'CMS › Support',
   'reg-tpl':'Tournaments › Regular › Templates',
   'reg-list':'Tournaments › Regular › List',
   'sg-tpl':'Tournaments › Sit & Go › Templates',
@@ -5012,7 +5076,7 @@ function calcRegHint(prefix){
 // ═══════════════════════════════════════════
 const newScreenMap = {
   'users':'ni-users','segments':'ni-segments','store-settings':'ni-store-settings','notifications':'ni-notifications',
-  'offers':'ni-offers','geo':'ni-geo','shop-items':'ni-shop-items','stores':'ni-stores',
+  'offers':'ni-offers','geo':'ni-geo','shop-items':'ni-shop-items','stores':'ni-stores','withdrawals':'ni-withdrawals',
   'dash-management':'ni-dash-management','dash-marketing':'ni-dash-marketing',
   'dash-monetization':'ni-dash-monetization','dash-finance':'ni-dash-finance','dash-support':'ni-dash-support',
   'dash-tv':'ni-dash-tv','dash-email':'ni-dash-email','dash-reportbuilder':'ni-dash-reportbuilder'
@@ -5036,7 +5100,7 @@ function navigateNew(screen) {
 
   // Update breadcrumb
   const bc = document.getElementById('breadcrumb');
-  const labels = {'users':'Players › User Management','store-settings':'Storefront › Store Settings','offers':'Storefront › Offers','geo':'Players › Geo & Session','shop-items':'Storefront › Store Items','stores':'Storefront › Stores',
+  const labels = {'users':'Players › User Management','store-settings':'Storefront › Store Settings','offers':'Storefront › Offers','geo':'Players › Geo & Session','shop-items':'Storefront › Store Items','stores':'Storefront › Stores','withdrawals':'Payments › Withdrawal Requests',
     'dash-management':'Dashboard › Management','dash-marketing':'Dashboard › Marketing',
     'dash-monetization':'Dashboard › Monetization','dash-finance':'Dashboard › Finance','dash-support':'Dashboard › Support & Ops',
     'dash-tv':'Dashboard › TV wallboard','dash-email':'Dashboard › Daily brief','dash-reportbuilder':'Dashboard › Report Settings'};
@@ -5094,7 +5158,12 @@ const U_DC=[54,150,5000,320,12,98,220,75,30,180,8800,440];
 const U_BD=[10,20,30,5,0,15,40,8,0,22,100,18];
 const U_LG=['2h ago','45min ago','Just now','3h ago','1d ago','2h ago','5h ago','12min ago','2d ago','30min ago','1h ago','4h ago'];
 const U_TN=[8,34,156,22,3,14,67,9,4,28,201,41];
-const uData = U_NM.map((n,i)=>({id:`USR-${1000+i*317}`,first:n[0],last:n[1],nick:n[2],init:(n[0][0]+n[1][0]),av:U_AV[i],st:U_ST[i],lv:U_LV[i],ky:U_KY[i],co:U_CO[i],dc:U_DC[i],bdc:U_BD[i],lg:U_LG[i],tn:U_TN[i]}));
+// Risk & compliance — per-user AML/fraud flags + risk score. Charles Boyle (Blocked, KYC Rejected)
+// is seeded as the one flagged example; everyone else starts Clear/low-risk.
+const U_AML=['Clear','Clear','Clear','Clear','Clear','Clear','Flagged','Clear','Clear','Clear','Clear','Clear'];
+const U_FRAUD=['Clear','Clear','Clear','Clear','Clear','Clear','Flagged','Clear','Clear','Clear','Clear','Clear'];
+const U_RISK=['12 / Low','8 / Low','15 / Low','22 / Low','9 / Low','14 / Low','78 / High','11 / Low','7 / Low','19 / Low','13 / Low','16 / Low'];
+const uData = U_NM.map((n,i)=>({id:`USR-${1000+i*317}`,first:n[0],last:n[1],nick:n[2],init:(n[0][0]+n[1][0]),av:U_AV[i],st:U_ST[i],lv:U_LV[i],ky:U_KY[i],co:U_CO[i],dc:U_DC[i],bdc:U_BD[i],lg:U_LG[i],tn:U_TN[i],amlFlag:U_AML[i],fraudFlag:U_FRAUD[i],riskScore:U_RISK[i],riskHistory:[]}));
 
 function uStBadge(s){const m={Active:'bact',Inactive:'binact',Blocked:'bblk','Pending KYC':'bpnd'};const dot=s==='Active'?'<span class="bdot"></span>':'';return `<span class="bdg2 ${m[s]||'binact'}">${dot}${s}</span>`;}
 function uLvBadge(l){const m={Starter:'lv-s',Fox:'lv-f',Talented:'lv-t',Pro:'lv-p',Master:'lv-m'};return `<span class="lvb ${m[l]||'lv-s'}">${l}</span>`;}
@@ -5140,43 +5209,63 @@ function openUDrw(idx){
   document.getElementById('u-w-lk').textContent=Math.round(u.dc*.2)+' Đ';
   const km={'Approved':'kyc-a','Pending':'kyc-p','Not started':'kyc-n','Rejected':'kyc-r'};
   const kb=document.getElementById('u-kyc-bdg');kb.className=km[u.ky]||'kyc-n';kb.textContent=u.ky;
+
+  window._currentUserIdx = idx;
+  document.getElementById('u-risk-aml').value = u.amlFlag;
+  document.getElementById('u-risk-fraud').value = u.fraudFlag;
+  document.getElementById('u-risk-score').textContent = u.riskScore;
+  document.getElementById('u-risk-reason').value = '';
+  renderRiskHistory(u);
+
   switchUTab('profile');
-  if(typeof renderUserSupportTab==='function') renderUserSupportTab(u.id);
   document.getElementById('u-drw-ov').classList.add('open');
   document.getElementById('u-drw').classList.add('open');
 }
 function closeUDrw(){document.getElementById('u-drw-ov').classList.remove('open');document.getElementById('u-drw').classList.remove('open');}
+
+function renderRiskHistory(u){
+  const el = document.getElementById('u-risk-history');
+  if (!el) return;
+  if (!u.riskHistory || !u.riskHistory.length){
+    el.innerHTML = '<div style="color:#9ca3af">No manual overrides recorded yet.</div>';
+    return;
+  }
+  el.innerHTML = u.riskHistory.map(function(h){
+    return '<div style="padding:6px 0;border-bottom:1px solid #f3f4f6">'
+      + '<strong>'+h.ts+'</strong> · '+h.actor+' — '+h.changes
+      + '<div style="color:#9ca3af;margin-top:2px">&ldquo;'+h.reason+'&rdquo;</div></div>';
+  }).join('');
+}
+
+function saveRiskOverride(){
+  if (window._currentUserIdx==null) return;
+  const u = uData[window._currentUserIdx];
+  const reason = document.getElementById('u-risk-reason').value.trim();
+  if (!reason){ showToast2('A reason is required to save an override'); return; }
+  const newAml = document.getElementById('u-risk-aml').value;
+  const newFraud = document.getElementById('u-risk-fraud').value;
+  const changes = [];
+  if (newAml !== u.amlFlag) changes.push('AML flag: '+u.amlFlag+' → '+newAml);
+  if (newFraud !== u.fraudFlag) changes.push('Fraud flag: '+u.fraudFlag+' → '+newFraud);
+  if (!changes.length){ showToast2('No changes to save'); return; }
+  u.riskHistory = u.riskHistory || [];
+  u.riskHistory.unshift({
+    ts: new Date().toISOString().slice(0,16).replace('T',' '),
+    actor: 'Admin YK',
+    changes: changes.join(', '),
+    reason: reason
+  });
+  u.amlFlag = newAml;
+  u.fraudFlag = newFraud;
+  document.getElementById('u-risk-reason').value = '';
+  renderRiskHistory(u);
+  showToast2('Override saved for '+u.first+' '+u.last);
+}
+
 function switchUTab(name){
-  const tabs=['profile','kyc','wallet','tournaments','notifications','support'];
+  const tabs=['profile','kyc','wallet','tournaments','notifications'];
   document.querySelectorAll('#u-drw .drw2-tab').forEach((t,i)=>t.classList.toggle('active',tabs[i]===name));
   tabs.forEach(t=>{const p=document.getElementById('u-tab-'+t);if(p)p.classList.toggle('active',t===name);});
-}
-// Player Support History tab (DIVI-514: Back Office — Player Support History).
-// Shows this player's full ticket history and reuses the main Support module's
-// own ticket drawer (openSupportDrw) so agents review it without leaving the profile.
-function renderUserSupportTab(userId){
-  var tbody=document.getElementById('u-support-tbody');
-  if(!tbody) return;
-  var tickets=(typeof SUPPORT_TICKETS!=='undefined'?SUPPORT_TICKETS:[]).filter(function(t){return t.userId===userId;});
-  tickets=tickets.slice().sort(function(a,b){return a.updatedAt<b.updatedAt?1:a.updatedAt>b.updatedAt?-1:0;});
-  var countEl=document.getElementById('u-support-count');
-  if(countEl) countEl.textContent=tickets.length+' ticket'+(tickets.length===1?'':'s');
-  var wrap=document.getElementById('u-support-tblwrap');
-  var empty=document.getElementById('u-support-empty');
-  if(wrap) wrap.style.display=tickets.length?'':'none';
-  if(empty) empty.style.display=tickets.length?'none':'';
-  tbody.innerHTML=tickets.map(function(t){
-    var sevStyle=(typeof chipColor==='function')?chipColor('severity',t.severity):'';
-    var stStyle=(typeof chipColor==='function')?chipColor('status',t.status):'';
-    return '<tr>'+
-      '<td>'+t.id+'</td>'+
-      '<td>'+t.category+'</td>'+
-      '<td><span class="chip" style="'+sevStyle+'">'+t.severity+'</span></td>'+
-      '<td><span class="chip" style="'+stStyle+'">'+t.status+'</span></td>'+
-      '<td>'+t.updatedAt+'</td>'+
-      '<td><button class="act-btn" onclick="openSupportDrw(\''+t.id+'\')">View</button></td>'+
-    '</tr>';
-  }).join('');
 }
 
 // ═══════════════════════════════════════════
@@ -6353,6 +6442,38 @@ const NOTIF_DATA = [
     },
     "audience": "Specific user (referral maker)",
     "alwaysSend": false
+  },
+  {
+    "id": "NTF-PRO-011",
+    "section": "Profile",
+    "category": "Security",
+    "priority": 1,
+    "quietHours": "Allowed",
+    "critical": true,
+    "channels": [
+      "In-App",
+      "Push"
+    ],
+    "enabled": true,
+    "target": "wallet_withdraw",
+    "tokens": "PlayerName",
+    "en": {
+      "push_title": "Verification Complete",
+      "push_body": "Your identity has been verified. You're all set to withdraw.",
+      "inapp_title": "Verification Complete",
+      "inapp_body": "Your identity has been verified. You're all set to withdraw.",
+      "cta": "Withdraw Now"
+    },
+    "es": {
+      "push_title": "Verificación Completada",
+      "push_body": "Tu identidad ha sido verificada. Ya puedes retirar.",
+      "inapp_title": "Verificación Completada",
+      "inapp_body": "Tu identidad ha sido verificada. Ya puedes retirar.",
+      "cta": "Retirar Ahora"
+    },
+    "audience": "Specific user (per-user, KYC applicant)",
+    "alwaysSend": true,
+    "note": "In-App is shown while the user is active in the app; if the user is outside the app when the Sumsub applicantReviewed webhook arrives, falls back to Push. No Email channel — Sumsub's own native applicant email (Advanced settings → Email notifications) is intentionally left disabled so this stays a single, app-branded notification path."
   }
 ];
 const SECTION_META = {
@@ -6367,7 +6488,7 @@ const SECTION_META = {
 const SECTION_ORDER = ['In-Tournament','Post-Tournament','Onboarding','Wallet','Social & Rival','Sit & Go','Profile'];
 const CH_CLS = {Push:'ch-push','In-App':'ch-inapp',Email:'ch-email',SMS:'ch-sms'};
 const CH_LBL = {Push:'Push','In-App':'In-App',Email:'Email',SMS:'SMS'};
-const CRIT_IDS = new Set(['NTF-IN-001','NTF-IN-003','NTF-POST-001','NTF-WAL-007','NTF-ONB-001','NTF-ONB-010']);
+const CRIT_IDS = new Set(['NTF-IN-001','NTF-IN-003','NTF-POST-001','NTF-WAL-007','NTF-ONB-001','NTF-ONB-010','NTF-PRO-011']);
 
 function chPill(ch, active) {
   const c = active !== false ? (CH_CLS[ch]||'ch-inapp') : 'ch-off';
@@ -6634,6 +6755,517 @@ function initNotifications() {
     renderAccordion(NOTIF_DATA);
   }
 }
+
+// ═══════════════════════════════════════════
+// WITHDRAWAL REQUESTS — tracking checklist
+// Steps 1-4 & 6 = automatic (Sumsub webhooks). Step 5 (payment execution) = manual (Operator).
+// Step 3b (crypto wallet screening) only applies to Crypto method and is manual (Ops).
+// ═══════════════════════════════════════════
+const WD_STEP_DEFS = [
+  {key:'submitted', label:'Request submitted', mode:'auto'},
+  {key:'identity',  label:'Identity verification valid', mode:'auto'},
+  {key:'payment',   label:'Payment method check passed', mode:'auto'},
+  {key:'crypto',    label:'Crypto wallet screening (BoomFi)', mode:'manual', cryptoOnly:true},
+  {key:'aml',       label:'AML re-screen passed', mode:'auto'},
+  {key:'payout',    label:'Payment executed', mode:'manual'},
+  {key:'notified',  label:'Player notified', mode:'auto'}
+];
+
+const WD_DATA = [
+  {id:'WD-10432', player:'David Gueta', uid:'USR-1000', amount:'450 Đ', method:'Bank Transfer', country:'Argentina', submitted:'28 Jul 2026 14:02', status:'Processing',
+    steps:{submitted:'done', identity:'done', payment:'done', crypto:'na', aml:'done', payout:'current', notified:'pending'},
+    pay:{accountHolder:'David Gueta', bankCountry:'Argentina', bankName:'Banco Galicia', accountType:'Savings', accountNumber:'••••7734', nationalId:'ARG-**112'},
+    paymentExecution:null},
+  {id:'WD-10431', player:'John Cena', uid:'USR-1317', amount:'900 Đ', method:'Bank Transfer', country:'USA', submitted:'28 Jul 2026 11:47', status:'Ready for Payout',
+    steps:{submitted:'done', identity:'done', payment:'done', crypto:'na', aml:'done', payout:'pending', notified:'pending'},
+    pay:{accountHolder:'John Cena', bankCountry:'USA', bankName:'Chase Bank', accountType:'Checking', accountNumber:'••••4489', nationalId:'SSN-***6721'},
+    paymentExecution:null},
+  {id:'WD-10430', player:'Norman Rousseau', uid:'USR-4432', amount:'640 Đ', method:'Card', country:'Mexico', submitted:'29 Jul 2026 10:15', status:'Ready for Payout',
+    steps:{submitted:'done', identity:'done', payment:'done', crypto:'na', aml:'done', payout:'pending', notified:'pending'},
+    pay:{cardBrand:'Visa', last4:'4242', bin:'411111', token:'tok_bp_7f2a19c3', cardholderName:'Norman Rousseau', cardCountry:'Mexico'},
+    paymentExecution:null},
+  {id:'WD-10428', player:'David Kreis', uid:'USR-1634', amount:'2,000 Đ', method:'Crypto', country:'Israel', submitted:'27 Jul 2026 19:15', status:'Ready for Payout',
+    steps:{submitted:'done', identity:'done', payment:'na', crypto:'done', aml:'done', payout:'pending', notified:'pending'},
+    pay:{walletAddress:'0x8a3F1e9B5c7D2a44F0e6C1b9D3a8E7F2C4b9c2D', network:'Ethereum (ERC-20)', currency:'USDT', memo:'—'},
+    paymentExecution:null},
+  {id:'WD-10425', player:'Doug Judy', uid:'USR-1951', amount:'320 Đ', method:'Crypto', country:'Brazil', submitted:'27 Jul 2026 09:03', status:'Awaiting Verification',
+    steps:{submitted:'done', identity:'done', payment:'na', crypto:'pending', aml:'done', payout:'blocked', notified:'pending'},
+    pay:{walletAddress:'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx4kml', network:'Bitcoin', currency:'BTC', memo:'—'},
+    paymentExecution:null},
+  {id:'WD-10419', player:'Amy Santiago', uid:'USR-2268', amount:'75 Đ', method:'Bank Transfer', country:'Colombia', submitted:'26 Jul 2026 16:40', status:'On Hold — AML',
+    steps:{submitted:'done', identity:'done', payment:'done', crypto:'na', aml:'hold', payout:'blocked', notified:'pending'},
+    pay:{accountHolder:'Amy Santiago', bankCountry:'Colombia', bankName:'Bancolombia', accountType:'Savings', accountNumber:'••••2201', nationalId:'CC-**5588'},
+    paymentExecution:null, amlReason:'Sanctions list — partial name match', amlTicket:'SUP-1050'},
+  {id:'WD-10440', player:'Gina Linetti', uid:'USR-3853', amount:'180 Đ', method:'Bank Transfer', country:'Israel', submitted:'29 Jul 2026 07:30', status:'Technical Issue',
+    steps:{submitted:'done', identity:'done', payment:'done', crypto:'na', aml:'timeout', payout:'blocked', notified:'pending'},
+    pay:{accountHolder:'Gina Linetti', bankCountry:'Israel', bankName:'Bank Hapoalim', accountType:'Checking', accountNumber:'••••5541', nationalId:'IL-**9034'},
+    paymentExecution:null, techRetryCount:1},
+  {id:'WD-10411', player:'Rosa Diaz', uid:'USR-2410', amount:'1,200 Đ', method:'Bank Transfer', country:'Argentina', submitted:'25 Jul 2026 08:22', status:'Completed',
+    steps:{submitted:'done', identity:'done', payment:'done', crypto:'na', aml:'done', payout:'done', notified:'done'},
+    pay:{accountHolder:'Rosa Diaz', bankCountry:'Argentina', bankName:'Banco Santander Río', accountType:'Checking', accountNumber:'••••9012', nationalId:'ARG-**340'},
+    paymentExecution:{ts:'25 Jul 2026 09:10', operator:'Admin YK', notes:'Paid via Directa24 Cashout, confirmation #DX-88213.', fileName:'receipt_DX-88213.pdf'}},
+  {id:'WD-10406', player:'Charles Boyle', uid:'USR-2522', amount:'60 Đ', method:'Crypto', country:'USA', submitted:'24 Jul 2026 20:11', status:'Completed',
+    steps:{submitted:'done', identity:'done', payment:'na', crypto:'done', aml:'done', payout:'done', notified:'done'},
+    pay:{walletAddress:'0x1bC4a2F8e6D9c05b3A7e1F4c8D2a9B6e0C3f77Ae', network:'Ethereum (ERC-20)', currency:'USDC', memo:'—'},
+    paymentExecution:{ts:'24 Jul 2026 21:02', operator:'Admin YK', notes:'Sent 60 USDC to wallet, tx confirmed on-chain.', fileName:'tx_screenshot.png'}},
+  {id:'WD-10398', player:'Terry Jeffords', uid:'USR-2650', amount:'500 Đ', method:'Bank Transfer', country:'Brazil', submitted:'23 Jul 2026 13:05', status:'Canceled',
+    steps:{submitted:'done', identity:'done', payment:'pending', crypto:'na', aml:'pending', payout:'canceled', notified:'done'},
+    pay:{accountHolder:'Terry Jeffords', bankCountry:'Brazil', bankName:'Itaú Unibanco', accountType:'Checking', accountNumber:'••••3345', nationalId:'CPF-***9012'},
+    paymentExecution:null}
+];
+
+function wdStatusClass(st){
+  return st==='Completed' ? 'kyc-a'
+       : (st==='On Hold — AML' || st==='Technical Issue') ? 'kyc-r'
+       : st==='Canceled' ? 'kyc-n'
+       : 'kyc-p'; // Awaiting Verification, Ready for Payout, Processing
+}
+
+function wdPayDetailsHtml(w){
+  const row = (label, val) => `<div><div style="color:#9ca3af;font-size:11px">${label}</div><div style="font-weight:600;font-family:monospace">${val}</div></div>`;
+  if (w.method === 'Crypto'){
+    const p = w.pay || {};
+    return row('Wallet address', p.walletAddress||'—')
+      + row('Network', p.network||'—')
+      + row('Currency / token', p.currency||'—')
+      + row('Memo / tag', p.memo||'—');
+  }
+  if (w.method === 'Card'){
+    // Per DIVI-535 spec: default payout method, mirrored from the deposit method.
+    // BIN/last4/brand/token/name/country only — pulled from BridgerPay, never a full PAN/CVV
+    // (out of PCI scope for this backoffice; full card data never enters this system).
+    const p = w.pay || {};
+    return row('Card brand', p.cardBrand||'—')
+      + row('Card number', p.last4 ? '•••• •••• •••• '+p.last4 : '—')
+      + row('BIN', p.bin||'—')
+      + row('Cardholder name', p.cardholderName||'—')
+      + row('Card country', p.cardCountry||'—')
+      + row('BridgerPay token', p.token||'—');
+  }
+  // Bank Transfer
+  const p = w.pay || {};
+  return row('Account holder', p.accountHolder||'—')
+    + row('Bank', p.bankName||'—')
+    + row('Account type', p.accountType||'—')
+    + row('Account number', p.accountNumber||'—')
+    + row('National ID', p.nationalId||'—')
+    + row('Bank country', p.bankCountry||'—');
+}
+
+function filterWD(){ renderWD(); }
+
+function renderWD(){
+  const q = (document.getElementById('wd-search')||{}).value?.toLowerCase() || '';
+  const stF = (document.getElementById('wd-status')||{}).value || '';
+  const mF = (document.getElementById('wd-method')||{}).value || '';
+  const rows = WD_DATA.filter(w=>{
+    if (stF && w.status!==stF) return false;
+    if (mF && w.method!==mF) return false;
+    if (q && !(w.id.toLowerCase().includes(q) || w.player.toLowerCase().includes(q) || w.uid.toLowerCase().includes(q))) return false;
+    return true;
+  });
+  const cnt = document.getElementById('wd-count');
+  if (cnt) cnt.textContent = `Showing ${rows.length} request${rows.length===1?'':'s'}`;
+  const tb = document.getElementById('wd-tbody');
+  if (!tb) return;
+  tb.innerHTML = rows.map(w=>{
+    const idx = WD_DATA.indexOf(w);
+    return `<tr onclick="openWDrw(${idx})">
+      <td style="font-family:monospace;font-weight:600">${w.id}</td>
+      <td>${w.player}<div class="uid2">${w.uid}</div></td>
+      <td style="color:#7c3aed;font-weight:600;font-family:monospace">${w.amount}</td>
+      <td>${w.method}</td>
+      <td style="color:#6b7280">${w.submitted}</td>
+      <td><span class="${wdStatusClass(w.status)}">${w.status}</span></td>
+      <td><div class="ra2"><button class="ab2" onclick="event.stopPropagation();openWDrw(${idx})"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>View</button></div></td>
+    </tr>`;
+  }).join('');
+}
+
+function wdStepIcon(state){
+  if (state==='done') return '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+  if (state==='current') return '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>';
+  if (state==='hold' || state==='blocked' || state==='timeout') return '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>';
+  if (state==='canceled') return '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
+  if (state==='na') return '<span style="color:#d1d5db;font-size:11px">—</span>';
+  return '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" stroke-width="2"><circle cx="12" cy="12" r="9"></circle></svg>';
+}
+
+let _wdCurrentIdx = null;
+
+function openWDrw(idx){
+  _wdCurrentIdx = idx;
+  const w = WD_DATA[idx];
+  document.getElementById('wd-drw-title').textContent = w.id;
+  document.getElementById('wd-drw-sub').textContent = `${w.player} · ${w.amount} · ${w.method}`;
+  const sb = document.getElementById('wd-drw-status');
+  sb.className = wdStatusClass(w.status); sb.textContent = w.status;
+  document.getElementById('wd-f-id').textContent = w.id;
+  document.getElementById('wd-f-player').textContent = `${w.player} (${w.uid})`;
+  document.getElementById('wd-f-amount').textContent = w.amount;
+  document.getElementById('wd-f-method').textContent = `${w.method} (${w.country})`;
+  document.getElementById('wd-f-submitted').textContent = w.submitted;
+  document.getElementById('wd-f-country').textContent = w.country;
+
+  document.getElementById('wd-pay-details').innerHTML = wdPayDetailsHtml(w);
+
+  const stepsEl = document.getElementById('wd-steps');
+  stepsEl.innerHTML = WD_STEP_DEFS.filter(d=>!d.cryptoOnly || w.method==='Crypto').map(d=>{
+    const state = w.steps[d.key] || 'pending';
+    const modeTag = d.mode==='auto'
+      ? '<span style="font-size:10px;font-weight:600;color:#7c3aed;background:#f3f0ff;padding:2px 7px;border-radius:10px">AUTO · SUMSUB</span>'
+      : '<span style="font-size:10px;font-weight:600;color:#92400e;background:#fef3c7;padding:2px 7px;border-radius:10px">MANUAL · OPERATOR</span>';
+    return `<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #f3f4f6">
+      <div style="width:20px;text-align:center">${wdStepIcon(state)}</div>
+      <div style="flex:1;font-size:12.5px;color:${state==='na'?'#9ca3af':'#374151'}">${d.label}</div>
+      ${modeTag}
+    </div>`;
+  }).join('');
+
+  wdRenderExecSection(w, idx);
+  wdRenderFooter(w, idx);
+
+  document.getElementById('wd-drw-ov').classList.add('open');
+  document.getElementById('wd-drw').classList.add('open');
+}
+function closeWDrw(){document.getElementById('wd-drw-ov').classList.remove('open');document.getElementById('wd-drw').classList.remove('open');}
+
+// Single dispatcher for the drawer's lower info section: AML hold details,
+// crypto wallet-pending details, technical-timeout details, the payment
+// execution form (while Processing), or the final read-only execution record.
+function wdRenderExecSection(w, idx){
+  const wrap = document.getElementById('wd-exec-wrap');
+  const title = document.getElementById('wd-exec-title');
+  const el = document.getElementById('wd-exec-record');
+
+  if (w.steps.aml === 'hold'){
+    wrap.style.display = ''; title.textContent = 'AML hold — case details';
+    el.innerHTML = `<div style="font-size:12.5px;color:#374151;margin-bottom:8px">
+        <div><span style="color:#9ca3af;font-size:11px">Reason</span><div style="font-weight:600">${w.amlReason||'Sanctions/PEP/Warning match'}</div></div>
+      </div>
+      <div style="display:inline-flex;align-items:center;gap:6px;background:#fee2e2;color:#991b1b;border-radius:6px;padding:4px 9px;font-size:11.5px">
+        <i class="ti ti-headset"></i>Support ticket auto-opened: ${w.amlTicket||'—'}
+      </div>`;
+  } else if (w.method==='Crypto' && w.steps.crypto==='pending'){
+    wrap.style.display = ''; title.textContent = 'Crypto wallet verification pending';
+    el.innerHTML = `<div style="font-size:12.5px;color:#374151">Automated wallet ownership/risk check is not yet finalized (pending BoomFi integration). Manually confirm the wallet address above belongs to this player before approving.</div>`;
+  } else if (w.status==='Technical Issue'){
+    wrap.style.display = ''; title.textContent = 'Technical issue details';
+    el.innerHTML = `<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:12.5px;margin-bottom:8px">
+        <div><span style="color:#9ca3af;font-size:11px">Request ID</span><div style="font-weight:600">${w.id}</div></div>
+        <div><span style="color:#9ca3af;font-size:11px">Submitted</span><div style="font-weight:600">${w.submitted}</div></div>
+        <div><span style="color:#9ca3af;font-size:11px">Retry count</span><div style="font-weight:600" id="wd-tech-retries">${w.techRetryCount||0}</div></div>
+      </div>
+      <div style="font-size:11.5px;color:#6b7280">Webhook / API did not respond within the SLA window. Retry the status fetch, or hand off to a full manual check if it stays stuck.</div>`;
+  } else if (w.paymentExecution){
+    wrap.style.display = ''; title.textContent = 'Payment execution record';
+    const pe = w.paymentExecution;
+    el.innerHTML = `<div style="font-size:12.5px;color:#374151">
+      <div style="margin-bottom:6px"><strong>${pe.ts}</strong> · ${pe.operator}</div>
+      <div style="margin-bottom:6px">${pe.notes}</div>
+      ${pe.fileName ? `<div style="display:inline-flex;align-items:center;gap:6px;background:#f3f4f6;border-radius:6px;padding:4px 9px;font-size:11.5px;color:#6b7280"><i class="ti ti-paperclip"></i>${pe.fileName}</div>` : ''}
+    </div>`;
+  } else if (w.status==='Processing'){
+    wrap.style.display = ''; title.textContent = 'Payment execution record';
+    el.innerHTML = `<div style="font-size:11.5px;color:#6b7280;margin-bottom:8px">Record when the payment was actually sent, before marking this request as executed. Timestamp is captured automatically.</div>
+      <label style="font-size:11px;color:#6b7280;font-weight:500;display:block;margin-bottom:4px">Operator notes</label>
+      <textarea class="ta2" id="wd-exec-notes" placeholder="e.g. Paid via Directa24 Cashout, confirmation #…"></textarea>
+      <label style="font-size:11px;color:#6b7280;font-weight:500;display:block;margin:10px 0 4px">Attach proof of payment (receipt / screenshot)</label>
+      <input type="file" id="wd-exec-file" style="font-size:12px">`;
+  } else {
+    wrap.style.display = 'none';
+    el.innerHTML = '';
+  }
+}
+
+function wdRenderFooter(w, idx){
+  const ft = document.getElementById('wd-drw-ft');
+  if (w.steps.aml === 'hold'){
+    ft.innerHTML = '<button class="btn2 bo" onclick="closeWDrw()">Close</button>'
+      + '<button class="btn2 bo" style="color:#374151" onclick="wdKeepLocked('+idx+')">Keep locked / escalate</button>'
+      + '<button class="btn2 bp" onclick="wdReleaseAml('+idx+')">Release withdrawals</button>';
+  } else if (w.method==='Crypto' && w.steps.crypto==='pending'){
+    ft.innerHTML = '<button class="btn2 bo" onclick="closeWDrw()">Close</button>'
+      + '<button class="btn2 bp" onclick="wdApproveCrypto('+idx+')">Approve crypto wallet verification</button>';
+  } else if (w.status==='Technical Issue'){
+    ft.innerHTML = '<button class="btn2 bo" onclick="closeWDrw()">Close</button>'
+      + '<button class="btn2 bo" onclick="wdRetryStatus('+idx+')">Retry status fetch</button>'
+      + '<button class="btn2 bp" onclick="wdManualHandoff('+idx+')">Manual handoff</button>';
+  } else if (w.status==='Ready for Payout'){
+    ft.innerHTML = '<button class="btn2 bo" onclick="closeWDrw()">Close</button>'
+      + '<button class="btn2 bp" onclick="wdStartProcessing('+idx+')">Start processing</button>';
+  } else if (w.status==='Processing'){
+    ft.innerHTML = '<button class="btn2 bo" onclick="closeWDrw()">Close</button>'
+      + '<button class="btn2 bp" onclick="wdMarkExecuted('+idx+')">Mark payment executed</button>';
+  } else {
+    ft.innerHTML = '<button class="btn2 bo" onclick="closeWDrw()">Close</button>';
+  }
+}
+
+function wdRetryStatus(idx){
+  const w = WD_DATA[idx];
+  w.techRetryCount = (w.techRetryCount||0) + 1;
+  showToast2(w.id+': retry #'+w.techRetryCount+' — still no response from Sumsub');
+  openWDrw(idx);
+}
+
+function wdManualHandoff(idx){
+  const w = WD_DATA[idx];
+  w.steps.aml = 'done';
+  w.status = 'Ready for Payout';
+  w.steps.payout = 'pending';
+  showToast2(w.id+': handed off for manual check — cleared to proceed');
+  openWDrw(idx);
+  renderWD();
+}
+
+// Ready for Payout -> Processing. From this point the request can no longer
+// be canceled by the player on the app side.
+function wdStartProcessing(idx){
+  const w = WD_DATA[idx];
+  w.status='Processing'; w.steps.payout='current';
+  showToast2(w.id+' moved to Processing — the player can no longer cancel this request');
+  openWDrw(idx);
+  renderWD();
+}
+
+// Processing -> Completed. Requires the operator's execution notes; the
+// attachment is optional. Timestamp + operator are captured automatically.
+function wdMarkExecuted(idx){
+  const w = WD_DATA[idx];
+  const notesEl = document.getElementById('wd-exec-notes');
+  const notes = notesEl ? notesEl.value.trim() : '';
+  if (!notes){ showToast2('Add a note about the payment before marking it executed'); return; }
+  const fileEl = document.getElementById('wd-exec-file');
+  const fileName = fileEl && fileEl.files && fileEl.files[0] ? fileEl.files[0].name : '';
+  w.paymentExecution = {
+    ts: new Date().toISOString().slice(0,16).replace('T',' '),
+    operator: 'Admin YK',
+    notes: notes,
+    fileName: fileName
+  };
+  w.status='Completed'; w.steps.payout='done'; w.steps.notified='done';
+  showToast2(w.id+' marked Completed — player notified automatically');
+  openWDrw(idx);
+  renderWD();
+}
+
+function wdApproveCrypto(idx){
+  const w = WD_DATA[idx];
+  w.steps.crypto = 'done';
+  w.status = 'Ready for Payout';
+  w.steps.payout = 'pending';
+  showToast2(w.id+': crypto wallet verification approved');
+  openWDrw(idx);
+  renderWD();
+}
+
+function wdReleaseAml(idx){
+  const w = WD_DATA[idx];
+  w.steps.aml = 'done';
+  w.status = 'Ready for Payout';
+  w.steps.payout = 'pending';
+  showToast2(w.id+': AML hold released, withdrawal can proceed');
+  openWDrw(idx);
+  renderWD();
+}
+
+function wdKeepLocked(idx){
+  const w = WD_DATA[idx];
+  showToast2(w.id+': kept locked — escalated for further AML review');
+  closeWDrw();
+}
+
+function initWithdrawals(){
+  if (document.getElementById('wd-tbody') && !document.getElementById('wd-tbody').innerHTML){
+    renderWD();
+  }
+}
+
+// ═══════════════════════════════════════════
+// CMS › SUPPORT — player ticket queue
+// ═══════════════════════════════════════════
+window.SUPPORT_TICKETS = [
+  {id:'SUP-1042', player:'Jake Peralta', uid:'USR-1000', vip:true,  category:'Wallet',      severity:'Critical', status:'Waiting for Support', updatedAt:'2026-07-18 09:12',
+   sessionId:'sess_8f2a1c', appVersion:'2.4.1', device:'iOS 18 · iPhone 15',
+   messages:[{from:'player', ts:'2026-07-18 09:12', text:'My withdrawal has been pending for 2 days and the app shows an error when I try to cancel it.'}],
+   suggested:'Thanks for flagging this wallet issue. Withdrawals/deposits can take up to 24-48h to process — if it has been longer, we are escalating this now. (Suggested from FAQ/T&C — source content pending)'},
+  {id:'SUP-1041', player:'John Cena', uid:'USR-1317', vip:false, category:'Tournaments', severity:'High',     status:'Waiting for You',      updatedAt:'2026-07-18 08:05',
+   sessionId:'sess_1c77b2', appVersion:'2.4.1', device:'Android 14 · Pixel 8',
+   messages:[{from:'player', ts:'2026-07-18 08:05', text:"I got disconnected mid-tournament and lost my spot. Can I get a refund of the entry fee?"}],
+   suggested:'We\'re sorry about the disconnect. Please share the tournament ID and timestamp so we can check the server logs and refund the entry fee if it was a platform-side issue.'},
+  {id:'SUP-1039', player:'Amy Santiago', uid:'USR-2268', vip:false, category:'Trading', severity:'Medium', status:'Waiting for You', updatedAt:'2026-07-17 10:15',
+   sessionId:'sess_44de91', appVersion:'2.3.9', device:'iOS 17 · iPhone 13',
+   messages:[{from:'player', ts:'2026-07-17 10:15', text:'Prices seem delayed by a few seconds compared to the market — is that expected?'}],
+   suggested:'Market data can have a short delay depending on the asset class. Let them know typical delay windows and offer to check the specific asset/timestamp they saw.'},
+  {id:'SUP-1035', player:'Raymond Holt', uid:'USR-2585', vip:true, category:'Account', severity:'High', status:'Waiting for Support', updatedAt:'2026-07-15 11:20',
+   sessionId:'sess_9b0a44', appVersion:'2.4.0', device:'iOS 18 · iPhone 14',
+   messages:[{from:'player', ts:'2026-07-15 11:20', text:'I can\'t update my registered address — the form keeps rejecting my postal code.'}],
+   suggested:'Ask which country/postal code format they\'re entering — some formats need a manual override on our side while the validation rule gets fixed.'},
+  {id:'SUP-1030', player:'Rosa Diaz', uid:'USR-3219', vip:false, category:'Other', severity:'Low', status:'Resolved', updatedAt:'2026-07-13 16:44',
+   sessionId:'sess_2f61ab', appVersion:'2.3.9', device:'Android 13 · Galaxy S22',
+   messages:[{from:'player', ts:'2026-07-13 15:02', text:'Just wanted to say the new tournament UI looks great!'},{from:'agent', ts:'2026-07-13 16:44', text:'Thank you so much for the kind words — passing it along to the product team!'}],
+   suggested:''},
+  {id:'SUP-1024', player:'Michael Scott', uid:'USR-4170', vip:false, category:'Trading', severity:'Low', status:'Resolved', updatedAt:'2026-07-11 09:10',
+   sessionId:'sess_77c210', appVersion:'2.3.8', device:'iOS 17 · iPhone 12',
+   messages:[{from:'player', ts:'2026-07-10 18:30', text:'How is the leverage on Forex pairs calculated?'},{from:'agent', ts:'2026-07-11 09:10', text:'Leverage is fixed per instrument category and shown on the tournament\'s Instruments tab — happy to walk you through an example.'}],
+   suggested:''}
+];
+
+window._supSort = {key:'severity', dir:'asc'};
+const _SUP_SEVERITY_ORDER = {'Critical':0,'High':1,'Medium':2,'Low':3};
+
+window.chipColor = function(kind, value){
+  if (kind==='severity'){
+    if (value==='Critical') return 'background:#fee2e2;color:#991b1b';
+    if (value==='High')     return 'background:#ffedd5;color:#9a3412';
+    if (value==='Medium')   return 'background:#fef3c7;color:#92400e';
+    return 'background:#f3f4f6;color:#6b7280'; // Low
+  }
+  if (kind==='status'){
+    if (value==='Waiting for Support') return 'background:#ede9fe;color:#5b21b6';
+    if (value==='Waiting for You')     return 'background:#fef3c7;color:#92400e';
+    return 'background:#d1fae5;color:#065f46'; // Resolved
+  }
+  return '';
+};
+
+window.getSuggestedAnswer = function(ticket){
+  return ticket.suggested || '';
+};
+
+window.sortSupport = function(key){
+  if (window._supSort.key === key){
+    window._supSort.dir = window._supSort.dir === 'asc' ? 'desc' : 'asc';
+  } else {
+    window._supSort = {key: key, dir: 'asc'};
+  }
+  renderSupportTable();
+};
+
+window.goToPlayerView = function(uid){
+  showToast2('Open player card: ' + uid);
+};
+
+window.renderSupportTable = function(){
+  const q = (document.getElementById('sup-search')||{}).value?.toLowerCase() || '';
+  const stF = (document.getElementById('sup-status-f')||{}).value || '';
+  const sevF = (document.getElementById('sup-severity-f')||{}).value || '';
+  const catF = (document.getElementById('sup-category-f')||{}).value || '';
+  const vipF = (document.getElementById('sup-vip-f')||{}).value || '';
+
+  let rows = window.SUPPORT_TICKETS.filter(function(t){
+    if (stF && t.status !== stF) return false;
+    if (sevF && t.severity !== sevF) return false;
+    if (catF && t.category !== catF) return false;
+    if (vipF === 'vip' && !t.vip) return false;
+    if (q && !(t.id.toLowerCase().includes(q) || t.player.toLowerCase().includes(q) || t.uid.toLowerCase().includes(q))) return false;
+    return true;
+  });
+
+  const sk = window._supSort.key, sd = window._supSort.dir === 'asc' ? 1 : -1;
+  rows = rows.slice().sort(function(a,b){
+    let av, bv;
+    if (sk === 'severity'){ av = _SUP_SEVERITY_ORDER[a.severity]; bv = _SUP_SEVERITY_ORDER[b.severity]; }
+    else { av = a.updatedAt; bv = b.updatedAt; }
+    if (av < bv) return -1*sd; if (av > bv) return 1*sd; return 0;
+  });
+
+  const cnt = document.getElementById('sup-count');
+  if (cnt) cnt.textContent = rows.length + ' ticket' + (rows.length===1?'':'s');
+
+  const tb = document.getElementById('sup-tbody');
+  if (!tb) return;
+  tb.innerHTML = rows.map(function(t){
+    const idx = window.SUPPORT_TICKETS.indexOf(t);
+    return '<tr onclick="openSupportDrw(\'' + t.id + '\')">'
+      + '<td style="font-family:monospace;font-weight:600">' + t.id + '</td>'
+      + '<td>' + t.player + '<div class="uid2">' + t.uid + '</div></td>'
+      + '<td>' + t.category + '</td>'
+      + '<td><span class="bdg2" style="' + window.chipColor('severity', t.severity) + '">' + t.severity + '</span></td>'
+      + '<td>' + (t.vip ? '<span class="bdg2" style="background:#fef3c7;color:#92400e">VIP</span>' : '') + '</td>'
+      + '<td><span class="bdg2" style="' + window.chipColor('status', t.status) + '">' + t.status + '</span></td>'
+      + '<td style="color:#6b7280">' + t.updatedAt + '</td>'
+      + '<td><div class="ra2"><button class="ab2" onclick="event.stopPropagation();openSupportDrw(\'' + t.id + '\')"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>View</button></div></td>'
+      + '</tr>';
+  }).join('');
+};
+
+window._supCurrentId = null;
+
+window.openSupportDrw = function(ticketId){
+  const t = window.SUPPORT_TICKETS.find(function(x){ return x.id === ticketId; });
+  if (!t) return;
+  window._supCurrentId = ticketId;
+
+  document.getElementById('sup-drw-title').innerHTML = t.id + ' · <a style="color:#7c3aed;cursor:pointer" onclick="goToPlayerView(\'' + t.uid + '\')">' + t.player + '</a>' + (t.vip ? ' ★ VIP' : '');
+  document.getElementById('sup-drw-sub').textContent = t.category + ' · Submitted ' + (t.messages[0] ? t.messages[0].ts : t.updatedAt);
+  document.getElementById('sup-f-player').innerHTML = t.player + ' (' + t.uid + ')';
+  document.getElementById('sup-f-session').textContent = t.sessionId;
+  document.getElementById('sup-f-appver').textContent = t.appVersion;
+  document.getElementById('sup-f-device').textContent = t.device;
+  document.getElementById('sup-drw-category').value = t.category;
+  document.getElementById('sup-drw-severity').value = t.severity;
+  document.getElementById('sup-drw-status').value = t.status;
+
+  document.getElementById('sup-drw-thread').innerHTML = t.messages.map(function(m){
+    return '<div style="margin-bottom:10px"><div style="font-size:11px;color:#9ca3af">' + (m.from==='player'?t.player:'Support agent') + ' · ' + m.ts + '</div>'
+      + '<div style="font-size:12.5px;color:#374151;background:' + (m.from==='player'?'#f9fafb':'#f3f0ff') + ';border-radius:8px;padding:8px 10px;margin-top:3px">' + m.text + '</div></div>';
+  }).join('');
+
+  const suggested = window.getSuggestedAnswer(t);
+  const suggBox = document.getElementById('sup-suggested-box');
+  if (suggested){
+    suggBox.style.display = '';
+    document.getElementById('sup-suggested-text').textContent = suggested;
+  } else {
+    suggBox.style.display = 'none';
+  }
+  document.getElementById('sup-reply').value = '';
+
+  document.getElementById('sup-drw-overlay').style.display = 'block';
+  document.getElementById('sup-drw').style.right = '0';
+};
+
+window.updateSupportField = function(field){
+  const t = window.SUPPORT_TICKETS.find(function(x){ return x.id === window._supCurrentId; });
+  if (!t) return;
+  const el = document.getElementById('sup-drw-' + field);
+  if (!el) return;
+  t[field] = el.value;
+  if (field === 'status') t.updatedAt = new Date().toISOString().slice(0,16).replace('T',' ');
+  showToast2('Updated ' + field);
+  renderSupportTable();
+};
+
+window.sendSupportReply = function(){
+  const t = window.SUPPORT_TICKETS.find(function(x){ return x.id === window._supCurrentId; });
+  if (!t) return;
+  const val = document.getElementById('sup-reply').value.trim();
+  if (!val) { showToast2('Write a reply first'); return; }
+  t.messages.push({from:'agent', ts:new Date().toISOString().slice(0,16).replace('T',' '), text:val});
+  t.status = 'Waiting for You';
+  t.updatedAt = new Date().toISOString().slice(0,16).replace('T',' ');
+  showToast2('Reply sent from support@dividandy.com');
+  renderSupportTable();
+  window.openSupportDrw(t.id);
+};
+
+window.closeSupportDrw = function(){
+  document.getElementById('sup-drw-overlay').style.display = 'none';
+  document.getElementById('sup-drw').style.right = '-780px';
+};
+
+window.navigateSupport = function(screenId){
+  navigate(screenId);
+  document.querySelectorAll('.nav-item').forEach(function(n){ n.classList.remove('active'); });
+  const ni = document.getElementById('ni-cms-support');
+  if (ni) ni.classList.add('active');
+  const bc = document.getElementById('breadcrumb');
+  if (bc) bc.innerHTML = '<span class="bc-cur">CMS › Support</span>';
+  if (screenId === 'support-list') window.renderSupportTable();
+};
+
 // ═══════════════════════════════════════════
 // RATE LIMITING TABLE
 // ═══════════════════════════════════════════
@@ -8294,6 +8926,94 @@ function initOffers(){ populateOfferFilters(); renderOffersTable(); }
 
 
 <!-- Segment Drawer -->
+<div class="drw2-ov" id="wd-drw-ov" onclick="closeWDrw()"></div>
+<div class="drw2" id="wd-drw" style="width:640px;right:-640px">
+  <div class="drw2-hdr">
+    <div style="flex:1">
+      <div style="font-size:16px;font-weight:700;color:#1a1a2e" id="wd-drw-title">WD-10432</div>
+      <div style="font-size:12px;color:#9ca3af;margin-top:2px" id="wd-drw-sub">David Gueta · 450 Đ · Bank Transfer</div>
+    </div>
+    <span class="kyc-a" id="wd-drw-status">Processing</span>
+    <button class="drw2-cls" onclick="closeWDrw()">
+      <svg viewBox="0 0 24 24" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+    </button>
+  </div>
+  <div class="drw2-body">
+    <div class="csec2">
+      <div class="csec2-h"><span class="csec2-t">Request details</span></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:12.5px">
+        <div><div style="color:#9ca3af;font-size:11px">Request ID</div><div style="font-weight:600" id="wd-f-id">WD-10432</div></div>
+        <div><div style="color:#9ca3af;font-size:11px">Player</div><div style="font-weight:600" id="wd-f-player">David Gueta</div></div>
+        <div><div style="color:#9ca3af;font-size:11px">Amount</div><div style="font-weight:600;color:#7c3aed;font-family:monospace" id="wd-f-amount">450 Đ</div></div>
+        <div><div style="color:#9ca3af;font-size:11px">Payment method</div><div style="font-weight:600" id="wd-f-method">Bank Transfer (Argentina)</div></div>
+        <div><div style="color:#9ca3af;font-size:11px">Submitted</div><div style="font-weight:600" id="wd-f-submitted">28 Jul 2026 14:02</div></div>
+        <div><div style="color:#9ca3af;font-size:11px">Country</div><div style="font-weight:600" id="wd-f-country">Argentina</div></div>
+      </div>
+    </div>
+    <div class="csec2">
+      <div class="csec2-h"><span class="csec2-t">Payment account details</span><span style="font-size:11px;color:#9ca3af">What the player set up for this payout</span></div>
+      <div id="wd-pay-details" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:12.5px"></div>
+    </div>
+    <div class="csec2">
+      <div class="csec2-h"><span class="csec2-t">Withdrawal checklist</span><span style="font-size:11px;color:#9ca3af">Auto-updates from Sumsub webhooks</span></div>
+      <div id="wd-steps"></div>
+    </div>
+    <div class="csec2" id="wd-exec-wrap" style="display:none">
+      <div class="csec2-h"><span class="csec2-t" id="wd-exec-title">Payment execution record</span></div>
+      <div id="wd-exec-record"></div>
+    </div>
+  </div>
+  <div class="drw2-ft" id="wd-drw-ft" style="display:flex;justify-content:flex-end;gap:8px"></div>
+</div>
+
+<!-- Support ticket drawer -->
+<div class="drw2-ov" id="sup-drw-overlay" style="display:none" onclick="closeSupportDrw()"></div>
+<div class="drw2" id="sup-drw" style="width:780px;right:-780px">
+  <div class="drw2-hdr">
+    <div style="flex:1">
+      <div style="font-size:16px;font-weight:700;color:#1a1a2e" id="sup-drw-title">SUP-1042 · Jake Peralta</div>
+      <div style="font-size:12px;color:#9ca3af;margin-top:2px" id="sup-drw-sub">Wallet · Submitted 2026-07-18 09:12</div>
+    </div>
+    <button class="drw2-cls" onclick="closeSupportDrw()"><svg viewBox="0 0 24 24" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+  </div>
+  <div class="drw2-body">
+    <div class="fg2" style="margin-bottom:14px">
+      <div class="fi2"><span class="fl2">Player</span><span class="fv2" id="sup-f-player">Jake Peralta (USR-1000)</span></div>
+      <div class="fi2"><span class="fl2">Session ID</span><span class="fv2" id="sup-f-session" style="font-family:monospace">sess_8f2a1c</span></div>
+      <div class="fi2"><span class="fl2">App Version</span><span class="fv2" id="sup-f-appver">2.4.1</span></div>
+      <div class="fi2"><span class="fl2">Device</span><span class="fv2" id="sup-f-device">iOS 18 · iPhone 15</span></div>
+    </div>
+    <div style="display:flex;gap:10px;margin-bottom:16px">
+      <div style="flex:1"><label style="font-size:11px;color:#6b7280;font-weight:500;display:block;margin-bottom:4px">Category</label>
+        <select class="fsel2" id="sup-drw-category" onchange="updateSupportField('category')" style="width:100%"><option>Trading</option><option>Tournaments</option><option>Wallet</option><option>Account</option><option>Other</option></select>
+      </div>
+      <div style="flex:1"><label style="font-size:11px;color:#6b7280;font-weight:500;display:block;margin-bottom:4px">Severity</label>
+        <select class="fsel2" id="sup-drw-severity" onchange="updateSupportField('severity')" style="width:100%"><option>Critical</option><option>High</option><option>Medium</option><option>Low</option></select>
+      </div>
+      <div style="flex:1"><label style="font-size:11px;color:#6b7280;font-weight:500;display:block;margin-bottom:4px">Status</label>
+        <select class="fsel2" id="sup-drw-status" onchange="updateSupportField('status')" style="width:100%"><option>Waiting for Support</option><option>Waiting for You</option><option>Resolved</option></select>
+      </div>
+    </div>
+    <div class="csec2">
+      <div class="csec2-h"><span class="csec2-t">Conversation</span></div>
+      <div id="sup-drw-thread"></div>
+    </div>
+    <div id="sup-suggested-box" style="display:none;background:#f3f0ff;border:1px solid #ddd6fe;border-radius:8px;padding:10px 12px;margin-top:4px">
+      <div style="font-size:11px;font-weight:600;color:#5b21b6;margin-bottom:3px">Suggested answer</div>
+      <div style="font-size:12px;color:#4c1d95;line-height:1.5" id="sup-suggested-text"></div>
+      <button class="btn2 bo" style="margin-top:8px;padding:4px 10px;font-size:11.5px" onclick="document.getElementById('sup-reply').value = document.getElementById('sup-suggested-text').textContent">Insert into reply</button>
+    </div>
+    <div style="margin-top:14px">
+      <label style="font-size:11px;color:#6b7280;font-weight:500;display:block;margin-bottom:4px">Reply <span style="color:#9ca3af;font-weight:400">(sent from support@dividandy.com)</span></label>
+      <textarea class="ta2" id="sup-reply" placeholder="Write a reply to the player…"></textarea>
+    </div>
+  </div>
+  <div class="drw2-ft" style="display:flex;justify-content:flex-end;gap:8px">
+    <button class="btn2 bo" onclick="closeSupportDrw()">Close</button>
+    <button class="btn2 bp" onclick="sendSupportReply()">Send Reply</button>
+  </div>
+</div>
+
 <div class="drw2-ov" id="seg-drw-ov" onclick="closeSegDrw()"></div>
 <div class="drw2" id="seg-drw" style="width:780px;right:-780px">
   <div class="drw2-hdr">
@@ -10669,188 +11389,4 @@ function initOffers(){ populateOfferFilters(); renderOffersTable(); }
 </html>
 
 </script>
-
-
-<script id="support-module-script">
-window.SUPPORT_TICKETS = [
-  {id:'SUP-1042', player:'Jake Peralta', userId:'USR-1000', vip:true, category:'Wallet', severity:'Critical', status:'Waiting for Support', sessionId:'sess_8f2a1c', appVersion:'2.4.1', device:'iOS 18 · iPhone 15', createdAt:'2026-07-18 09:12', updatedAt:'2026-07-18 09:12',
-    thread:[{from:'player', text:'My withdrawal has been pending for 2 days and the app shows an error when I try to cancel it.', at:'2026-07-18 09:12'}]},
-  {id:'SUP-1041', player:'John Cena', userId:'USR-1317', vip:false, category:'Tournaments', severity:'High', status:'Waiting for You', sessionId:'sess_11de44', appVersion:'2.4.1', device:'Android 14 · Pixel 8', createdAt:'2026-07-17 18:40', updatedAt:'2026-07-18 08:05',
-    thread:[{from:'player', text:'I got disconnected mid-tournament and lost my position.', at:'2026-07-17 18:40'},{from:'agent', text:'Hi John, thanks for the report — looking into the tournament logs now.', at:'2026-07-18 08:05'}]},
-  {id:'SUP-1039', player:'Amy Santiago', userId:'USR-2268', vip:false, category:'Trading', severity:'Medium', status:'Waiting for You', sessionId:'sess_99ab02', appVersion:'2.3.9', device:'iOS 17 · iPhone 13', createdAt:'2026-07-16 14:02', updatedAt:'2026-07-17 10:15',
-    thread:[{from:'player', text:'A trade I closed still shows as open in my portfolio.', at:'2026-07-16 14:02'},{from:'agent', text:'Could you share the asset name and approximate time of the trade?', at:'2026-07-17 10:15'}]},
-  {id:'SUP-1035', player:'Raymond Holt', userId:'USR-2585', vip:true, category:'Account', severity:'High', status:'Waiting for Support', sessionId:'sess_55cd10', appVersion:'2.4.0', device:'Android 13 · Galaxy S22', createdAt:'2026-07-15 11:20', updatedAt:'2026-07-15 11:20',
-    thread:[{from:'player', text:'I can’t log back in after deleting my account by mistake within the 24h window.', at:'2026-07-15 11:20'}]},
-  {id:'SUP-1030', player:'Rosa Diaz', userId:'USR-3219', vip:false, category:'Other', severity:'Low', status:'Resolved', sessionId:'sess_20ff31', appVersion:'2.3.8', device:'iOS 17 · iPhone 12', createdAt:'2026-07-12 09:00', updatedAt:'2026-07-13 16:44',
-    thread:[{from:'player', text:'Just a suggestion — the buy sound effect is a bit stressful.', at:'2026-07-12 09:00'},{from:'agent', text:'Thanks for the feedback, passed it to the product team!', at:'2026-07-13 16:44'}]},
-  {id:'SUP-1024', player:'Michael Scott', userId:'USR-4170', vip:false, category:'Trading', severity:'Low', status:'Resolved', sessionId:'sess_77aa88', appVersion:'2.3.7', device:'Android 14 · OnePlus 11', createdAt:'2026-07-10 12:30', updatedAt:'2026-07-11 09:10',
-    thread:[{from:'player', text:'Numeric keypad covers the Modify/Close buttons.', at:'2026-07-10 12:30'},{from:'agent', text:'Fixed in the latest release, please update the app.', at:'2026-07-11 09:10'}]}
-];
-
-window._supSort = {key:'updatedAt', dir:'desc'};
-
-window.getSuggestedAnswer = function(category){
-  var map = {
-    'Trading': 'Thanks for reaching out about a trading issue. Could you confirm the asset and approximate time of the trade? (Suggested from FAQ/T&C — source content pending)',
-    'Tournaments': 'Sorry about the tournament issue. We are checking the tournament logs for your session now. (Suggested from FAQ/T&C — source content pending)',
-    'Wallet': 'Thanks for flagging this wallet issue. Withdrawals/deposits can take up to 24-48h to process — if it has been longer, we are escalating this now. (Suggested from FAQ/T&C — source content pending)',
-    'Account': 'Thanks for reaching out about your account. For account access issues we may need to verify a few details before re-enabling access. (Suggested from FAQ/T&C — source content pending)',
-    'Other': 'Thanks for your message — our team is reviewing this now. (Suggested from FAQ/T&C — source content pending)'
-  };
-  return map[category] || map['Other'];
-};
-
-window.chipColor = function(kind, value){
-  var m = {
-    severity:{Critical:['#fee2e2','#991b1b'],High:['#ffedd5','#9a3412'],Medium:['#fef9c3','#854d0e'],Low:['#e5e7eb','#374151']},
-    status:{'Waiting for Support':['#ede9fe','#7c3aed'],'Waiting for You':['#fef9c3','#854d0e'],Resolved:['#d1fae5','#065f46']}
-  };
-  var c = (m[kind] && m[kind][value]) || ['#e5e7eb','#374151'];
-  return 'background:'+c[0]+';color:'+c[1];
-};
-
-window.sortSupport = function(key){
-  if(_supSort.key===key){ _supSort.dir = _supSort.dir==='asc'?'desc':'asc'; } else { _supSort = {key:key, dir:'desc'}; }
-  renderSupportTable();
-};
-
-window.goToPlayerView = function(userId, evt){
-  if(evt) evt.stopPropagation();
-  closeSupportDrw();
-  navigateNew('users');
-  var search = document.getElementById('u-search');
-  if(search){
-    search.value = userId;
-    if(typeof filterUsers==='function') filterUsers();
-  }
-  setTimeout(function(){
-    var rows = [].slice.call(document.querySelectorAll('#u-tbody tr'));
-    var match = rows.find(function(r){
-      var idEl = r.querySelector('.uid2');
-      return idEl && idEl.textContent.indexOf(userId) === 0;
-    });
-    if(match) match.click();
-  }, 30);
-};
-
-window.renderSupportTable = function(){
-  var q = (document.getElementById('sup-search').value||'').toLowerCase();
-  var st = document.getElementById('sup-status-f').value;
-  var sv = document.getElementById('sup-severity-f').value;
-  var ct = document.getElementById('sup-category-f').value;
-  var vip = document.getElementById('sup-vip-f').value;
-  var sevOrder = {Critical:4,High:3,Medium:2,Low:1};
-  var rows = SUPPORT_TICKETS.filter(function(t){
-    if(q && t.id.toLowerCase().indexOf(q)===-1 && t.player.toLowerCase().indexOf(q)===-1 && t.userId.toLowerCase().indexOf(q)===-1) return false;
-    if(st && t.status!==st) return false;
-    if(sv && t.severity!==sv) return false;
-    if(ct && t.category!==ct) return false;
-    if(vip==='vip' && !t.vip) return false;
-    return true;
-  });
-  rows.sort(function(a,b){
-    var k=_supSort.key, dir=_supSort.dir==='asc'?1:-1;
-    var av = k==='severity'? sevOrder[a.severity] : a[k];
-    var bv = k==='severity'? sevOrder[b.severity] : b[k];
-    return av>bv?dir:av<bv?-dir:0;
-  });
-  document.getElementById('sup-count').textContent = rows.length + ' ticket' + (rows.length===1?'':'s');
-  document.getElementById('sup-tbody').innerHTML = rows.map(function(t){
-    return '<tr>'+
-      '<td>'+t.id+'</td>'+
-      '<td><div style="cursor:pointer" onclick="goToPlayerView(\''+t.userId+'\', event)"><div style="font-weight:500;color:#111827">'+t.player+'</div><div style="font-size:11px;color:#6b7280">'+t.userId+'</div></div></td>'+
-      '<td>'+t.category+'</td>'+
-      '<td><span class="chip" style="'+chipColor('severity',t.severity)+'">'+t.severity+'</span></td>'+
-      '<td>'+(t.vip?'<span class="chip" style="background:#fef3c7;color:#92400e">VIP</span>':'')+'</td>'+
-      '<td><span class="chip" style="'+chipColor('status',t.status)+'">'+t.status+'</span></td>'+
-      '<td>'+t.updatedAt+'</td>'+
-      '<td><button class="act-btn" onclick="openSupportDrw(\''+t.id+'\')">View</button></td>'+
-    '</tr>';
-  }).join('');
-};
-
-window.navigateSupport = function(screenId){
-  navigate(screenId);
-  document.querySelectorAll('.nav-item').forEach(function(n){n.classList.remove('active');});
-  var ni = document.getElementById('ni-cms-support');
-  if(ni) ni.classList.add('active');
-  var bc = document.getElementById('breadcrumb');
-  if(bc) bc.textContent = 'CMS › Support';
-  if(screenId==='support-list') renderSupportTable();
-};
-
-window._supCurrentId = null;
-
-window.openSupportDrw = function(id){
-  var t = SUPPORT_TICKETS.find(function(x){return x.id===id;});
-  if(!t) return;
-  _supCurrentId = id;
-  document.getElementById('sup-drw-title').textContent = t.id + ' · ' + t.player + (t.vip?' ★ VIP':'');
-  document.getElementById('sup-drw-sub').textContent = t.category + ' · Submitted ' + t.createdAt;
-  var threadHtml = t.thread.map(function(m){
-    var isAgent = m.from==='agent';
-    return '<div style="margin-bottom:10px;padding:10px 12px;border-radius:8px;max-width:85%;'+
-      (isAgent? 'margin-left:auto;background:#ede9fe;color:#4c1d95;' : 'background:#f9fafb;border:1px solid #e5e7eb;color:#374151;')+'">'+
-      '<div style="font-size:11px;color:#6b7280;margin-bottom:3px">'+(isAgent?'Support Agent':t.player)+' · '+m.at+'</div>'+
-      '<div style="font-size:12.5px">'+m.text+'</div></div>';
-  }).join('');
-  document.getElementById('sup-drw-body').innerHTML =
-    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px 16px;margin-bottom:16px;font-size:12.5px">'+
-      '<div><div style="color:#6b7280;font-size:11px">Player</div><span style="color:#7c3aed;cursor:pointer;font-weight:500" onclick="goToPlayerView(\''+t.userId+'\')">'+t.player+' ('+t.userId+') <i class="ti ti-external-link" style="font-size:11px"></i></span></div>'+
-      '<div><div style="color:#6b7280;font-size:11px">Session ID</div>'+t.sessionId+'</div>'+
-      '<div><div style="color:#6b7280;font-size:11px">App Version</div>'+t.appVersion+'</div>'+
-      '<div><div style="color:#6b7280;font-size:11px">Device</div>'+t.device+'</div>'+
-    '</div>'+
-    '<div style="display:flex;gap:10px;margin-bottom:16px">'+
-      '<div><div style="color:#6b7280;font-size:11px;margin-bottom:3px">Category</div>'+
-        '<select class="fs2" id="sup-drw-category" onchange="updateSupportField(\'category\')">'+
-          ['Trading','Tournaments','Wallet','Account','Other'].map(function(c){return '<option'+(c===t.category?' selected':'')+'>'+c+'</option>';}).join('')+
-        '</select></div>'+
-      '<div><div style="color:#6b7280;font-size:11px;margin-bottom:3px">Severity</div>'+
-        '<select class="fs2" id="sup-drw-severity" onchange="updateSupportField(\'severity\')">'+
-          ['Critical','High','Medium','Low'].map(function(c){return '<option'+(c===t.severity?' selected':'')+'>'+c+'</option>';}).join('')+
-        '</select></div>'+
-      '<div><div style="color:#6b7280;font-size:11px;margin-bottom:3px">Status</div>'+
-        '<select class="fs2" id="sup-drw-status" onchange="updateSupportField(\'status\')">'+
-          ['Waiting for Support','Waiting for You','Resolved'].map(function(c){return '<option'+(c===t.status?' selected':'')+'>'+c+'</option>';}).join('')+
-        '</select></div>'+
-    '</div>'+
-    '<div style="font-size:11px;color:#6b7280;margin-bottom:6px;font-weight:500">CONVERSATION</div>'+
-    '<div style="max-height:220px;overflow:auto;margin-bottom:14px">'+threadHtml+'</div>'+
-    '<div style="background:#f5f3ff;border:1px solid #ddd6fe;border-radius:8px;padding:10px 12px;margin-bottom:12px">'+
-      '<div style="font-size:11px;color:#6d28d9;font-weight:500;margin-bottom:4px"><i class="ti ti-bulb"></i> Suggested answer</div>'+
-      '<div style="font-size:12px;color:#4c1d95;margin-bottom:8px" id="sup-suggested-text">'+getSuggestedAnswer(t.category)+'</div>'+
-      '<button class="act-btn" onclick="document.getElementById(\'sup-reply\').value = document.getElementById(\'sup-suggested-text\').textContent">Insert into reply</button>'+
-    '</div>'+
-    '<div style="font-size:11px;color:#6b7280;margin-bottom:6px;font-weight:500">REPLY (sent from support@dividandy.com)</div>'+
-    '<textarea id="sup-reply" placeholder="Write a reply to the player..." style="width:100%;min-height:80px;border:1px solid #d1d5db;border-radius:6px;padding:8px 10px;font-family:Inter,sans-serif;font-size:12.5px"></textarea>';
-  document.getElementById('sup-drw').style.right = '0';
-  document.getElementById('sup-drw-overlay').style.display = 'block';
-  document.getElementById('sup-drw-overlay').style.zIndex = '200';
-};
-
-window.updateSupportField = function(field){
-  var t = SUPPORT_TICKETS.find(function(x){return x.id===_supCurrentId;});
-  if(!t) return;
-  var el = document.getElementById('sup-drw-'+field);
-  t[field] = el.value;
-  t.updatedAt = new Date().toISOString().slice(0,16).replace('T',' ');
-};
-
-window.sendSupportReply = function(){
-  var t = SUPPORT_TICKETS.find(function(x){return x.id===_supCurrentId;});
-  if(!t) return;
-  var val = document.getElementById('sup-reply').value.trim();
-  if(!val){ closeSupportDrw(); return; }
-  t.thread.push({from:'agent', text:val, at:new Date().toISOString().slice(0,16).replace('T',' ')});
-  t.updatedAt = t.thread[t.thread.length-1].at;
-  if(typeof showToast2==='function') showToast2('Reply sent via support@dividandy.com');
-  openSupportDrw(t.id);
-};
-
-window.closeSupportDrw = function(){
-  document.getElementById('sup-drw').style.right = '-780px';
-  document.getElementById('sup-drw-overlay').style.display = 'none';
-};
-</script><div class="drw2" id="sup-drw" style="width:780px;right:-780px"><div class="drw2-hdr"><div><div id="sup-drw-title" style="font-weight:600;font-size:15px"></div><div id="sup-drw-sub" style="color:#6b7280;font-size:12px"></div></div><i class="ti ti-x" style="cursor:pointer;font-size:18px" onclick="closeSupportDrw()"></i></div><div class="drw2-body" id="sup-drw-body" style="padding:16px;overflow:auto;flex:1"></div><div class="drw2-ft" style="padding:12px 16px;border-top:1px solid #e5e7eb;display:flex;justify-content:flex-end;gap:8px"><button class="btn2 bo" onclick="closeSupportDrw()">Close</button><button class="btn2 bp" onclick="sendSupportReply()"><i class="ti ti-send"></i> Send Reply</button></div></div><div id="sup-drw-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:200" onclick="closeSupportDrw()"></div>
 </body></html>
