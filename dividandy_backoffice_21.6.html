@@ -4,7 +4,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DiviDandy — Back Office</title>
-<link rel="stylesheet" href="./dividandy_backoffice_unified_files/tabler-icons.min.css">
+<link rel="stylesheet" href="./DiviDandy — Back Office_files/tabler-icons.min.css">
 <style>
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
@@ -687,19 +687,19 @@ input[readonly]{background:#f9fafb;color:#6b7280}
     <div class="sidebar">
       <!-- NEW: DASHBOARD -->
       <div class="nav-group-new">
-        <div class="nav-gh-new" onclick="toggleNav2('nav-dashboard')">
+        <div class="nav-gh-new" onclick="toggleNav2(&#39;nav-dashboard&#39;)">
           <div class="nav-gl-new"><i class="ti ti-layout-dashboard"></i>Dashboard</div>
           <i class="ti ti-chevron-down nav-arrow open" id="arr-dashboard"></i>
         </div>
         <div id="nav-dashboard" style="display:block">
-          <a class="nav-item-new" id="ni-dash-management" onclick="navigateNew('dash-management');loadDashFrame('management')"><i class="ti ti-briefcase"></i>Management</a>
-          <a class="nav-item-new" id="ni-dash-marketing" onclick="navigateNew('dash-marketing');loadDashFrame('marketing')"><i class="ti ti-speakerphone"></i>Marketing</a>
-          <a class="nav-item-new" id="ni-dash-monetization" onclick="navigateNew('dash-monetization');loadDashFrame('monetization')"><i class="ti ti-coin"></i>Monetization</a>
-          <a class="nav-item-new" id="ni-dash-finance" onclick="navigateNew('dash-finance');loadDashFrame('finance')" style="justify-content:space-between"><span><i class="ti ti-report-money"></i>Finance</span><span style="font-size:9.5px;font-weight:600;color:#92400e;background:#fef3c7;padding:1px 6px;border-radius:20px;letter-spacing:.02em;">NOT MVP</span></a>
-          <a class="nav-item-new" id="ni-dash-support" onclick="navigateNew('dash-support');loadDashFrame('support')" style="justify-content:space-between"><span><i class="ti ti-headset"></i>Support &amp; Ops</span><span style="font-size:9.5px;font-weight:600;color:#92400e;background:#fef3c7;padding:1px 6px;border-radius:20px;letter-spacing:.02em;">NOT MVP</span></a>
-          <a class="nav-item-new" id="ni-dash-tv" onclick="navigateNew('dash-tv');loadDashFrame('tv')"><i class="ti ti-device-tv"></i>TV wallboard</a>
-          <a class="nav-item-new" id="ni-dash-email" onclick="navigateNew('dash-email');loadDashFrame('email')"><i class="ti ti-mail"></i>Daily brief</a>
-          <a class="nav-item-new" id="ni-dash-reportbuilder" onclick="navigateNew('dash-reportbuilder');loadDashFrame('reportbuilder')"><i class="ti ti-settings-automation"></i>Report Settings</a>
+          <a class="nav-item-new" id="ni-dash-management" onclick="navigateNew(&#39;dash-management&#39;);loadDashFrame(&#39;management&#39;)"><i class="ti ti-briefcase"></i>Management</a>
+          <a class="nav-item-new" id="ni-dash-marketing" onclick="navigateNew(&#39;dash-marketing&#39;);loadDashFrame(&#39;marketing&#39;)"><i class="ti ti-speakerphone"></i>Marketing</a>
+          <a class="nav-item-new" id="ni-dash-monetization" onclick="navigateNew(&#39;dash-monetization&#39;);loadDashFrame(&#39;monetization&#39;)"><i class="ti ti-coin"></i>Monetization</a>
+          <a class="nav-item-new" id="ni-dash-finance" onclick="navigateNew(&#39;dash-finance&#39;);loadDashFrame(&#39;finance&#39;)" style="justify-content:space-between"><span><i class="ti ti-report-money"></i>Finance</span><span style="font-size:9.5px;font-weight:600;color:#92400e;background:#fef3c7;padding:1px 6px;border-radius:20px;letter-spacing:.02em;">NOT MVP</span></a>
+          <a class="nav-item-new" id="ni-dash-support" onclick="navigateNew(&#39;dash-support&#39;);loadDashFrame(&#39;support&#39;)" style="justify-content:space-between"><span><i class="ti ti-headset"></i>Support &amp; Ops</span><span style="font-size:9.5px;font-weight:600;color:#92400e;background:#fef3c7;padding:1px 6px;border-radius:20px;letter-spacing:.02em;">NOT MVP</span></a>
+          <a class="nav-item-new" id="ni-dash-tv" onclick="navigateNew(&#39;dash-tv&#39;);loadDashFrame(&#39;tv&#39;)"><i class="ti ti-device-tv"></i>TV wallboard</a>
+          <a class="nav-item-new" id="ni-dash-email" onclick="navigateNew(&#39;dash-email&#39;);loadDashFrame(&#39;email&#39;)"><i class="ti ti-mail"></i>Daily brief</a>
+          <a class="nav-item-new" id="ni-dash-reportbuilder" onclick="navigateNew(&#39;dash-reportbuilder&#39;);loadDashFrame(&#39;reportbuilder&#39;)"><i class="ti ti-settings-automation"></i>Report Settings</a>
         </div>
       </div>
       <!-- ASSETS -->
@@ -760,6 +760,16 @@ input[readonly]{background:#f9fafb;color:#6b7280}
           <a class="nav-item-new" id="ni-notifications" onclick="navigateNew(&#39;notifications&#39;);initNotifications()"><i class="ti ti-bell-ringing"></i>Notification Center</a>
         </div>
       </div>
+      <!-- NEW: POPUPS -->
+      <div class="nav-group-new">
+        <div class="nav-gh-new" onclick="toggleNav2(&#39;nav-popups&#39;)">
+          <div class="nav-gl-new"><i class="ti ti-message-2"></i>Popups</div>
+          <i class="ti ti-chevron-down nav-arrow" id="arr-popups"></i>
+        </div>
+        <div id="nav-popups" style="display:block">
+          <a class="nav-item-new" id="ni-popups" onclick="navigateNew(&#39;popups&#39;);initPopups()"><i class="ti ti-layout-bottombar-expand"></i>Popup Management</a>
+        </div>
+      </div>
       <!-- NEW: WITHDRAWALS -->
       <div class="nav-group-new">
         <div class="nav-gh-new" onclick="toggleNav2(&#39;nav-withdrawals&#39;)">
@@ -786,12 +796,12 @@ input[readonly]{background:#f9fafb;color:#6b7280}
       <div class="nav-group-header"><div class="nav-group-label"><i class="ti ti-cards"></i>Cards</div><i class="ti ti-chevron-down nav-arrow"></i></div>
       <div class="nav-group-header"><div class="nav-group-label"><i class="ti ti-medal"></i>Quests</div><i class="ti ti-chevron-down nav-arrow"></i></div>
       <div class="nav-group-header"><div class="nav-group-label"><i class="ti ti-shopping-bag"></i>Catalog</div><i class="ti ti-chevron-down nav-arrow"></i></div>
-      <div class="nav-group-header" onclick="toggleNav('nav-cms')">
+      <div class="nav-group-header" onclick="toggleNav(&#39;nav-cms&#39;)">
         <div class="nav-group-label"><i class="ti ti-browser"></i>CMS</div>
         <i class="ti ti-chevron-down nav-arrow" id="arr-cms"></i>
       </div>
       <div id="nav-cms" style="display:none">
-        <a class="nav-item" id="ni-cms-support" onclick="navigateSupport('support-list')"><i class="ti ti-headset"></i>Support</a>
+        <a class="nav-item" id="ni-cms-support" onclick="navigateSupport(&#39;support-list&#39;)"><i class="ti ti-headset"></i>Support</a>
       </div>
       <div class="nav-group-header"><div class="nav-group-label"><i class="ti ti-receipt"></i>Sales</div><i class="ti ti-chevron-down nav-arrow"></i></div>
       <div class="nav-group-header"><div class="nav-group-label"><i class="ti ti-settings"></i>Settings</div><i class="ti ti-chevron-down nav-arrow"></i></div>
@@ -3619,32 +3629,32 @@ input[readonly]{background:#f9fafb;color:#6b7280}
   </div>
 </div>
 
-<div class="screen" id="screen-dash-management"><div style="background:#fff;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;height:calc(100vh - 130px);min-height:520px;"><iframe id="dashFrame-management" title="Management dashboard" style="width:100%;height:100%;border:0;display:block;"></iframe></div></div>
-<div class="screen" id="screen-dash-marketing"><div style="background:#fff;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;height:calc(100vh - 130px);min-height:520px;"><iframe id="dashFrame-marketing" title="Marketing dashboard" style="width:100%;height:100%;border:0;display:block;"></iframe></div></div>
-<div class="screen" id="screen-dash-monetization"><div style="background:#fff;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;height:calc(100vh - 130px);min-height:520px;"><iframe id="dashFrame-monetization" title="Monetization dashboard" style="width:100%;height:100%;border:0;display:block;"></iframe></div></div>
+<div class="screen" id="screen-dash-management"><div style="background:#fff;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;height:calc(100vh - 130px);min-height:520px;"><iframe id="dashFrame-management" title="Management dashboard" style="width:100%;height:100%;border:0;display:block;" src="./DiviDandy — Back Office_files/saved_resource.html"></iframe></div></div>
+<div class="screen" id="screen-dash-marketing"><div style="background:#fff;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;height:calc(100vh - 130px);min-height:520px;"><iframe id="dashFrame-marketing" title="Marketing dashboard" style="width:100%;height:100%;border:0;display:block;" src="./DiviDandy — Back Office_files/saved_resource(1).html"></iframe></div></div>
+<div class="screen" id="screen-dash-monetization"><div style="background:#fff;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;height:calc(100vh - 130px);min-height:520px;"><iframe id="dashFrame-monetization" title="Monetization dashboard" style="width:100%;height:100%;border:0;display:block;" src="./DiviDandy — Back Office_files/saved_resource(2).html"></iframe></div></div>
 <div class="screen" id="screen-dash-finance">
   <div style="display:flex;align-items:center;gap:8px;background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:8px 14px;margin-bottom:10px;font-size:12.5px;color:#92400e;">
     <i class="ti ti-alert-triangle" style="font-size:15px"></i>
     <span><b>Not for MVP.</b> Included for future scope review — not planned for the initial release.</span>
   </div>
-  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;height:calc(100vh - 175px);min-height:480px;"><iframe id="dashFrame-finance" title="Finance dashboard" style="width:100%;height:100%;border:0;display:block;"></iframe></div>
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;height:calc(100vh - 175px);min-height:480px;"><iframe id="dashFrame-finance" title="Finance dashboard" style="width:100%;height:100%;border:0;display:block;" src="./DiviDandy — Back Office_files/saved_resource(3).html"></iframe></div>
 </div>
 <div class="screen" id="screen-dash-support">
   <div style="display:flex;align-items:center;gap:8px;background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:8px 14px;margin-bottom:10px;font-size:12.5px;color:#92400e;">
     <i class="ti ti-alert-triangle" style="font-size:15px"></i>
     <span><b>Not for MVP.</b> Included for future scope review — not planned for the initial release.</span>
   </div>
-  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;height:calc(100vh - 175px);min-height:480px;"><iframe id="dashFrame-support" title="Support and ops dashboard" style="width:100%;height:100%;border:0;display:block;"></iframe></div>
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;height:calc(100vh - 175px);min-height:480px;"><iframe id="dashFrame-support" title="Support and ops dashboard" style="width:100%;height:100%;border:0;display:block;" src="./DiviDandy — Back Office_files/saved_resource(4).html"></iframe></div>
 </div>
-<div class="screen" id="screen-dash-tv"><div style="background:#fff;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;height:calc(100vh - 130px);min-height:520px;"><iframe id="dashFrame-tv" title="TV wallboard" style="width:100%;height:100%;border:0;display:block;"></iframe></div></div>
+<div class="screen" id="screen-dash-tv"><div style="background:#fff;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;height:calc(100vh - 130px);min-height:520px;"><iframe id="dashFrame-tv" title="TV wallboard" style="width:100%;height:100%;border:0;display:block;" src="./DiviDandy — Back Office_files/saved_resource(5).html"></iframe></div></div>
 <div class="screen" id="screen-dash-email">
   <div style="display:flex;align-items:center;gap:8px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:8px 14px;margin-bottom:10px;font-size:12.5px;color:#1e40af;">
     <i class="ti ti-info-circle" style="font-size:15px"></i>
     <span>This is the <b>email template structure</b> — the actual KPIs shown depend on what's selected in <b>Report Settings</b>.</span>
   </div>
-  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;height:calc(100vh - 175px);min-height:480px;"><iframe id="dashFrame-email" title="Daily brief email preview" style="width:100%;height:100%;border:0;display:block;"></iframe></div>
+  <div style="background:#fff;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;height:calc(100vh - 175px);min-height:480px;"><iframe id="dashFrame-email" title="Daily brief email preview" style="width:100%;height:100%;border:0;display:block;" src="./DiviDandy — Back Office_files/saved_resource(6).html"></iframe></div>
 </div>
-<div class="screen" id="screen-dash-reportbuilder"><div style="background:#fff;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;height:calc(100vh - 130px);min-height:520px;"><iframe id="dashFrame-reportbuilder" title="Report builder" style="width:100%;height:100%;border:0;display:block;"></iframe></div></div>
+<div class="screen" id="screen-dash-reportbuilder"><div style="background:#fff;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;height:calc(100vh - 130px);min-height:520px;"><iframe id="dashFrame-reportbuilder" title="Report builder" style="width:100%;height:100%;border:0;display:block;" src="./DiviDandy — Back Office_files/saved_resource(7).html"></iframe></div></div>
 
     
 <div class="screen" id="screen-notifications">
@@ -3815,6 +3825,109 @@ input[readonly]{background:#f9fafb;color:#6b7280}
   </div>
 </div>
 
+<!-- ═══════════════════════════════════════════ -->
+<!-- POPUP MANAGEMENT -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="screen" id="screen-popups">
+  <div class="page-hdr">
+    <div class="page-hdr-top">
+      <div><div class="page-title2">Popup Management</div><div class="page-sub">In-app interruption &amp; offer campaigns — the fifth channel alongside Push, In-App Center, Email &amp; SMS. Nominated by triggers, decided by one arbitration queue.</div></div>
+      <div class="hdr-actions">
+        <button class="btn2 bo" onclick="showToast2(&#39;Exported to CSV&#39;)"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>Export</button>
+        <button class="btn2 bp" onclick="openPopupDrw(null)"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>Create new popup</button>
+      </div>
+    </div>
+  </div>
+  <div class="pg-tabs">
+    <div class="pg-tab active" onclick="switchPopupPageTab(&#39;catalog&#39;)">Popup Catalog</div>
+    <div class="pg-tab" onclick="switchPopupPageTab(&#39;placements&#39;)">Placements &amp; Pressure Budget</div>
+    <div class="pg-tab" onclick="switchPopupPageTab(&#39;guardrails&#39;)">Guardrails &amp; Governance</div>
+  </div>
+
+  <!-- ── CATALOG ── -->
+  <div class="pg-panel active" id="popups-panel-catalog">
+    <div class="tb2" style="flex-shrink:0">
+      <div class="sw2"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg><input class="si2" type="text" placeholder="Search popup name, signal or ID…" id="pop-search" oninput="renderPopupsTable()"></div>
+      <select class="fs2" id="pop-category" style="width:auto;flex:0 0 auto;min-width:150px" onchange="renderPopupsTable()">
+        <option value="">All categories</option>
+        <option>Storefront</option><option>Wallet</option><option>Progression</option><option>Platform</option>
+        <option>In-Tournament</option><option>Post-Tournament</option><option>Sit &amp; Go</option><option>Social &amp; Rival</option><option>Onboarding</option><option>Profile</option>
+      </select>
+      <select class="fs2" id="pop-placement" style="width:auto;flex:0 0 auto;min-width:150px" onchange="renderPopupsTable()">
+        <option value="">All placements</option>
+        <option value="app_open">app_open</option><option value="lobby_return">lobby_return</option><option value="store_exit">store_exit</option>
+        <option value="pre_registration">pre_registration</option><option value="post_tournament">post_tournament</option><option value="feed_entry">feed_entry</option>
+        <option value="wallet_return">wallet_return</option><option value="arena">arena (locked)</option><option value="platform_preempt">platform_preempt</option>
+      </select>
+      <select class="fs2" id="pop-priority" style="width:auto;flex:0 0 auto;min-width:150px" onchange="renderPopupsTable()">
+        <option value="">All priorities</option><option value="1">P1 · Critical</option><option value="2">P2 · Medium</option><option value="3">P3 · Low</option>
+      </select>
+      <select class="fs2" id="pop-status" style="width:auto;flex:0 0 auto;min-width:150px" onchange="renderPopupsTable()">
+        <option value="">All statuses</option><option>Live</option><option>Scheduled</option><option>Draft</option><option>Paused</option><option>Archived</option>
+      </select>
+      <span class="rl2" id="pop-count"></span>
+    </div>
+    <div style="font-size:11px;color:#9ca3af;padding:0 24px 10px;display:flex;align-items:center;gap:6px"><i class="ti ti-info-circle" style="font-size:14px"></i>Row order here is authoring order only. At runtime the arbitration queue in L2 decides who actually renders — priority, caps, cooldowns, placement capacity and the shared pressure budget all apply before a winner is picked. See the Placements &amp; Pressure Budget tab.</div>
+    <div style="flex:1;overflow:auto">
+      <table class="tbl2" id="pop-table">
+        <thead><tr>
+          <th style="width:90px">Priority</th><th>Popup</th><th>Category</th><th>Signal / trigger</th><th>Placement</th><th>Cost / action</th><th>Frequency</th><th>Status</th><th></th>
+        </tr></thead>
+        <tbody id="pop-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── PLACEMENTS & PRESSURE BUDGET ── -->
+  <div class="pg-panel" id="popups-panel-placements">
+    <div class="gs-grid" style="max-width:1080px">
+      <div class="gs-card" style="grid-column:span 2">
+        <div class="gs-card-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>Placements &amp; capacity</div>
+        <div style="font-size:12px;color:#6b7280;margin-bottom:14px;padding:10px 14px;background:#f3f0ff;border:1px solid #c4b5fd;border-radius:8px;line-height:1.6">Campaigns bid for a named placement; they do not fire directly. Capacities are DiviDandy values — tunable here, not per-vertical.</div>
+        <div id="plc-rows"></div>
+      </div>
+      <div class="gs-card">
+        <div class="gs-card-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>Pressure budget</div>
+        <div class="gs-row"><span class="gs-lbl">Ceiling (per player)</span><input class="gs-inp" type="number" value="100" style="width:70px"></div>
+        <div class="gs-row"><span class="gs-lbl">Window (hours)</span><input class="gs-inp" type="number" value="24" style="width:70px"></div>
+        <div style="font-size:11px;color:#9ca3af;margin:8px 0 6px;font-weight:600;text-transform:uppercase;letter-spacing:.4px">Credits (deposits)</div>
+        <div class="gs-row"><span class="gs-lbl">Gift granted</span><input class="gs-inp" type="number" value="8" style="width:56px"></div>
+        <div class="gs-row"><span class="gs-lbl">Win celebrated</span><input class="gs-inp" type="number" value="12" style="width:56px"></div>
+        <div class="gs-row"><span class="gs-lbl">Purchase completed</span><input class="gs-inp" type="number" value="20" style="width:56px"></div>
+        <div style="font-size:11px;color:#9ca3af;margin-top:4px">Debits are shared across Popup · Push · In-App Center · Email · SMS — one account per player.</div>
+      </div>
+      <div class="gs-card">
+        <div class="gs-card-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2"><path d="M12 9v4"></path><path d="M12 17h.01"></path><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"></path></svg>On exhausted, allow</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <label style="display:flex;align-items:center;gap:8px;font-size:12.5px"><input type="checkbox" checked disabled> P1 — Critical</label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:12.5px"><input type="checkbox" checked disabled> Platform category</label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:12.5px"><input type="checkbox" disabled> Everything else</label>
+        </div>
+        <div style="font-size:11px;color:#9ca3af;margin-top:8px">Everything else logs <code>suppressed_budget</code> — watch it as closely as conversion.</div>
+      </div>
+      <div class="gs-card" style="grid-column:span 2">
+        <div class="gs-card-title" style="justify-content:space-between">
+          <span style="display:flex;align-items:center;gap:8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#b0332a" stroke-width="2"><path d="M12 9v4"></path><path d="M12 17h.01"></path><circle cx="12" cy="12" r="10"></circle></svg>Bypass exemptions — live</span>
+          <button class="ab2" onclick="showToast2(&#39;Exemptions are granted from a popup&#39;+String.fromCharCode(39)+&#39;s Arbitration tab — Head of Monetization only&#39;)"><i class="ti ti-plus"></i>New exemption</button>
+        </div>
+        <div style="font-size:12px;color:#6b7280;margin-bottom:12px">Both flags — session-limit bypass and pressure-budget bypass — are set only by the Head of Monetization, and every exemption requires a named reason and an expiry date. An exemption without an expiry is a permanent hole in the limit.</div>
+        <table class="tbl2" style="border:1px solid #e8e8ec;border-radius:8px;overflow:hidden">
+          <thead><tr><th>Popup</th><th>Flag</th><th>Reason</th><th>Approver</th><th>Expires</th><th>Status</th></tr></thead>
+          <tbody id="bypass-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── GUARDRAILS ── -->
+  <div class="pg-panel" id="popups-panel-guardrails">
+    <div style="padding:20px 24px;max-width:900px">
+      <div style="font-size:12.5px;color:#6b7280;margin-bottom:16px;padding:12px 16px;background:#fffbeb;border:1px solid #fde68a;border-radius:8px;line-height:1.6"><i class="ti ti-lock" style="font-size:14px;vertical-align:-2px"></i> These are save-time validations, not a policy page — they are enforced automatically on every popup and are not configurable per campaign. This tab is a reference for what will block a save.</div>
+      <div id="guardrail-list" style="display:flex;flex-direction:column;gap:10px"></div>
+    </div>
+  </div>
+</div>
+
 <div class="screen" id="screen-withdrawals">
   <div class="page-hdr">
     <div class="page-hdr-top">
@@ -3848,7 +3961,7 @@ input[readonly]{background:#f9fafb;color:#6b7280}
     <div class="page-hdr-top">
       <div><div class="page-title2">Support</div><div class="page-sub">Player-submitted support tickets — prioritize, respond, and track status.</div></div>
       <div class="hdr-actions">
-        <button class="btn2 bo" onclick="showToast2('Exported')"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>Export</button>
+        <button class="btn2 bo" onclick="showToast2(&#39;Exported&#39;)"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>Export</button>
       </div>
     </div>
   </div>
@@ -3862,7 +3975,7 @@ input[readonly]{background:#f9fafb;color:#6b7280}
   </div>
   <div style="flex:1;overflow:auto">
     <table class="tbl2" id="sup-table"><thead><tr>
-      <th>Ticket ID</th><th>Player</th><th>Category</th><th style="cursor:pointer" onclick="sortSupport('severity')">Severity ↕</th><th>VIP</th><th>Status</th><th style="cursor:pointer" onclick="sortSupport('updatedAt')">Last Update ↕</th><th></th>
+      <th>Ticket ID</th><th>Player</th><th>Category</th><th style="cursor:pointer" onclick="sortSupport(&#39;severity&#39;)">Severity ↕</th><th>VIP</th><th>Status</th><th style="cursor:pointer" onclick="sortSupport(&#39;updatedAt&#39;)">Last Update ↕</th><th></th>
     </tr></thead><tbody id="sup-tbody"></tbody></table>
   </div>
 </div>
@@ -5076,7 +5189,7 @@ function calcRegHint(prefix){
 // ═══════════════════════════════════════════
 const newScreenMap = {
   'users':'ni-users','segments':'ni-segments','store-settings':'ni-store-settings','notifications':'ni-notifications',
-  'offers':'ni-offers','geo':'ni-geo','shop-items':'ni-shop-items','stores':'ni-stores','withdrawals':'ni-withdrawals',
+  'offers':'ni-offers','geo':'ni-geo','shop-items':'ni-shop-items','stores':'ni-stores','withdrawals':'ni-withdrawals','popups':'ni-popups',
   'dash-management':'ni-dash-management','dash-marketing':'ni-dash-marketing',
   'dash-monetization':'ni-dash-monetization','dash-finance':'ni-dash-finance','dash-support':'ni-dash-support',
   'dash-tv':'ni-dash-tv','dash-email':'ni-dash-email','dash-reportbuilder':'ni-dash-reportbuilder'
@@ -5100,7 +5213,7 @@ function navigateNew(screen) {
 
   // Update breadcrumb
   const bc = document.getElementById('breadcrumb');
-  const labels = {'users':'Players › User Management','store-settings':'Storefront › Store Settings','offers':'Storefront › Offers','geo':'Players › Geo & Session','shop-items':'Storefront › Store Items','stores':'Storefront › Stores','withdrawals':'Payments › Withdrawal Requests',
+  const labels = {'users':'Players › User Management','store-settings':'Storefront › Store Settings','offers':'Storefront › Offers','geo':'Players › Geo & Session','shop-items':'Storefront › Store Items','stores':'Storefront › Stores','withdrawals':'Payments › Withdrawal Requests','popups':'Popups › Popup Management',
     'dash-management':'Dashboard › Management','dash-marketing':'Dashboard › Marketing',
     'dash-monetization':'Dashboard › Monetization','dash-finance':'Dashboard › Finance','dash-support':'Dashboard › Support & Ops',
     'dash-tv':'Dashboard › TV wallboard','dash-email':'Dashboard › Daily brief','dash-reportbuilder':'Dashboard › Report Settings'};
@@ -8842,6 +8955,517 @@ function duplicateOffer(id){
 
 function initOffers(){ populateOfferFilters(); renderOffersTable(); }
 
+// ═══════════════════════════════════════════
+// POPUP MANAGEMENT — the fifth channel
+// ═══════════════════════════════════════════
+var CATEGORY_LABELS = {storefront:'Storefront',wallet:'Wallet',progression:'Progression',platform:'Platform',in_tournament:'In-Tournament',post_tournament:'Post-Tournament',sit_and_go:'Sit & Go',social_rival:'Social & Rival',onboarding:'Onboarding',profile:'Profile'};
+
+var PLACEMENTS_DATA = [
+  {id:'app_open',label:'app_open[1..2]',capacity:2,policy:'Give-before-ask ordering enforced'},
+  {id:'lobby_return',label:'lobby_return',capacity:1,policy:''},
+  {id:'store_exit',label:'store_exit',capacity:1,policy:'Exit intent. Suppressed if a purchase occurred this session'},
+  {id:'pre_registration',label:'pre_registration',capacity:1,policy:'Gate class only. Limit- and budget-exempt'},
+  {id:'post_tournament',label:'post_tournament',capacity:2,policy:'Results first, always. Any offer comes second or not at all'},
+  {id:'feed_entry',label:'feed_entry',capacity:'n',policy:'Self-summoned in My DiviDandy. Near-zero intrusion'},
+  {id:'wallet_return',label:'wallet_return',capacity:1,policy:'Post-purchase and post-withdrawal states'},
+  {id:'arena',label:'arena',capacity:0,policy:'Hard-locked. Nothing below P1; P1 only as a non-blocking banner',locked:true},
+  {id:'platform_preempt',label:'platform_preempt',capacity:'∞',policy:'Force update, maintenance, consent, KYC block'}
+];
+
+var GUARDRAILS_DATA = [
+  {key:'countdown_binding',rule:'Countdown honesty',desc:'Every countdown binds to a deadline entity that genuinely withdraws the offer or closes the window. A "one-time" campaign with a reset rule fails to save.'},
+  {key:'urgency_binding',rule:'Urgency needs a deadline',desc:'Urgency language requires an active countdown binding. Copy that says the offer is about to disappear when nothing expires is blocked.'},
+  {key:'prize_pool_truth',rule:'Prize-pool truth',desc:'Any popup promoting winnings binds to the live tournament: real entry fee, real field size, real net pool after the published house fee.'},
+  {key:'roster_truth',rule:'Roster truth',desc:'Seats remaining, players registered and rivals present bind to live data. No simulated fill meters, no fabricated activity.'},
+  {key:'anchor_integrity',rule:'Anchor integrity',desc:'A struck-through price must match a real prior price for that bundle in that market.'},
+  {key:'deterministic_rewards',rule:'Deterministic rewards only',desc:'Every promised value is fixed and published, or derived from the live prize-pool formula. Probability-weighted outcomes have no representation in the schema.'},
+  {key:'wallet_clarity',rule:'Wallet clarity',desc:'Any popup granting or spending Đ distinguishes Regular from Bonus, and any reference to cashing out states the Bonus reset consequence.'},
+  {key:'legal_injection',rule:'18+ and jurisdiction',desc:"Legal strip auto-injected for commercial categories, resolved by registered country, rendered in the player's language."},
+  {key:'localisation_completeness',rule:'Localisation completeness',desc:'Money, identity and platform categories require approved strings in the target language. A baked layer carrying a variable value fails to save.'},
+  {key:'close_contract',rule:'Close contract',desc:'Close control live within 1000ms, minimum 44pt, unobstructed. Non-dismissible only for platform preemption.'},
+  {key:'justification',rule:'Justification',desc:'A save with an empty rationale is blocked. Required free text: "We are using [lever] at [moment] because [player-true fact]."'}
+];
+
+var BYPASS_EXEMPTIONS = [
+  {popupId:'POP-007',flag:'bypass_session_limit + bypass_pressure_budget',reason:'Pre-tournament entry-fee gate — structurally not an interruption',approver:'Head of Monetization',expires:'2026-12-31',status:'Active'},
+  {popupId:'POP-026',flag:'bypass_session_limit + bypass_pressure_budget',reason:'Force update — platform preemption, ignores every limit by design',approver:'Head of Monetization',expires:'2027-06-30',status:'Active'}
+];
+
+var POPUP_CAMPAIGNS = [
+  {id:'POP-001',name:'Short at registration',catEnum:'storefront',cat:'Storefront',arch:'gate',signal:'insufficient_at_registration',predicate:"balance < entry_fee AND status='registering'",placements:['pre_registration'],pri:2,tiebreak:500,cost:'top_up → store_route',freq:'Gate · not capped',status:'Live',notes:'Highest-intent commercial moment in the product. Chains back to registration on success.'},
+  {id:'POP-002',name:'First deposit offer',catEnum:'storefront',cat:'Storefront',arch:'modal',signal:'first_deposit_completed',predicate:"segment = 'FTD Special Offer'",placements:['app_open','store_exit'],pri:2,tiebreak:500,cost:'real_money',freq:'Lifetime cap 1 · personal 24h countdown',status:'Live',notes:'Personal countdown via first_view_plus.',countdown:{type:'offer_expiry',anchor:'first_view_plus',deadlineRef:'offer.ftd_special.expires_at'}},
+  {id:'POP-003',name:"Browsed, didn't buy",catEnum:'storefront',cat:'Storefront',arch:'modal',signal:'store_exit',predicate:'—',placements:['store_exit'],pri:3,tiebreak:500,cost:'real_money',freq:'Suppressed if purchased this session',status:'Live',notes:'Exit intent.'},
+  {id:'POP-004',name:'Bundle promotion',catEnum:'storefront',cat:'Storefront',arch:'interstitial',signal:'(schedule-driven)',predicate:'campaign schedule active',placements:['app_open','feed_entry'],pri:3,tiebreak:500,cost:'real_money',freq:'Per storefront catalogue pricing',status:'Live',notes:'Badge and pricing from the storefront catalogue, never typed into the campaign.'},
+  {id:'POP-005',name:'Purchase confirmed',catEnum:'wallet',cat:'Wallet',arch:'modal',signal:'purchase_completed',predicate:'server-nominated (webhook)',placements:['wallet_return','app_open'],pri:2,tiebreak:500,cost:'collect',freq:'Once per purchase',status:'Live',notes:'Survives cold start after an external checkout.'},
+  {id:'POP-006',name:'Bonus Đ expiring',catEnum:'wallet',cat:'Wallet',arch:'modal',signal:'bonus_dc_expiring',predicate:'—',placements:['app_open','lobby_return'],pri:2,tiebreak:500,cost:'navigate → tournaments',freq:'Bound to ledger expiry',status:'Live',notes:'States the Regular/Bonus distinction explicitly.'},
+  {id:'POP-007',name:'Entry confirmation',catEnum:'in_tournament',cat:'In-Tournament',arch:'gate',signal:'registration intent',predicate:'—',placements:['pre_registration'],pri:1,tiebreak:500,cost:'regular_dc + bonus_dc',freq:'Gate · not capped',status:'Live',notes:'Shows the 9:1 split before charging.',bypassSession:true,bypassBudget:true,exemptApprover:'Head of Monetization',exemptExpiry:'2026-12-31',exemptReason:'Pre-tournament entry-fee gate — structurally not an interruption'},
+  {id:'POP-008',name:'Sit & Go filling',catEnum:'sit_and_go',cat:'Sit & Go',arch:'sheet',signal:'sit_and_go_filling',predicate:'—',placements:['lobby_return','feed_entry'],pri:2,tiebreak:500,cost:'register',freq:'Per occurrence 1',status:'Live',notes:'Seats remaining is a real number bound to the tournament.',blocks:[{type:'roster_strip',binding:'tournament.seats_remaining'}]},
+  {id:'POP-009',name:'Starting soon',catEnum:'in_tournament',cat:'In-Tournament',arch:'interstitial',signal:'tournament_starting',predicate:'player is registered',placements:['app_open','lobby_return'],pri:1,tiebreak:500,cost:'enter_arena',freq:'Registered players only · exempt',status:'Live',notes:''},
+  {id:'POP-010',name:'Results — Champion',catEnum:'post_tournament',cat:'Post-Tournament',arch:'interstitial',signal:'tournament_ended',predicate:'final_rank == 1',placements:['post_tournament'],pri:1,tiebreak:100,cost:'collect · share',freq:'Once per tournament',status:'Live',notes:'Largest single budget deposit in the catalogue — spend it deliberately in the arbitration order.',
+    blocks:[{type:'hero_art',binding:'result.crown_art'},{type:'wallet_delta',binding:'ledger.before_after'}],
+    textTitle:'You owned the arena', textBody:'Nobody traded better today. Relive the run that took the crown.',
+    ctas:[{label:'View Your Win',action:'navigate',costType:'free',costValue:'',grantType:'regular_dc',grantQty:'2450',destKind:'internal'},{label:'Share win',action:'share',costType:'social_action',costValue:'',grantType:'',grantQty:'',destKind:'external'}],
+    justification:"We are using social proof / status at tournament_ended (rank 1) because the player genuinely finished 1st of 640 and won a real, published Đ prize."},
+  {id:'POP-011',name:'Results — Cashed',catEnum:'post_tournament',cat:'Post-Tournament',arch:'interstitial',signal:'tournament_ended',predicate:'1 < final_rank <= cashline',placements:['post_tournament'],pri:1,tiebreak:200,cost:'collect',freq:'Once per tournament',status:'Live',notes:'States rank of field and Đ won. Never stacked with an offer.',
+    textTitle:"You're in the money!", textBody:'Your trading paid off. See the moves that got you into the money.',
+    ctas:[{label:'View Your Win',action:'navigate',costType:'free',costValue:'',grantType:'regular_dc',grantQty:'820',destKind:'internal'},{label:'Share',action:'share',costType:'social_action',costValue:'',grantType:'',grantQty:'',destKind:'external'}],
+    justification:'We are using endowment / real reward framing at tournament_ended (cashed) because the player genuinely finished 8th of 34, inside the published cashline.'},
+  {id:'POP-012',name:'Results — Bubble / near miss',catEnum:'post_tournament',cat:'Post-Tournament',arch:'interstitial',signal:'tournament_ended',predicate:'final_rank just above cashline',placements:['post_tournament'],pri:1,tiebreak:300,cost:'collect · register',freq:'Once per tournament · no commercial stack',status:'Live',notes:'No commercial offer may accompany this state — §5.5 "no sale on a loss".',
+    blocks:[{type:'leaderboard_block',binding:'tournament.player_position_vs_cashline'}],
+    textTitle:'Three spots from the money', textBody:'Three better trades and you were in. See exactly where the gap opened up.',
+    ctas:[{label:'View Your Recap',action:'navigate',costType:'free',costValue:'',grantType:'',grantQty:'',destKind:'internal'},{label:'Play the next one',action:'register',costType:'regular_dc',costValue:'',grantType:'',grantQty:'',destKind:'tournament_registration'}],
+    justification:"We are using sunk cost / goal gradient at tournament_ended (bubble) because the player's real leaderboard position was 3 spots from the cashline — no commercial offer is attached."},
+  {id:'POP-013',name:'Results — Standard finish',catEnum:'post_tournament',cat:'Post-Tournament',arch:'interstitial',signal:'tournament_ended',predicate:'else',placements:['post_tournament'],pri:1,tiebreak:400,cost:'collect',freq:'Once per tournament',status:'Live',notes:'Acknowledgement. Rematch/social CTA permitted; commercial CTA is not.',
+    textTitle:'Your run is in', textBody:'See where you gained ground, where you slipped, and your best move of the tournament.',
+    ctas:[{label:'View Your Recap',action:'navigate',costType:'free',costValue:'',grantType:'',grantQty:'',destKind:'internal'},{label:'Back to lobby',action:'close',costType:'free',costValue:'',grantType:'',grantQty:'',destKind:'dismiss'}],
+    justification:'We are using neutral acknowledgement at tournament_ended (standard) because the player genuinely finished 23rd of 640, outside the cashline and outside the near-miss band.'},
+  {id:'POP-014',name:'Results digest — While you were away',catEnum:'post_tournament',cat:'Post-Tournament',arch:'interstitial',signal:'results_pending_multi',predicate:'count(unclaimed_results) >= 2',placements:['app_open'],pri:1,tiebreak:50,cost:'collect (aggregate) · navigate',freq:'Fires only when ≥2 pending · exempt from session cap',status:'Live',isNew:true,notes:'Supersedes the individual Results popups above whenever ≥2 are pending. A single unclaimed result still renders as the ordinary state-branched popup.',
+    blocks:[{type:'results_digest_list',binding:'player.unclaimed_tournament_results[]'}],
+    textTitle:'You’ve got results. And money.', textBody:'3 tournaments ended while you were away.',
+    ctas:[{label:'View All Results',action:'navigate',costType:'free',costValue:'',grantType:'',grantQty:'',destKind:'internal'},{label:'Dismiss all',action:'close',costType:'free',costValue:'',grantType:'',grantQty:'',destKind:'dismiss'}],
+    justification:'We are using the give-before-ask / respect-for-attention rule at app_open because 3 real tournaments genuinely ended while the player was away, each with its own real result and grant.'},
+  {id:'POP-015',name:'Interim reward',catEnum:'in_tournament',cat:'In-Tournament',arch:'toast',signal:'interim_reward_granted',predicate:'—',placements:['post_tournament','app_open'],pri:2,tiebreak:500,cost:'collect',freq:'Per reward table',status:'Live',notes:'Reward, segment and player text come from the interim reward table.'},
+  {id:'POP-016',name:'Cancelled & refunded',catEnum:'platform',cat:'Platform',arch:'platform',signal:'tournament_cancelled',predicate:'—',placements:['platform_preempt'],pri:1,tiebreak:500,cost:'acknowledge',freq:'Exempt from everything',status:'Live',notes:'Service message.'},
+  {id:'POP-017',name:'Daily login reward',catEnum:'progression',cat:'Progression',arch:'modal',signal:'daily_login',predicate:'—',placements:['app_open'],pri:2,tiebreak:500,cost:'free → collect',freq:'Opens the parade · budget deposit',status:'Live',notes:'The give that pays for a later ask.'},
+  {id:'POP-018',name:'Level group reached',catEnum:'progression',cat:'Progression',arch:'modal',signal:'level_group_reached',predicate:'—',placements:['post_tournament','app_open'],pri:2,tiebreak:500,cost:'collect',freq:'Once per milestone',status:'Live',notes:'Unlocks shown, not sold.'},
+  {id:'POP-019',name:'Loyalty tier up',catEnum:'progression',cat:'Progression',arch:'modal',signal:'loyalty_tier_up',predicate:'—',placements:['app_open'],pri:2,tiebreak:500,cost:'collect',freq:'Once per tier',status:'Live',notes:'Tier rail Origin → Eternal with next-tier benefits.'},
+  {id:'POP-020',name:'Quests',catEnum:'progression',cat:'Progression',arch:'sheet',signal:'quest_complete',predicate:'—',placements:['feed_entry'],pri:3,tiebreak:500,cost:'collect · navigate',freq:'Self-summoned · near-zero intrusion',status:'Live',notes:'Rows carry claimable/actionable/complete/locked state simultaneously.',blocks:[{type:'task_list',binding:'player.quests[]'}]},
+  {id:'POP-021',name:'Rival joined',catEnum:'social_rival',cat:'Social & Rival',arch:'toast',signal:'rival_joined',predicate:'—',placements:['lobby_return','feed_entry'],pri:3,tiebreak:500,cost:'register',freq:'Per real rival event',status:'Live',notes:'Bound to a real followed player and a real tournament.'},
+  {id:'POP-022',name:'Rematch',catEnum:'social_rival',cat:'Social & Rival',arch:'modal',signal:'rematch_available',predicate:'—',placements:['post_tournament'],pri:3,tiebreak:500,cost:'register',freq:'Never with a commercial offer',status:'Live',notes:''},
+  {id:'POP-023',name:'Referral reward',catEnum:'social_rival',cat:'Social & Rival',arch:'toast',signal:'referral_completed',predicate:'—',placements:['app_open'],pri:2,tiebreak:500,cost:'collect',freq:'Grant to Bonus Đ',status:'Live',notes:'States non-withdrawable.'},
+  {id:'POP-024',name:'Verify to withdraw',catEnum:'wallet',cat:'Wallet',arch:'modal',signal:'kyc_required',predicate:'—',placements:['wallet_return','platform_preempt'],pri:1,tiebreak:500,cost:'identity → kyc_flow',freq:'Resumable across provider handoff',status:'Live',notes:'Revenue gate, not a compliance chore.',blocks:[{type:'kyc_status_block',binding:'player.kyc_status'}]},
+  {id:'POP-025',name:'Verify your email',catEnum:'platform',cat:'Platform',arch:'toast',signal:'email_unverified',predicate:'—',placements:['app_open'],pri:2,tiebreak:500,cost:'consent',freq:'Capped hard',status:'Live',notes:'Nagging here damages more than it recovers.'},
+  {id:'POP-026',name:'Force update',catEnum:'platform',cat:'Platform',arch:'platform',signal:'version_stale',predicate:'—',placements:['platform_preempt'],pri:1,tiebreak:500,cost:'redirect → store',freq:'Non-dismissible · ignores every limit',status:'Live',notes:'The only non-dismissible surface.',bypassSession:true,bypassBudget:true,exemptApprover:'Head of Monetization',exemptExpiry:'2027-06-30',exemptReason:'Force update — platform preemption, ignores every limit by design'}
+];
+
+function popupById(id){ return POPUP_CAMPAIGNS.find(function(p){return p.id===id;}); }
+function popupPriBadge(pri){
+  var m={1:['#fee2e2','#991b1b','P1 · Critical'],2:['#fef3c7','#92400e','P2 · Medium'],3:['#f3f4f6','#6b7280','P3 · Low']}[pri]||['#f3f4f6','#6b7280','P?'];
+  return '<span class="bdg2" style="background:'+m[0]+';color:'+m[1]+'">'+m[2]+'</span>';
+}
+function popupStatusBadge(status){
+  var cls={Live:'state-active',Scheduled:'state-scheduled',Draft:'state-draft',Paused:'state-expired',Archived:'state-terminated'};
+  return '<span class="store-state '+(cls[status]||'state-draft')+'">'+status+'</span>';
+}
+
+function renderPopupsTable(){
+  var q=(document.getElementById('pop-search')||{}).value||'';
+  var catF=(document.getElementById('pop-category')||{}).value||'';
+  var plcF=(document.getElementById('pop-placement')||{}).value||'';
+  var priF=(document.getElementById('pop-priority')||{}).value||'';
+  var stF=(document.getElementById('pop-status')||{}).value||'';
+  var filtered = POPUP_CAMPAIGNS.filter(function(p){
+    var mq = !q || p.name.toLowerCase().includes(q.toLowerCase()) || p.signal.toLowerCase().includes(q.toLowerCase()) || p.id.toLowerCase().includes(q.toLowerCase());
+    var mc = !catF || p.cat===catF;
+    var mp = !plcF || (p.placements||[]).includes(plcF);
+    var mpri = !priF || String(p.pri)===priF;
+    var ms = !stF || p.status===stF;
+    return mq&&mc&&mp&&mpri&&ms;
+  }).sort(function(a,b){ return (a.pri-b.pri) || (a.tiebreak-b.tiebreak); });
+  var tb=document.getElementById('pop-tbody');
+  if(!tb) return;
+  tb.innerHTML = filtered.map(function(p){
+    return '<tr>'+
+      '<td>'+popupPriBadge(p.pri)+'<div style="font-size:10px;color:#9ca3af;margin-top:3px">tiebreak '+p.tiebreak+'</div></td>'+
+      '<td><div style="font-weight:600;color:#1a1a2e;display:flex;align-items:center;gap:6px">'+esc(p.name)+(p.isNew?'<span class="bdg2" style="background:#ede9fe;color:#5b21b6">NEW</span>':'')+'</div><div style="font-size:11px;color:#9ca3af">'+p.id+' · '+esc(p.arch)+'</div></td>'+
+      '<td style="font-size:12px">'+esc(p.cat)+'</td>'+
+      '<td style="font-size:12px"><span style="font-family:monospace;color:#5e36be">'+esc(p.signal)+'</span>'+(p.predicate&&p.predicate!=='—'?'<div style="font-size:10.5px;color:#9ca3af;margin-top:2px;max-width:220px;white-space:normal">'+esc(p.predicate)+'</div>':'')+'</td>'+
+      '<td style="font-size:12px">'+(p.placements||[]).join(' · ')+'</td>'+
+      '<td style="font-size:12px">'+esc(p.cost)+'</td>'+
+      '<td style="font-size:11.5px;color:#6b7280;max-width:200px">'+esc(p.freq)+'</td>'+
+      '<td>'+popupStatusBadge(p.status)+'</td>'+
+      '<td><div class="ra2"><button class="ab2" onclick="openPopupDrw(\''+p.id+'\')">Edit</button><button class="ab2" onclick="duplicatePopup(\''+p.id+'\')">Duplicate</button><button class="ab2" onclick="togglePausePopup(\''+p.id+'\')">'+(p.status==='Paused'?'Resume':'Pause')+'</button><button class="ab2" onclick="deletePopup(\''+p.id+'\')">Delete</button></div></td>'+
+      '</tr>';
+  }).join('');
+  document.getElementById('pop-count').textContent = filtered.length+' popups';
+}
+
+function switchPopupPageTab(name){
+  var order=['catalog','placements','guardrails'];
+  document.querySelectorAll('#screen-popups .pg-tab').forEach(function(t,i){ t.classList.toggle('active', order[i]===name); });
+  document.getElementById('popups-panel-catalog').classList.toggle('active', name==='catalog');
+  document.getElementById('popups-panel-placements').classList.toggle('active', name==='placements');
+  document.getElementById('popups-panel-guardrails').classList.toggle('active', name==='guardrails');
+  if(name==='placements') renderPlacementsTab();
+  if(name==='guardrails') renderGuardrailsTab();
+}
+
+function renderPlacementsTab(){
+  var rows=document.getElementById('plc-rows'); if(!rows) return;
+  rows.innerHTML = PLACEMENTS_DATA.map(function(pl){
+    return '<div style="display:grid;grid-template-columns:170px 100px 1fr;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid #f0f0f5">'+
+      '<div style="font-family:monospace;font-size:12.5px;color:'+(pl.locked?'#b0332a':'#1a1a2e')+';font-weight:600">'+pl.label+(pl.locked?' <i class="ti ti-lock" style="font-size:12px"></i>':'')+'</div>'+
+      '<input class="gs-inp" type="number" value="'+(typeof pl.capacity==='number'?pl.capacity:0)+'" style="width:70px" '+(pl.locked?'disabled':'')+' onchange="showToast2(\'Capacity updated\')">'+
+      '<div style="font-size:11.5px;color:#6b7280">'+esc(pl.policy)+'</div>'+
+    '</div>';
+  }).join('');
+  var bt=document.getElementById('bypass-tbody'); if(!bt) return;
+  bt.innerHTML = BYPASS_EXEMPTIONS.map(function(ex){
+    var p = popupById(ex.popupId);
+    return '<tr><td>'+(p?esc(p.name):ex.popupId)+'<div style="font-size:10.5px;color:#9ca3af">'+ex.popupId+'</div></td>'+
+      '<td style="font-size:11.5px">'+esc(ex.flag)+'</td>'+
+      '<td style="font-size:12px">'+esc(ex.reason)+'</td>'+
+      '<td style="font-size:12px">'+esc(ex.approver)+'</td>'+
+      '<td style="font-size:12px">'+esc(ex.expires)+'</td>'+
+      '<td><span class="store-state state-active">'+esc(ex.status)+'</span></td></tr>';
+  }).join('');
+}
+
+function renderGuardrailsTab(){
+  var el=document.getElementById('guardrail-list'); if(!el) return;
+  el.innerHTML = GUARDRAILS_DATA.map(function(g){
+    return '<div style="display:flex;gap:12px;align-items:flex-start;padding:12px 14px;background:#fff;border:1px solid #e8e8ec;border-radius:8px">'+
+      '<i class="ti ti-shield-check" style="font-size:16px;color:#10b981;flex-shrink:0;margin-top:1px"></i>'+
+      '<div><div style="font-size:13px;font-weight:700;color:#1a1a2e;margin-bottom:3px">'+esc(g.rule)+'</div><div style="font-size:12px;color:#6b7280;line-height:1.5">'+esc(g.desc)+'</div></div>'+
+    '</div>';
+  }).join('');
+}
+
+// ─── POPUP DRAWER ───
+var _popDrwId=null, _popDrwGeo=[], _popDrwSegIds=[], _popDrwExclSegIds=[], _popDrwPlacements=[], _popDrwBlocks=[], _popDrwCtas=[];
+
+function switchPopupTab(name){
+  var order=['identity','trigger','freq','content','guardrails'];
+  document.querySelectorAll('#popup-drw .drw2-tab').forEach(function(t,i){ t.classList.toggle('active', order[i]===name); });
+  order.forEach(function(n){ document.getElementById('pop-tab-'+n).classList.toggle('active', n===name); });
+}
+
+function renderPopupPlacementChips(){
+  var box=document.getElementById('pop-placement-chips'); if(!box) return;
+  box.innerHTML = PLACEMENTS_DATA.map(function(pl){
+    var on=_popDrwPlacements.includes(pl.id);
+    var lockedStyle = pl.locked ? 'opacity:.4;pointer-events:none' : '';
+    return '<span class="chip-sel '+(on?'on':'off')+'" style="'+lockedStyle+'" onclick="togglePopupPlacementChip(\''+pl.id+'\')">'+pl.label+'</span>';
+  }).join('');
+}
+function togglePopupPlacementChip(id){
+  var pl = PLACEMENTS_DATA.find(function(x){return x.id===id;});
+  if(pl && pl.locked) return;
+  var i=_popDrwPlacements.indexOf(id);
+  if(i>=0) _popDrwPlacements.splice(i,1); else _popDrwPlacements.push(id);
+  renderPopupPlacementChips();
+}
+function renderPopupSegPicker(){ renderSegPickerGeneric('pop-seg-list','pop-seg-search',_popDrwSegIds,'togglePopupSegSel'); }
+function togglePopupSegSel(id){ var i=_popDrwSegIds.indexOf(id); if(i>=0) _popDrwSegIds.splice(i,1); else _popDrwSegIds.push(id); renderPopupSegPicker(); }
+function renderPopupExclPicker(){ renderSegPickerGeneric('pop-excl-list','pop-excl-search',_popDrwExclSegIds,'togglePopupExclSel'); }
+function togglePopupExclSel(id){ var i=_popDrwExclSegIds.indexOf(id); if(i>=0) _popDrwExclSegIds.splice(i,1); else _popDrwExclSegIds.push(id); renderPopupExclPicker(); }
+function renderPopupGeoChips(){
+  var box=document.getElementById('pop-geo-chips'); if(!box) return;
+  box.innerHTML = SS_C.map(function(c){
+    var on=_popDrwGeo.includes(c.n);
+    return '<span class="chip-sel '+(on?'on':'off')+'" onclick="togglePopupGeoChip(\''+c.n+'\')">'+c.f+' '+c.n+'</span>';
+  }).join('');
+}
+function togglePopupGeoChip(name){ var i=_popDrwGeo.indexOf(name); if(i>=0) _popDrwGeo.splice(i,1); else _popDrwGeo.push(name); renderPopupGeoChips(); }
+
+var BLOCK_TYPES = ['hero_art','bundle_grid','bundle_column_set','price_block','wallet_delta','prize_pool_block','leaderboard_block','progress_rail','task_list','tier_rail','countdown_chip','versus_block','roster_strip','kyc_status_block','legal_strip','docked_offer','results_digest_list'];
+function renderPopupBlocksList(){
+  var box=document.getElementById('pop-blocks-list'); if(!box) return;
+  if(!_popDrwBlocks.length){ box.innerHTML='<div style="font-size:11.5px;color:#9ca3af;font-style:italic">No blocks yet — add at least one.</div>'; return; }
+  box.innerHTML = _popDrwBlocks.map(function(b,i){
+    return '<div style="display:grid;grid-template-columns:190px 1fr 32px;gap:8px;align-items:center">'+
+      '<select class="finp2" onchange="_popDrwBlocks['+i+'].type=this.value">'+BLOCK_TYPES.map(function(t){return '<option value="'+t+'" '+(b.type===t?'selected':'')+'>'+t+'</option>';}).join('')+'</select>'+
+      '<input type="text" class="finp2" placeholder="binding, e.g. tournament.net_prize_pool" value="'+esc(b.binding||'')+'" oninput="_popDrwBlocks['+i+'].binding=this.value">'+
+      '<button class="ab2" style="color:#dc2626" onclick="removePopupBlockRow('+i+')"><i class="ti ti-trash"></i></button>'+
+    '</div>';
+  }).join('');
+}
+function addPopupBlockRow(){ _popDrwBlocks.push({type:'hero_art',binding:''}); renderPopupBlocksList(); }
+function removePopupBlockRow(i){ _popDrwBlocks.splice(i,1); renderPopupBlocksList(); }
+
+var CTA_ACTIONS=['close','collect','top_up','register','enter_arena','navigate','verify','share','open_child','activate'];
+var CTA_COST_TYPES=['free','regular_dc','bonus_dc','real_money','social_action','consent','identity','conditional_free'];
+var CTA_GRANT_TYPES=['','regular_dc','bonus_dc','xp','loyalty_points','item'];
+var CTA_DEST_KINDS=['dismiss','grant_and_close','store_route','tournament_registration','arena_start','internal','kyc_flow','external','child_popup','state_mutation'];
+function renderPopupCtasList(){
+  var box=document.getElementById('pop-ctas-list'); if(!box) return;
+  if(!_popDrwCtas.length){ box.innerHTML='<div style="font-size:11.5px;color:#9ca3af;font-style:italic">At least one CTA is required, even if it is only a dismiss.</div>'; return; }
+  box.innerHTML = _popDrwCtas.map(function(c,i){
+    return '<div style="padding:10px;background:#fff;border:1px solid #e8e8ec;border-radius:8px">'+
+      '<div class="fg2" style="margin-bottom:8px">'+
+        '<input type="text" class="finp2" placeholder="Label" value="'+esc(c.label||'')+'" oninput="_popDrwCtas['+i+'].label=this.value">'+
+        '<select class="finp2" onchange="_popDrwCtas['+i+'].action=this.value">'+CTA_ACTIONS.map(function(a){return '<option value="'+a+'" '+(c.action===a?'selected':'')+'>'+a+'</option>';}).join('')+'</select>'+
+      '</div>'+
+      '<div class="fg2-4 fg2" style="margin-bottom:8px">'+
+        '<select class="finp2" onchange="_popDrwCtas['+i+'].costType=this.value">'+CTA_COST_TYPES.map(function(ct){return '<option value="'+ct+'" '+(c.costType===ct?'selected':'')+'>'+ct+'</option>';}).join('')+'</select>'+
+        '<input type="text" class="finp2" placeholder="Cost value" value="'+esc(c.costValue||'')+'" oninput="_popDrwCtas['+i+'].costValue=this.value">'+
+        '<select class="finp2" onchange="_popDrwCtas['+i+'].grantType=this.value">'+CTA_GRANT_TYPES.map(function(g){return '<option value="'+g+'" '+(c.grantType===g?'selected':'')+'>'+(g||'no grant')+'</option>';}).join('')+'</select>'+
+        '<input type="text" class="finp2" placeholder="Grant qty" value="'+esc(c.grantQty||'')+'" oninput="_popDrwCtas['+i+'].grantQty=this.value">'+
+      '</div>'+
+      '<div style="display:grid;grid-template-columns:1fr 32px;gap:8px">'+
+        '<select class="finp2" onchange="_popDrwCtas['+i+'].destKind=this.value">'+CTA_DEST_KINDS.map(function(d){return '<option value="'+d+'" '+(c.destKind===d?'selected':'')+'>'+d+'</option>';}).join('')+'</select>'+
+        '<button class="ab2" style="color:#dc2626" onclick="removePopupCtaRow('+i+')"><i class="ti ti-trash"></i></button>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+}
+function addPopupCtaRow(){ _popDrwCtas.push({label:'',action:'close',costType:'free',costValue:'',grantType:'',grantQty:'',destKind:'dismiss'}); renderPopupCtasList(); }
+function removePopupCtaRow(i){ _popDrwCtas.splice(i,1); renderPopupCtasList(); }
+
+function onBypassToggle(){
+  var on = document.getElementById('pop-bypass-session').checked || document.getElementById('pop-bypass-budget').checked;
+  document.getElementById('pop-bypass-fields').style.display = on ? 'block' : 'none';
+}
+function onCountdownToggle(){
+  document.getElementById('pop-countdown-fields').style.display = document.getElementById('pop-countdown-on').checked ? 'block' : 'none';
+}
+function renderPopupGuardrailMiniList(){
+  var el=document.getElementById('pop-guardrail-mini-list'); if(!el) return;
+  el.innerHTML = GUARDRAILS_DATA.map(function(g){
+    return '<label style="display:flex;align-items:center;gap:8px;font-size:12px;color:#374151"><input type="checkbox" checked disabled> '+esc(g.rule)+'</label>';
+  }).join('');
+}
+
+function fillPopupForm(p){
+  document.getElementById('pop-name').value = p.name||'';
+  document.getElementById('pop-id').value = p.id||'';
+  document.getElementById('pop-category-f').value = p.catEnum||'storefront';
+  document.getElementById('pop-archetype').value = p.arch||'modal';
+  document.getElementById('pop-status-f').value = (p.status||'draft').toLowerCase();
+  document.getElementById('pop-start').value = p.start||'';
+  document.getElementById('pop-end').value = p.end||'';
+  document.getElementById('pop-tz-policy').value = p.tzPolicy||'player_local';
+  document.getElementById('pop-signal').value = p.signal && p.signal.indexOf('(')<0 ? p.signal : 'login';
+  document.getElementById('pop-predicate').value = (p.predicate&&p.predicate!=='—') ? p.predicate : '';
+  document.getElementById('pop-perishable').checked = p.perishable!==false;
+  _popDrwPlacements = (p.placements||[]).slice();
+  _popDrwSegIds = (p.segmentIds||[]).slice();
+  _popDrwExclSegIds = (p.excludeSegmentIds||[]).slice();
+  document.getElementById('pop-holdout-excluded').checked = p.holdoutExcluded!==false;
+  _popDrwGeo = (p.geo||[]).slice();
+  document.getElementById('pop-plat-ios').checked = p.platIos!==false;
+  document.getElementById('pop-plat-android').checked = p.platAndroid!==false;
+  document.getElementById('pop-plat-web').checked = p.platWeb!==false;
+  document.getElementById('pop-min-age').value = p.minAgeH||0;
+  document.getElementById('pop-repeat-mode').value = p.repeatMode||'once_per_session';
+  document.getElementById('pop-repeat-n').value = p.repeatN||1;
+  document.getElementById('pop-reset-on').value = p.resetOn||'never';
+  document.getElementById('pop-cd-show').value = p.cdShow||0;
+  document.getElementById('pop-cd-dismiss').value = p.cdDismiss||'';
+  document.getElementById('pop-cd-decline').value = p.cdDecline||'';
+  document.getElementById('pop-cd-purchase').value = p.cdPurchase||'';
+  document.getElementById('pop-cd-pct').value = p.cdPct||'';
+  document.getElementById('pop-cd-min').value = p.cdMin||'';
+  document.getElementById('pop-cd-max').value = p.cdMax||'';
+  document.getElementById('pop-cap-lifetime').value = p.capLifetime||'';
+  document.getElementById('pop-cap-session').value = p.capSession!=null?p.capSession:1;
+  document.getElementById('pop-cap-day').value = p.capDay||'';
+  document.getElementById('pop-cap-week').value = p.capWeek||'';
+  document.getElementById('pop-cap-occurrence').value = p.capOccurrence!=null?p.capOccurrence:1;
+  document.getElementById('pop-cap-tourn').value = p.capTourn||'';
+  document.getElementById('pop-refire-delta').value = p.refireDelta!=null?p.refireDelta:3600;
+  document.getElementById('pop-priority-f').value = p.pri||2;
+  document.getElementById('pop-tiebreak').value = p.tiebreak!=null?p.tiebreak:500;
+  document.getElementById('pop-exclusivity').value = p.exclusivity||'';
+  document.getElementById('pop-bypass-session').checked = !!p.bypassSession;
+  document.getElementById('pop-bypass-budget').checked = !!p.bypassBudget;
+  document.getElementById('pop-exempt-approver').value = p.exemptApprover||(p.bypassSession||p.bypassBudget?'Head of Monetization':'');
+  document.getElementById('pop-exempt-expiry').value = p.exemptExpiry||'';
+  document.getElementById('pop-exempt-reason').value = p.exemptReason||'';
+  onBypassToggle();
+  document.getElementById('pop-layout-template').value = p.layoutTemplate||'';
+  _popDrwBlocks = JSON.parse(JSON.stringify(p.blocks||[]));
+  document.getElementById('pop-text-title').value = p.textTitle||p.name||'';
+  document.getElementById('pop-text-title-src').value = p.textTitleSrc||'live';
+  document.getElementById('pop-text-body').value = p.textBody||'';
+  _popDrwCtas = JSON.parse(JSON.stringify(p.ctas||[]));
+  document.getElementById('pop-countdown-on').checked = !!p.countdown;
+  onCountdownToggle();
+  document.getElementById('pop-cd-type').value = (p.countdown&&p.countdown.type)||'offer_expiry';
+  document.getElementById('pop-cd-anchor').value = (p.countdown&&p.countdown.anchor)||'first_view_plus';
+  document.getElementById('pop-cd-deadline').value = (p.countdown&&p.countdown.deadlineRef)||'';
+  document.getElementById('pop-close-enabled').checked = p.closeEnabled!==false;
+  document.getElementById('pop-close-pos').value = p.closePos||'tr';
+  document.getElementById('pop-tap-outside').value = p.tapOutside!==false ? 'true':'false';
+  document.getElementById('pop-justification').value = p.justification||'';
+  renderPopupPlacementChips();
+  var segSearch=document.getElementById('pop-seg-search'); if(segSearch) segSearch.value='';
+  var exclSearch=document.getElementById('pop-excl-search'); if(exclSearch) exclSearch.value='';
+  renderPopupSegPicker();
+  renderPopupExclPicker();
+  renderPopupGeoChips();
+  renderPopupBlocksList();
+  renderPopupCtasList();
+  renderPopupGuardrailMiniList();
+}
+
+function readPopupForm(){
+  var catEnum = document.getElementById('pop-category-f').value;
+  return {
+    id: _popDrwId || ('POP-'+String(Math.floor(100+Math.random()*899))),
+    name: document.getElementById('pop-name').value || 'Untitled popup',
+    catEnum: catEnum,
+    cat: CATEGORY_LABELS[catEnum] || catEnum,
+    arch: document.getElementById('pop-archetype').value,
+    status: document.getElementById('pop-status-f').selectedOptions[0].textContent,
+    start: document.getElementById('pop-start').value,
+    end: document.getElementById('pop-end').value,
+    tzPolicy: document.getElementById('pop-tz-policy').value,
+    signal: document.getElementById('pop-signal').value,
+    predicate: document.getElementById('pop-predicate').value || '—',
+    perishable: document.getElementById('pop-perishable').checked,
+    placements: _popDrwPlacements.slice(),
+    segmentIds: _popDrwSegIds.slice(),
+    excludeSegmentIds: _popDrwExclSegIds.slice(),
+    holdoutExcluded: document.getElementById('pop-holdout-excluded').checked,
+    geo: _popDrwGeo.slice(),
+    platIos: document.getElementById('pop-plat-ios').checked,
+    platAndroid: document.getElementById('pop-plat-android').checked,
+    platWeb: document.getElementById('pop-plat-web').checked,
+    minAgeH: parseInt(document.getElementById('pop-min-age').value)||0,
+    repeatMode: document.getElementById('pop-repeat-mode').value,
+    repeatN: parseInt(document.getElementById('pop-repeat-n').value)||1,
+    resetOn: document.getElementById('pop-reset-on').value,
+    cdShow: parseInt(document.getElementById('pop-cd-show').value)||0,
+    cdDismiss: document.getElementById('pop-cd-dismiss').value,
+    cdDecline: document.getElementById('pop-cd-decline').value,
+    cdPurchase: document.getElementById('pop-cd-purchase').value,
+    cdPct: document.getElementById('pop-cd-pct').value,
+    cdMin: document.getElementById('pop-cd-min').value,
+    cdMax: document.getElementById('pop-cd-max').value,
+    capLifetime: document.getElementById('pop-cap-lifetime').value,
+    capSession: parseInt(document.getElementById('pop-cap-session').value)||1,
+    capDay: document.getElementById('pop-cap-day').value,
+    capWeek: document.getElementById('pop-cap-week').value,
+    capOccurrence: parseInt(document.getElementById('pop-cap-occurrence').value)||1,
+    capTourn: document.getElementById('pop-cap-tourn').value,
+    refireDelta: parseInt(document.getElementById('pop-refire-delta').value)||3600,
+    pri: parseInt(document.getElementById('pop-priority-f').value)||2,
+    tiebreak: parseInt(document.getElementById('pop-tiebreak').value)||500,
+    exclusivity: document.getElementById('pop-exclusivity').value,
+    bypassSession: document.getElementById('pop-bypass-session').checked,
+    bypassBudget: document.getElementById('pop-bypass-budget').checked,
+    exemptApprover: document.getElementById('pop-exempt-approver').value,
+    exemptExpiry: document.getElementById('pop-exempt-expiry').value,
+    exemptReason: document.getElementById('pop-exempt-reason').value,
+    layoutTemplate: document.getElementById('pop-layout-template').value,
+    blocks: _popDrwBlocks.slice(),
+    textTitle: document.getElementById('pop-text-title').value,
+    textTitleSrc: document.getElementById('pop-text-title-src').value,
+    textBody: document.getElementById('pop-text-body').value,
+    ctas: _popDrwCtas.slice(),
+    countdown: document.getElementById('pop-countdown-on').checked ? {
+      type: document.getElementById('pop-cd-type').value,
+      anchor: document.getElementById('pop-cd-anchor').value,
+      deadlineRef: document.getElementById('pop-cd-deadline').value
+    } : null,
+    closeEnabled: document.getElementById('pop-close-enabled').checked,
+    closePos: document.getElementById('pop-close-pos').value,
+    tapOutside: document.getElementById('pop-tap-outside').value === 'true',
+    justification: document.getElementById('pop-justification').value,
+    cost: (_popDrwCtas.length ? _popDrwCtas.map(function(c){return c.action;}).join(' · ') : '—'),
+    freq: document.getElementById('pop-repeat-mode').value + ' · cap/session ' + (document.getElementById('pop-cap-session').value||'—'),
+    isNew: _popDrwId ? !!((popupById(_popDrwId)||{}).isNew) : false
+  };
+}
+
+function openPopupDrw(id){
+  _popDrwId = id;
+  if(id){
+    var p = popupById(id);
+    document.getElementById('pop-drw-title').textContent = 'Edit Popup';
+    document.getElementById('pop-drw-sub').textContent = p.id+' · '+p.cat;
+    document.getElementById('pop-drw-state').innerHTML = popupStatusBadge(p.status);
+    document.getElementById('pop-drw-pause-btn').style.display = p.status==='Paused' ? 'none' : 'inline-flex';
+    fillPopupForm(p);
+  } else {
+    document.getElementById('pop-drw-title').textContent = 'New Popup';
+    document.getElementById('pop-drw-sub').textContent = 'Auto-generated ID on save';
+    document.getElementById('pop-drw-state').innerHTML = '';
+    document.getElementById('pop-drw-pause-btn').style.display = 'none';
+    fillPopupForm({catEnum:'storefront',arch:'modal',status:'draft',signal:'login',placements:[],
+      ctas:[{label:'Close',action:'close',costType:'free',costValue:'',grantType:'',grantQty:'',destKind:'dismiss'}],
+      blocks:[{type:'hero_art',binding:''}]});
+  }
+  switchPopupTab('identity');
+  document.getElementById('pop-drw-saved').textContent='Unsaved';
+  document.getElementById('popup-drw-ov').classList.add('open');
+  document.getElementById('popup-drw').classList.add('open');
+  setTimeout(function(){document.getElementById('popup-drw').style.right='0';},10);
+}
+function closePopupDrw(){
+  document.getElementById('popup-drw-ov').classList.remove('open');
+  document.getElementById('popup-drw').classList.remove('open');
+  document.getElementById('popup-drw').style.right='-900px';
+}
+function pausePopupDrw(){
+  if(!_popDrwId){ showToast2('Save the popup before pausing it.'); return; }
+  var p = popupById(_popDrwId);
+  if(p) p.status='Paused';
+  renderPopupsTable();
+  closePopupDrw();
+  showToast2('Popup paused — takes effect within this session, not a release.');
+}
+function togglePausePopup(id){
+  var p = popupById(id); if(!p) return;
+  p.status = p.status==='Paused' ? 'Live' : 'Paused';
+  renderPopupsTable();
+  showToast2(p.status==='Paused' ? 'Popup paused' : 'Popup resumed');
+}
+function deletePopup(id){
+  var p = popupById(id); if(!p) return;
+  if(!confirm('Delete popup "'+p.name+'"? This cannot be undone.')) return;
+  POPUP_CAMPAIGNS = POPUP_CAMPAIGNS.filter(function(x){return x.id!==id;});
+  renderPopupsTable();
+  showToast2('Popup deleted');
+}
+function duplicatePopup(id){
+  var p = popupById(id); if(!p) return;
+  var clone = JSON.parse(JSON.stringify(p));
+  clone.id = 'POP-'+String(Math.floor(100+Math.random()*899));
+  clone.name = p.name + ' (Copy)';
+  clone.status = 'Draft';
+  clone.isNew = false;
+  POPUP_CAMPAIGNS.push(clone);
+  renderPopupsTable();
+  showToast2('Popup duplicated as draft');
+}
+
+function savePopupDrw(publish){
+  var p = readPopupForm();
+
+  // ── Guardrails enforced at save (§5.10 of the spec) ──
+  if(!p.justification || !p.justification.trim()){
+    showToast2('Guardrail: justification is required — "We are using [lever] at [moment] because [player-true fact]."');
+    switchPopupTab('guardrails');
+    return;
+  }
+  if(!p.ctas.length){
+    showToast2('Guardrail: at least one CTA is required, even if it is only a dismiss.');
+    switchPopupTab('content');
+    return;
+  }
+  if(p.resetOn!=='never' && p.repeatMode==='once_ever'){
+    showToast2('Guardrail: a once_ever campaign cannot carry a reset rule — that reads as a fake "one-time" offer.');
+    switchPopupTab('freq');
+    return;
+  }
+  if((p.bypassSession||p.bypassBudget) && (!p.exemptReason||!p.exemptExpiry||!p.exemptApprover)){
+    showToast2('Guardrail: a bypass exemption requires an approver, a reason and an expiry date.');
+    switchPopupTab('freq');
+    return;
+  }
+  var bodyLower=(p.textBody||'').toLowerCase();
+  if((bodyLower.includes('last chance')||bodyLower.includes('ends soon')||bodyLower.includes('about to')) && !p.countdown){
+    showToast2('Guardrail: urgency copy needs an active countdown binding — enable Countdown on the Content tab.');
+    switchPopupTab('content');
+    return;
+  }
+
+  p.status = publish ? 'Live' : 'Draft';
+  if(_popDrwId){
+    var idx = POPUP_CAMPAIGNS.findIndex(function(x){return x.id===_popDrwId;});
+    if(idx>=0) POPUP_CAMPAIGNS[idx] = p;
+  } else {
+    POPUP_CAMPAIGNS.push(p);
+  }
+  closePopupDrw();
+  renderPopupsTable();
+  showToast2(publish ? 'Popup saved & published' : 'Popup saved as draft');
+}
+
+function initPopups(){ renderPopupsTable(); renderPlacementsTab(); renderGuardrailsTab(); }
+
 </script>
 
 <div class="drw2-ov" id="edit-drw-ov" onclick="closeEditDrw()"></div>
@@ -8985,13 +9609,13 @@ function initOffers(){ populateOfferFilters(); renderOffersTable(); }
     </div>
     <div style="display:flex;gap:10px;margin-bottom:16px">
       <div style="flex:1"><label style="font-size:11px;color:#6b7280;font-weight:500;display:block;margin-bottom:4px">Category</label>
-        <select class="fsel2" id="sup-drw-category" onchange="updateSupportField('category')" style="width:100%"><option>Trading</option><option>Tournaments</option><option>Wallet</option><option>Account</option><option>Other</option></select>
+        <select class="fsel2" id="sup-drw-category" onchange="updateSupportField(&#39;category&#39;)" style="width:100%"><option>Trading</option><option>Tournaments</option><option>Wallet</option><option>Account</option><option>Other</option></select>
       </div>
       <div style="flex:1"><label style="font-size:11px;color:#6b7280;font-weight:500;display:block;margin-bottom:4px">Severity</label>
-        <select class="fsel2" id="sup-drw-severity" onchange="updateSupportField('severity')" style="width:100%"><option>Critical</option><option>High</option><option>Medium</option><option>Low</option></select>
+        <select class="fsel2" id="sup-drw-severity" onchange="updateSupportField(&#39;severity&#39;)" style="width:100%"><option>Critical</option><option>High</option><option>Medium</option><option>Low</option></select>
       </div>
       <div style="flex:1"><label style="font-size:11px;color:#6b7280;font-weight:500;display:block;margin-bottom:4px">Status</label>
-        <select class="fsel2" id="sup-drw-status" onchange="updateSupportField('status')" style="width:100%"><option>Waiting for Support</option><option>Waiting for You</option><option>Resolved</option></select>
+        <select class="fsel2" id="sup-drw-status" onchange="updateSupportField(&#39;status&#39;)" style="width:100%"><option>Waiting for Support</option><option>Waiting for You</option><option>Resolved</option></select>
       </div>
     </div>
     <div class="csec2">
@@ -9001,7 +9625,7 @@ function initOffers(){ populateOfferFilters(); renderOffersTable(); }
     <div id="sup-suggested-box" style="display:none;background:#f3f0ff;border:1px solid #ddd6fe;border-radius:8px;padding:10px 12px;margin-top:4px">
       <div style="font-size:11px;font-weight:600;color:#5b21b6;margin-bottom:3px">Suggested answer</div>
       <div style="font-size:12px;color:#4c1d95;line-height:1.5" id="sup-suggested-text"></div>
-      <button class="btn2 bo" style="margin-top:8px;padding:4px 10px;font-size:11.5px" onclick="document.getElementById('sup-reply').value = document.getElementById('sup-suggested-text').textContent">Insert into reply</button>
+      <button class="btn2 bo" style="margin-top:8px;padding:4px 10px;font-size:11.5px" onclick="document.getElementById(&#39;sup-reply&#39;).value = document.getElementById(&#39;sup-suggested-text&#39;).textContent">Insert into reply</button>
     </div>
     <div style="margin-top:14px">
       <label style="font-size:11px;color:#6b7280;font-weight:500;display:block;margin-bottom:4px">Reply <span style="color:#9ca3af;font-weight:400">(sent from support@dividandy.com)</span></label>
@@ -9422,6 +10046,315 @@ function initOffers(){ populateOfferFilters(); renderOffersTable(); }
     <button class="btn2 bo" onclick="closeStoreDrw()">Cancel</button>
     <button class="btn2 bo" style="border-color:#7c3aed;color:#7c3aed" onclick="saveStoreDrw(false)">Save as draft</button>
     <button class="btn2 bp" onclick="saveStoreDrw(true)">Save &amp; publish</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- Popup Drawer -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="drw2-ov" id="popup-drw-ov" onclick="closePopupDrw()"></div>
+<div class="drw2" id="popup-drw" style="width:900px;right:-900px">
+  <div class="drw2-hdr">
+    <div style="flex:1">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div style="font-size:16px;font-weight:700;color:#1a1a2e" id="pop-drw-title">New Popup</div>
+        <span id="pop-drw-state"></span>
+      </div>
+      <div style="font-size:12px;color:#9ca3af;margin-top:2px" id="pop-drw-sub">Campaign object — one popup, many locales, many render variants</div>
+    </div>
+    <button class="btn2 bo" style="border-color:#fca5a5;color:#dc2626;display:none" id="pop-drw-pause-btn" onclick="pausePopupDrw()">Pause now</button>
+    <button class="drw2-cls" onclick="closePopupDrw()"><svg viewBox="0 0 24 24" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+  </div>
+  <div class="drw2-tabs">
+    <div class="drw2-tab active" onclick="switchPopupTab(&#39;identity&#39;)">Identity</div>
+    <div class="drw2-tab" onclick="switchPopupTab(&#39;trigger&#39;)">Trigger &amp; Audience</div>
+    <div class="drw2-tab" onclick="switchPopupTab(&#39;freq&#39;)">Frequency &amp; Arbitration</div>
+    <div class="drw2-tab" onclick="switchPopupTab(&#39;content&#39;)">Content</div>
+    <div class="drw2-tab" onclick="switchPopupTab(&#39;guardrails&#39;)">Guardrails</div>
+  </div>
+  <div class="drw2-body">
+
+    <!-- IDENTITY -->
+    <div class="tpnl active" id="pop-tab-identity">
+      <div class="csec2">
+        <div class="csec2-h"><span class="csec2-t">Basic info</span></div>
+        <div class="fg2" style="margin-bottom:12px">
+          <div class="fi2"><span class="fl2">Popup name</span><input type="text" class="finp2" id="pop-name" placeholder="e.g. Results — Bubble / near miss"></div>
+          <div class="fi2"><span class="fl2">ID</span><input type="text" class="finp2" id="pop-id" disabled style="background:#f9fafb;color:#9ca3af"></div>
+        </div>
+        <div class="fg2">
+          <div class="fi2"><span class="fl2">Category</span><select class="finp2" id="pop-category-f">
+            <option value="storefront">storefront</option><option value="wallet">wallet</option><option value="progression">progression</option><option value="platform">platform</option>
+            <option value="in_tournament">in_tournament</option><option value="post_tournament">post_tournament</option><option value="sit_and_go">sit_and_go</option>
+            <option value="social_rival">social_rival</option><option value="onboarding">onboarding</option><option value="profile">profile</option>
+          </select></div>
+          <div class="fi2"><span class="fl2">Archetype</span><select class="finp2" id="pop-archetype">
+            <option value="interstitial">interstitial</option><option value="modal">modal</option><option value="gate">gate</option><option value="sheet">sheet</option>
+            <option value="banner">banner</option><option value="toast">toast</option><option value="badge">badge</option><option value="platform">platform</option>
+          </select></div>
+        </div>
+        <div style="font-size:11px;color:#9ca3af;margin-top:6px"><code>gate</code> is limit- and budget-exempt — reserve it for pre-tournament confirmation screens (§3.7 of the spec).</div>
+      </div>
+      <div class="csec2">
+        <div class="csec2-h"><span class="csec2-t">Status</span></div>
+        <select class="finp2" id="pop-status-f" style="max-width:220px">
+          <option value="draft">Draft</option><option value="scheduled">Scheduled</option><option value="live">Live</option><option value="paused">Paused</option><option value="archived">Archived</option>
+        </select>
+        <div style="font-size:11px;color:#9ca3af;margin-top:6px">Pausing must take effect within one session, not one release.</div>
+      </div>
+      <div class="csec2">
+        <div class="csec2-h"><span class="csec2-t">Schedule</span><span style="font-size:11px;color:#9ca3af">When the campaign is available to the system — not the player-facing countdown</span></div>
+        <div class="fg2">
+          <div class="fi2"><span class="fl2">Start</span><input type="datetime-local" class="finp2" id="pop-start"></div>
+          <div class="fi2"><span class="fl2">End</span><input type="datetime-local" class="finp2" id="pop-end"></div>
+        </div>
+        <div class="fi2" style="margin-top:10px;max-width:220px"><span class="fl2">Timezone policy</span><select class="finp2" id="pop-tz-policy">
+          <option value="player_local">player_local</option><option value="utc">utc</option><option value="server">server</option>
+        </select></div>
+      </div>
+    </div>
+
+    <!-- TRIGGER & AUDIENCE -->
+    <div class="tpnl" id="pop-tab-trigger">
+      <div class="csec2">
+        <div class="csec2-h"><span class="csec2-t">Trigger</span></div>
+        <div class="fi2" style="margin-bottom:10px"><span class="fl2">Signal</span>
+          <select class="finp2" id="pop-signal">
+            <optgroup label="Session">
+              <option value="login">login</option><option value="foreground_return">foreground_return</option><option value="session_n">session_n</option><option value="session_end">session_end</option>
+              <option value="results_pending_multi">results_pending_multi — resume digest</option>
+            </optgroup>
+            <optgroup label="Navigation">
+              <option value="lobby_return">lobby_return</option><option value="store_opened">store_opened</option><option value="store_exit">store_exit</option>
+              <option value="tab_entered">tab_entered</option><option value="feed_opened">feed_opened</option><option value="wallet_opened">wallet_opened</option>
+            </optgroup>
+            <optgroup label="Tournament lifecycle">
+              <option value="tournament_registered">tournament_registered</option><option value="tournament_starting">tournament_starting</option>
+              <option value="tournament_ended">tournament_ended</option><option value="sit_and_go_filling">sit_and_go_filling</option>
+              <option value="late_registration_closing">late_registration_closing</option><option value="tournament_cancelled">tournament_cancelled</option>
+            </optgroup>
+            <optgroup label="In-tournament">
+              <option value="rank_dropped">rank_dropped</option><option value="rank_climbed">rank_climbed</option><option value="cashline_approach">cashline_approach</option>
+              <option value="cashline_crossed">cashline_crossed</option><option value="deathline_alert">deathline_alert</option><option value="interim_reward_granted">interim_reward_granted</option>
+              <option value="watchlist_alert">watchlist_alert</option><option value="volatility_signal">volatility_signal</option>
+            </optgroup>
+            <optgroup label="Wallet & economy">
+              <option value="balance_below_entry_fee">balance_below_entry_fee</option><option value="insufficient_at_registration">insufficient_at_registration</option>
+              <option value="first_deposit_completed">first_deposit_completed</option><option value="purchase_completed">purchase_completed</option>
+              <option value="withdrawal_requested">withdrawal_requested</option><option value="withdrawal_approved">withdrawal_approved</option>
+              <option value="kyc_required">kyc_required</option><option value="bonus_dc_expiring">bonus_dc_expiring</option>
+            </optgroup>
+            <optgroup label="Progression">
+              <option value="level_up">level_up</option><option value="level_group_reached">level_group_reached</option><option value="loyalty_tier_up">loyalty_tier_up</option>
+              <option value="quest_complete">quest_complete</option><option value="achievement_unlocked">achievement_unlocked</option><option value="daily_login">daily_login</option>
+              <option value="streak_at_risk">streak_at_risk</option>
+            </optgroup>
+            <optgroup label="Social & rival">
+              <option value="rival_joined">rival_joined</option><option value="rematch_available">rematch_available</option><option value="followed_by_pro">followed_by_pro</option>
+              <option value="referral_completed">referral_completed</option><option value="leaderboard_overtaken">leaderboard_overtaken</option>
+            </optgroup>
+            <optgroup label="Platform">
+              <option value="version_stale">version_stale</option><option value="maintenance_window">maintenance_window</option><option value="consent_required">consent_required</option>
+              <option value="email_unverified">email_unverified</option><option value="session_expiring">session_expiring</option>
+            </optgroup>
+            <optgroup label="External">
+              <option value="deeplink_entry">deeplink_entry</option><option value="campaign_attribution">campaign_attribution</option>
+            </optgroup>
+          </select>
+        </div>
+        <div class="fi2"><span class="fl2">Predicate <span style="text-transform:none;font-weight:400">(boolean expression, arithmetic over live entities)</span></span>
+          <textarea class="ta2" id="pop-predicate" style="min-height:60px;font-family:monospace;font-size:12px" placeholder="e.g. player.balance.regular_dc + player.balance.bonus_dc < tournament.entry_fee AND tournament.status=='registering'"></textarea>
+        </div>
+        <label style="display:flex;align-items:center;gap:8px;margin-top:10px;font-size:12.5px;color:#374151;cursor:pointer"><input type="checkbox" id="pop-perishable" checked> Perishable — a losing candidate is dropped rather than staying queued</label>
+      </div>
+      <div class="csec2">
+        <div class="csec2-h"><span class="csec2-t">Placement eligibility</span><span style="font-size:11px;color:#9ca3af">Campaigns bid for a placement — they don't fire into it</span></div>
+        <div id="pop-placement-chips" style="display:flex;flex-wrap:wrap;gap:6px"></div>
+        <div style="font-size:11px;color:#b0332a;margin-top:8px"><i class="ti ti-lock"></i> <code>arena</code> capacity is hard-locked at 0 below P1 — not selectable here.</div>
+      </div>
+      <div class="csec2">
+        <div class="csec2-h"><span class="csec2-t">Audience — include</span><span style="font-size:11px;color:#9ca3af">Optional — empty = all eligible players</span></div>
+        <input type="text" class="finp2 picker-search-inp" id="pop-seg-search" placeholder="Search segments…" oninput="renderPopupSegPicker()">
+        <div id="pop-seg-list" style="display:flex;flex-direction:column;gap:6px;max-height:160px;overflow:auto"></div>
+      </div>
+      <div class="csec2">
+        <div class="csec2-h"><span class="csec2-t">Audience — exclude</span><span style="font-size:11px;color:#9ca3af">Separate from inclusion — keeps offers off pending withdrawals / KYC-blocked players</span></div>
+        <input type="text" class="finp2 picker-search-inp" id="pop-excl-search" placeholder="Search segments…" oninput="renderPopupExclPicker()">
+        <div id="pop-excl-list" style="display:flex;flex-direction:column;gap:6px;max-height:140px;overflow:auto"></div>
+      </div>
+      <div class="csec2">
+        <div class="csec2-h"><span class="csec2-t">Holdout &amp; jurisdiction</span></div>
+        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;margin-bottom:12px">
+          <label class="tgl2"><input type="checkbox" id="pop-holdout-excluded" checked><span class="tgl2-sl"></span></label>
+          <span style="font-size:12.5px;color:#374151">Exclude the permanent holdout (default — a campaign must opt <b>in</b> to reach it)</span>
+        </label>
+        <div class="fl2" style="margin-bottom:6px">Jurisdiction allow-list <span style="text-transform:none;font-weight:400">— empty = all eligible countries</span></div>
+        <div id="pop-geo-chips" style="display:flex;flex-wrap:wrap;gap:6px"></div>
+      </div>
+      <div class="csec2">
+        <div class="csec2-h"><span class="csec2-t">Platforms &amp; eligibility</span></div>
+        <div style="display:flex;gap:18px;margin-bottom:10px">
+          <label style="display:flex;align-items:center;gap:6px;font-size:12.5px;color:#374151;cursor:pointer"><input type="checkbox" id="pop-plat-ios" checked>iOS</label>
+          <label style="display:flex;align-items:center;gap:6px;font-size:12.5px;color:#374151;cursor:pointer"><input type="checkbox" id="pop-plat-android" checked>Android</label>
+          <label style="display:flex;align-items:center;gap:6px;font-size:12.5px;color:#374151;cursor:pointer"><input type="checkbox" id="pop-plat-web" checked>Web</label>
+        </div>
+        <div class="fi2" style="max-width:220px"><span class="fl2">Min account age (hours)</span><input type="number" min="0" class="finp2" id="pop-min-age" value="0"></div>
+      </div>
+    </div>
+
+    <!-- FREQUENCY & ARBITRATION -->
+    <div class="tpnl" id="pop-tab-freq">
+      <div class="csec2">
+        <div class="csec2-h"><span class="csec2-t">Repeat</span></div>
+        <div class="fg2-3 fg2" style="margin-bottom:10px">
+          <div class="fi2"><span class="fl2">Mode</span><select class="finp2" id="pop-repeat-mode">
+            <option value="once_ever">once_ever</option><option value="once_per_session" selected>once_per_session</option><option value="every_n_sessions">every_n_sessions</option>
+            <option value="every_n_hours">every_n_hours</option><option value="every_trigger">every_trigger</option><option value="n_times_then_stop">n_times_then_stop</option>
+          </select></div>
+          <div class="fi2"><span class="fl2">N</span><input type="number" min="1" class="finp2" id="pop-repeat-n" value="1"></div>
+          <div class="fi2"><span class="fl2">Reset on</span><select class="finp2" id="pop-reset-on">
+            <option value="never" selected>never</option><option value="daily">daily</option><option value="weekly">weekly</option><option value="tournament_end">tournament_end</option><option value="app_version">app_version</option>
+          </select></div>
+        </div>
+        <div style="font-size:11px;color:#b0332a"><i class="ti ti-lock"></i> Audited — a campaign whose copy claims "one-time" with reset_on ≠ never is blocked on the Guardrails tab.</div>
+      </div>
+      <div class="csec2">
+        <div class="csec2-h"><span class="csec2-t">Cooldowns (seconds)</span></div>
+        <div class="fg2-4 fg2">
+          <div class="fi2"><span class="fl2">After show</span><input type="number" min="0" class="finp2" id="pop-cd-show" value="0"></div>
+          <div class="fi2"><span class="fl2">After dismiss</span><input type="number" min="0" class="finp2" id="pop-cd-dismiss" placeholder="inherits show"></div>
+          <div class="fi2"><span class="fl2">After decline</span><input type="number" min="0" class="finp2" id="pop-cd-decline"></div>
+          <div class="fi2"><span class="fl2">After purchase</span><input type="number" min="0" class="finp2" id="pop-cd-purchase"></div>
+        </div>
+        <div style="font-size:11px;color:#9ca3af;margin:10px 0 6px">Dynamic (tournament-scoped) — optional</div>
+        <div class="fg2-3 fg2">
+          <div class="fi2"><span class="fl2">% of duration</span><input type="number" min="0" max="100" class="finp2" id="pop-cd-pct"></div>
+          <div class="fi2"><span class="fl2">Min (s)</span><input type="number" min="0" class="finp2" id="pop-cd-min"></div>
+          <div class="fi2"><span class="fl2">Max (s)</span><input type="number" min="0" class="finp2" id="pop-cd-max"></div>
+        </div>
+      </div>
+      <div class="csec2">
+        <div class="csec2-h"><span class="csec2-t">Caps</span></div>
+        <div class="fg2-3 fg2">
+          <div class="fi2"><span class="fl2">Lifetime</span><input type="number" min="0" class="finp2" id="pop-cap-lifetime" placeholder="∞"></div>
+          <div class="fi2"><span class="fl2">Per session</span><input type="number" min="0" class="finp2" id="pop-cap-session" value="1"></div>
+          <div class="fi2"><span class="fl2">Per day</span><input type="number" min="0" class="finp2" id="pop-cap-day" placeholder="∞"></div>
+          <div class="fi2"><span class="fl2">Per week</span><input type="number" min="0" class="finp2" id="pop-cap-week" placeholder="∞"></div>
+          <div class="fi2"><span class="fl2">Per occurrence</span><input type="number" min="0" class="finp2" id="pop-cap-occurrence" value="1"></div>
+          <div class="fi2"><span class="fl2">Per tournament instance</span><input type="number" min="0" class="finp2" id="pop-cap-tourn" placeholder="∞"></div>
+        </div>
+        <div class="fi2" style="margin-top:10px;max-width:260px"><span class="fl2">Re-fire variant delta (s)</span><input type="number" min="0" class="finp2" id="pop-refire-delta" value="3600"></div>
+      </div>
+      <div class="csec2">
+        <div class="csec2-h"><span class="csec2-t">Arbitration</span></div>
+        <div class="fg2" style="margin-bottom:10px">
+          <div class="fi2"><span class="fl2">Priority</span><select class="finp2" id="pop-priority-f">
+            <option value="1">P1 — Critical (always delivered, exempt from limits/budget/quiet hours)</option>
+            <option value="2" selected>P2 — Medium (subject to per-category rate limits)</option>
+            <option value="3">P3 — Low (dropped first under load)</option>
+          </select></div>
+          <div class="fi2"><span class="fl2">Tiebreak (0–1000)</span><input type="number" min="0" max="1000" class="finp2" id="pop-tiebreak" value="500"></div>
+        </div>
+        <div class="fi2"><span class="fl2">Exclusivity group(s) <span style="text-transform:none;font-weight:400">(comma-separated tags — never co-occur)</span></span><input type="text" class="finp2" id="pop-exclusivity" placeholder="e.g. results-family"></div>
+      </div>
+      <div class="csec2">
+        <div class="csec2-h"><span class="csec2-t">Bypass flags — Head of Monetization only</span></div>
+        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;margin-bottom:10px">
+          <label class="tgl2"><input type="checkbox" id="pop-bypass-session" onchange="onBypassToggle()"><span class="tgl2-sl"></span></label>
+          <span style="font-size:12.5px;color:#374151">Bypass session limit</span>
+        </label>
+        <label style="display:flex;align-items:center;gap:10px;cursor:pointer">
+          <label class="tgl2"><input type="checkbox" id="pop-bypass-budget" onchange="onBypassToggle()"><span class="tgl2-sl"></span></label>
+          <span style="font-size:12.5px;color:#374151">Bypass pressure budget</span>
+        </label>
+        <div id="pop-bypass-fields" style="display:none;margin-top:14px;padding:12px;background:#fef2f2;border:1px solid #fecaca;border-radius:8px">
+          <div style="font-size:11.5px;color:#991b1b;margin-bottom:10px"><i class="ti ti-alert-triangle"></i> Both flags require a named reason and an expiry date. An exemption without an expiry will not save.</div>
+          <div class="fg2" style="margin-bottom:10px">
+            <div class="fi2"><span class="fl2">Approver</span><input type="text" class="finp2" id="pop-exempt-approver" placeholder="Head of Monetization"></div>
+            <div class="fi2"><span class="fl2">Expires</span><input type="date" class="finp2" id="pop-exempt-expiry"></div>
+          </div>
+          <div class="fi2"><span class="fl2">Reason</span><input type="text" class="finp2" id="pop-exempt-reason" placeholder="Why this campaign needs the exemption"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="tpnl" id="pop-tab-content">
+      <div class="csec2">
+        <div class="csec2-h"><span class="csec2-t">Frame</span></div>
+        <div class="fi2"><span class="fl2">Layout template</span><input type="text" class="finp2" id="pop-layout-template" placeholder="e.g. results-state-branch-v2"></div>
+        <div style="font-size:11px;color:#9ca3af;margin-top:6px">The legal strip is auto-injected for commercial categories and cannot be removed here.</div>
+      </div>
+      <div class="csec2">
+        <div class="csec2-h"><span class="csec2-t">Blocks</span><button class="ab2" onclick="addPopupBlockRow()"><i class="ti ti-plus"></i>Add block</button></div>
+        <div style="font-size:11px;color:#9ca3af;margin-bottom:10px">Every block needs a live <b>binding</b> — a hardcoded value where a binding belongs fails validation.</div>
+        <div id="pop-blocks-list" style="display:flex;flex-direction:column;gap:8px"></div>
+      </div>
+      <div class="csec2">
+        <div class="csec2-h"><span class="csec2-t">Text layers</span></div>
+        <div class="fg2" style="margin-bottom:10px">
+          <div class="fi2"><span class="fl2">Headline</span><input type="text" class="finp2" id="pop-text-title" placeholder="Live text, localisable"></div>
+          <div class="fi2"><span class="fl2">Source</span><select class="finp2" id="pop-text-title-src"><option value="live" selected>live</option><option value="baked">baked (requires approval)</option></select></div>
+        </div>
+        <div class="fi2"><span class="fl2">Body</span><textarea class="ta2" id="pop-text-body" placeholder="Live text, can bind to a value e.g. {{tournament.net_prize_pool}}"></textarea></div>
+      </div>
+      <div class="csec2">
+        <div class="csec2-h"><span class="csec2-t">CTA rail</span><button class="ab2" onclick="addPopupCtaRow()"><i class="ti ti-plus"></i>Add CTA</button></div>
+        <div style="font-size:11px;color:#9ca3af;margin-bottom:10px">At least one CTA is required, even if it is only a dismiss. Cost and grant are independent fields.</div>
+        <div id="pop-ctas-list" style="display:flex;flex-direction:column;gap:10px"></div>
+      </div>
+      <div class="csec2">
+        <div class="csec2-h"><span class="csec2-t">Countdown</span>
+          <label style="display:flex;align-items:center;gap:8px"><label class="tgl2"><input type="checkbox" id="pop-countdown-on" onchange="onCountdownToggle()"><span class="tgl2-sl"></span></label><span style="font-size:11px;color:#9ca3af">Enable</span></label>
+        </div>
+        <div id="pop-countdown-fields" style="display:none">
+          <div class="fg2" style="margin-bottom:10px">
+            <div class="fi2"><span class="fl2">Type</span><select class="finp2" id="pop-cd-type">
+              <option value="tournament_window">tournament_window</option><option value="offer_expiry">offer_expiry</option><option value="bonus_expiry">bonus_expiry</option>
+              <option value="cooldown_to_next">cooldown_to_next</option><option value="session_flash">session_flash</option>
+            </select></div>
+            <div class="fi2"><span class="fl2">Anchor</span><select class="finp2" id="pop-cd-anchor">
+              <option value="global_end">global_end</option><option value="first_view_plus">first_view_plus</option><option value="first_trigger_plus">first_trigger_plus</option><option value="fixed_clock">fixed_clock</option>
+            </select></div>
+          </div>
+          <div class="fi2"><span class="fl2">Deadline reference <span style="text-transform:none;font-weight:400">(must resolve to something that genuinely ends)</span></span><input type="text" class="finp2" id="pop-cd-deadline" placeholder="e.g. tournament.late_registration_closes_at"></div>
+        </div>
+      </div>
+      <div class="csec2">
+        <div class="csec2-h"><span class="csec2-t">Chrome (dismissal contract)</span></div>
+        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;margin-bottom:10px">
+          <label class="tgl2"><input type="checkbox" id="pop-close-enabled" checked><span class="tgl2-sl"></span></label>
+          <span style="font-size:12.5px;color:#374151">Close button enabled <span style="color:#9ca3af">(false only for platform_preempt)</span></span>
+        </label>
+        <div class="fg2">
+          <div class="fi2"><span class="fl2">Close button position</span><select class="finp2" id="pop-close-pos">
+            <option value="tr" selected>top-right</option><option value="tl">top-left</option><option value="bl">bottom-left</option><option value="br">bottom-right</option><option value="outside">outside</option>
+          </select></div>
+          <div class="fi2"><span class="fl2">Tap outside dismisses</span><select class="finp2" id="pop-tap-outside"><option value="true" selected>true</option><option value="false">false — confirmations that charge</option></select></div>
+        </div>
+        <div style="font-size:11px;color:#9ca3af;margin-top:8px"><i class="ti ti-lock"></i> Framework-clamped, not editable: available within 1000ms, minimum 44pt touch target.</div>
+      </div>
+    </div>
+
+    <!-- GUARDRAILS -->
+    <div class="tpnl" id="pop-tab-guardrails">
+      <div class="csec2">
+        <div class="csec2-h"><span class="csec2-t">Justification — required to save</span></div>
+        <div style="font-size:11.5px;color:#6b7280;margin-bottom:8px">"We are using <b>[lever]</b> at <b>[moment]</b> because <b>[player-true fact]</b>." If the player-true fact isn't true, the campaign should not save.</div>
+        <textarea class="ta2" id="pop-justification" placeholder="e.g. We are using loss aversion at tournament_ended (bubble) because the player's real leaderboard position was 3 spots from the cashline."></textarea>
+      </div>
+      <div class="csec2">
+        <div class="csec2-h"><span class="csec2-t">Enforced at save (reference)</span></div>
+        <div id="pop-guardrail-mini-list" style="display:flex;flex-direction:column;gap:6px"></div>
+      </div>
+    </div>
+
+  </div>
+  <div class="drw2-ft">
+    <span style="font-size:11px;color:#9ca3af;margin-right:auto" id="pop-drw-saved">Unsaved</span>
+    <button class="btn2 bo" onclick="closePopupDrw()">Cancel</button>
+    <button class="btn2 bo" style="border-color:#7c3aed;color:#7c3aed" onclick="savePopupDrw(false)">Save as draft</button>
+    <button class="btn2 bp" onclick="savePopupDrw(true)">Save &amp; publish</button>
   </div>
 </div>
 
@@ -11389,4 +12322,5 @@ function initOffers(){ populateOfferFilters(); renderOffersTable(); }
 </html>
 
 </script>
+
 </body></html>
