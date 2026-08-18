@@ -3842,6 +3842,7 @@ input[readonly]{background:#f9fafb;color:#6b7280}
     <div class="pg-tab active" onclick="switchPopupPageTab(&#39;catalog&#39;)">Popup Catalog</div>
     <div class="pg-tab" onclick="switchPopupPageTab(&#39;placements&#39;)">Placements &amp; Pressure Budget</div>
     <div class="pg-tab" onclick="switchPopupPageTab(&#39;guardrails&#39;)">Guardrails &amp; Governance</div>
+    <div class="pg-tab" onclick="switchPopupPageTab(&#39;themes&#39;)">Themes &amp; Design Bank</div>
   </div>
 
   <!-- ── CATALOG ── -->
@@ -3924,6 +3925,17 @@ input[readonly]{background:#f9fafb;color:#6b7280}
     <div style="padding:20px 24px;max-width:900px">
       <div style="font-size:12.5px;color:#6b7280;margin-bottom:16px;padding:12px 16px;background:#fffbeb;border:1px solid #fde68a;border-radius:8px;line-height:1.6"><i class="ti ti-lock" style="font-size:14px;vertical-align:-2px"></i> These are save-time validations, not a policy page — they are enforced automatically on every popup and are not configurable per campaign. This tab is a reference for what will block a save.</div>
       <div id="guardrail-list" style="display:flex;flex-direction:column;gap:10px"></div>
+    </div>
+  </div>
+
+  <!-- ── THEMES & DESIGN BANK ── -->
+  <div class="pg-panel" id="popups-panel-themes">
+    <div style="padding:20px 24px;max-width:1080px">
+      <div style="font-size:12.5px;color:#6b7280;margin-bottom:16px;padding:12px 16px;background:#f3f0ff;border:1px solid #c4b5fd;border-radius:8px;line-height:1.6">A campaign never authors a raw colour or a freestanding image — it selects a Theme. <strong>Bank</strong> Themes are pre-built and ready to use instantly from any popup's Design tab. <strong>Bespoke</strong> Themes are built for one named campaign and need a creative brief filed with Design ahead of the campaign's start date — see the Designer Brief (spec §2.8) for the full token manifest and lead-time guidance.</div>
+      <div style="display:flex;justify-content:flex-end;margin-bottom:10px">
+        <button class="ab2" onclick="showToast2('Filing a creative brief routes to Design — not modeled in this prototype')"><i class="ti ti-plus"></i>File a bespoke creative brief</button>
+      </div>
+      <div id="theme-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px"></div>
     </div>
   </div>
 </div>
@@ -9081,13 +9093,15 @@ function renderPopupsTable(){
 }
 
 function switchPopupPageTab(name){
-  var order=['catalog','placements','guardrails'];
+  var order=['catalog','placements','guardrails','themes'];
   document.querySelectorAll('#screen-popups .pg-tab').forEach(function(t,i){ t.classList.toggle('active', order[i]===name); });
   document.getElementById('popups-panel-catalog').classList.toggle('active', name==='catalog');
   document.getElementById('popups-panel-placements').classList.toggle('active', name==='placements');
   document.getElementById('popups-panel-guardrails').classList.toggle('active', name==='guardrails');
+  document.getElementById('popups-panel-themes').classList.toggle('active', name==='themes');
   if(name==='placements') renderPlacementsTab();
   if(name==='guardrails') renderGuardrailsTab();
+  if(name==='themes') renderThemesTab();
 }
 
 function renderPlacementsTab(){
@@ -9125,9 +9139,10 @@ function renderGuardrailsTab(){
 var _popDrwId=null, _popDrwGeo=[], _popDrwSegIds=[], _popDrwExclSegIds=[], _popDrwPlacements=[], _popDrwBlocks=[], _popDrwCtas=[];
 
 function switchPopupTab(name){
-  var order=['identity','trigger','freq','content','guardrails'];
+  var order=['identity','trigger','freq','content','design','guardrails'];
   document.querySelectorAll('#popup-drw .drw2-tab').forEach(function(t,i){ t.classList.toggle('active', order[i]===name); });
   order.forEach(function(n){ document.getElementById('pop-tab-'+n).classList.toggle('active', n===name); });
+  if(name==='design') renderPopupPreview();
 }
 
 function renderPopupPlacementChips(){
@@ -9157,6 +9172,76 @@ function renderPopupGeoChips(){
   }).join('');
 }
 function togglePopupGeoChip(name){ var i=_popDrwGeo.indexOf(name); if(i>=0) _popDrwGeo.splice(i,1); else _popDrwGeo.push(name); renderPopupGeoChips(); }
+
+// ── Themes: background dressing only (spec §2.8) ──
+var LAYOUT_LABELS = {hero_and_content:'hero-and-content', centred_card:'centred-card', versus_face_off:'versus / face-off'};
+// CTA colour is NOT part of a Theme — it already follows one fixed rule everywhere (spec §2.8).
+function ctaColorForPopup(catEnum, ctas){
+  var hasKyc = (ctas||[]).some(function(c){ return c.destKind==='kyc_flow'; });
+  if(hasKyc) return {hex:'#2efff1', why:'CTA is cyan — a kyc_flow / identity destination is set on at least one CTA.'};
+  if(catEnum==='social_rival') return {hex:'#a472ff', why:'CTA is purple — category is social_rival.'};
+  return {hex:'#c7ff2c', why:'CTA is lime (default) — the standard action colour for this category.'};
+}
+var THEMES = [
+  {id:'theme_standard_core', name:'Standard — DiviDandy Core', status:'Active',
+    background_plate:'plate_core_default.png', bg_primary:'#031014', bg_secondary:'#1b2a30', decorative_accent:null},
+  {id:'theme_holiday_winter_2026', name:'Holiday — Winter 2026', status:'Active',
+    background_plate:'plate_winter_2026.png', bg_primary:'#04141c', bg_secondary:'#123240', decorative_accent:'#2efff1'},
+  {id:'theme_reports_season', name:'Reports Season', status:'Active',
+    background_plate:'plate_reports_season.png', bg_primary:'#151821', bg_secondary:'#20242f', decorative_accent:'#eca945'}
+];
+function themeById(id){ return THEMES.find(function(t){return t.id===id;}) || THEMES[0]; }
+function renderThemePicker(){
+  var sel=document.getElementById('pop-theme'); if(!sel) return;
+  sel.innerHTML = THEMES.map(function(t){ return '<option value="'+t.id+'">'+esc(t.name)+'</option>'; }).join('');
+}
+function renderThemesTab(){
+  var box=document.getElementById('theme-grid'); if(!box) return;
+  box.innerHTML = THEMES.map(function(t){
+    return '<div style="border:1px solid #e8e8ec;border-radius:10px;overflow:hidden;background:#fff">'+
+      '<div style="height:64px;background:linear-gradient(135deg,'+t.bg_primary+','+t.bg_secondary+');display:flex;align-items:flex-end;padding:8px;gap:6px">'+
+        (t.decorative_accent ? '<span style="width:16px;height:16px;border-radius:4px;background:'+t.decorative_accent+';border:1px solid rgba(255,255,255,.25)" title="decorative_accent"></span>' : '')+
+      '</div>'+
+      '<div style="padding:12px">'+
+        '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><span style="font-size:13px;font-weight:600">'+esc(t.name)+'</span><span class="store-state state-live">'+esc(t.status)+'</span></div>'+
+        '<div style="font-size:11px;color:#9ca3af">'+esc(t.background_plate)+' — background dressing only</div>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+}
+function renderPopupPreview(){
+  var wrap=document.getElementById('pop-preview-wrap'); if(!wrap) return;
+  var catEnum=(document.getElementById('pop-category-f')||{}).value||'storefront';
+  var layout=(document.getElementById('pop-layout-template')||{}).value||'hero_and_content';
+  var themeId=(document.getElementById('pop-theme')||{}).value||'theme_standard_core';
+  var t=themeById(themeId);
+  var metaBox=document.getElementById('pop-theme-meta');
+  if(metaBox) metaBox.innerHTML = '<i class="ti ti-circle-check" style="color:#059669"></i> Background dressing only — available immediately, no design turnaround needed.';
+  var headline=(document.getElementById('pop-text-title')||{}).value || 'Headline';
+  var body=(document.getElementById('pop-text-body')||{}).value || 'Body text bound to a live value…';
+  var ctaLabel=(_popDrwCtas[0]&&_popDrwCtas[0].label) || 'CTA';
+  var cta=ctaColorForPopup(catEnum,_popDrwCtas);
+  var noteBox=document.getElementById('pop-preview-cta-note');
+  if(noteBox) noteBox.innerHTML = '<i class="ti ti-info-circle"></i> '+esc(cta.why);
+  var headText='#e8eaf0', bodyText='#9aa0b0';
+  var shapeCss='position:absolute;left:12px;right:12px;top:44px;bottom:44px;border-radius:8px;background:linear-gradient(160deg,'+t.bg_secondary+','+t.bg_primary+');border:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column;padding:8px;gap:5px;box-sizing:border-box;overflow:hidden';
+  var zoneImg='<div style="height:34%;border-radius:4px;font-size:8px;color:'+bodyText+';display:flex;align-items:center;justify-content:center;background:repeating-linear-gradient(45deg,rgba(255,255,255,.04),rgba(255,255,255,.04) 4px,transparent 4px,transparent 8px)">'+esc(t.background_plate)+'</div>';
+  var zoneHead='<div style="border-radius:4px;font-size:9px;font-weight:600;color:'+headText+';padding:3px 4px;background:rgba(255,255,255,.06)">'+esc(headline).slice(0,40)+'</div>';
+  var zoneBody='<div style="flex:1;border-radius:4px;font-size:8px;color:'+bodyText+';padding:3px 4px;background:rgba(255,255,255,.03);overflow:hidden">'+esc(body).slice(0,80)+'</div>';
+  var zoneCta='<div style="border-radius:4px;font-size:9px;font-weight:700;padding:4px;text-align:center;background:'+cta.hex+';color:#031014">'+esc(ctaLabel)+'</div>';
+  var zoneVersus='<div style="flex:1;display:flex;align-items:center;justify-content:center;gap:10px">'+
+      '<div style="width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.08);border:2px solid '+(t.decorative_accent||'#2efff1')+'"></div>'+
+      '<span style="font-size:10px;font-weight:800;color:'+headText+'">VS</span>'+
+      '<div style="width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.08);border:2px solid '+cta.hex+'"></div>'+
+    '</div>';
+  var innerZones = (layout==='versus_face_off') ? (zoneHead+zoneVersus+zoneCta)
+    : (layout==='centred_card') ? (zoneHead+zoneBody+zoneCta)
+    : (zoneImg+zoneHead+zoneBody+zoneCta);
+  wrap.innerHTML = '<div style="position:relative;width:170px;height:300px;border-radius:18px;background:#05060a;border:3px solid #2a2f3d;overflow:hidden">'+
+    '<div style="position:absolute;inset:0;background:rgba(0,0,0,.6)"></div>'+
+    '<div style="'+shapeCss+'">'+innerZones+'</div>'+
+    '</div>';
+}
 
 var BLOCK_TYPES = ['hero_art','bundle_grid','bundle_column_set','price_block','wallet_delta','prize_pool_block','leaderboard_block','progress_rail','task_list','tier_rail','countdown_chip','versus_block','roster_strip','kyc_status_block','legal_strip','docked_offer','results_digest_list'];
 function renderPopupBlocksList(){
@@ -9263,7 +9348,9 @@ function fillPopupForm(p){
   document.getElementById('pop-exempt-expiry').value = p.exemptExpiry||'';
   document.getElementById('pop-exempt-reason').value = p.exemptReason||'';
   onBypassToggle();
-  document.getElementById('pop-layout-template').value = p.layoutTemplate||'';
+  document.getElementById('pop-layout-template').value = p.layoutTemplate||'hero_and_content';
+  renderThemePicker();
+  document.getElementById('pop-theme').value = p.themeId||'theme_standard_core';
   _popDrwBlocks = JSON.parse(JSON.stringify(p.blocks||[]));
   document.getElementById('pop-text-title').value = p.textTitle||p.name||'';
   document.getElementById('pop-text-title-src').value = p.textTitleSrc||'live';
@@ -9339,6 +9426,7 @@ function readPopupForm(){
     exemptExpiry: document.getElementById('pop-exempt-expiry').value,
     exemptReason: document.getElementById('pop-exempt-reason').value,
     layoutTemplate: document.getElementById('pop-layout-template').value,
+    themeId: document.getElementById('pop-theme').value,
     blocks: _popDrwBlocks.slice(),
     textTitle: document.getElementById('pop-text-title').value,
     textTitleSrc: document.getElementById('pop-text-title-src').value,
@@ -10070,6 +10158,7 @@ function initPopups(){ renderPopupsTable(); renderPlacementsTab(); renderGuardra
     <div class="drw2-tab" onclick="switchPopupTab(&#39;trigger&#39;)">Trigger &amp; Audience</div>
     <div class="drw2-tab" onclick="switchPopupTab(&#39;freq&#39;)">Frequency &amp; Arbitration</div>
     <div class="drw2-tab" onclick="switchPopupTab(&#39;content&#39;)">Content</div>
+    <div class="drw2-tab" onclick="switchPopupTab(&#39;design&#39;)">Design &amp; Preview</div>
     <div class="drw2-tab" onclick="switchPopupTab(&#39;guardrails&#39;)">Guardrails</div>
   </div>
   <div class="drw2-body">
@@ -10282,8 +10371,7 @@ function initPopups(){ renderPopupsTable(); renderPlacementsTab(); renderGuardra
     <div class="tpnl" id="pop-tab-content">
       <div class="csec2">
         <div class="csec2-h"><span class="csec2-t">Frame</span></div>
-        <div class="fi2"><span class="fl2">Layout template</span><input type="text" class="finp2" id="pop-layout-template" placeholder="e.g. results-state-branch-v2"></div>
-        <div style="font-size:11px;color:#9ca3af;margin-top:6px">The legal strip is auto-injected for commercial categories and cannot be removed here.</div>
+        <div style="font-size:11px;color:#9ca3af">Layout template, Theme and backdrop moved to the <b>Design &amp; Preview</b> tab, alongside the live preview. The legal strip is auto-injected for commercial categories and cannot be removed here.</div>
       </div>
       <div class="csec2">
         <div class="csec2-h"><span class="csec2-t">Blocks</span><button class="ab2" onclick="addPopupBlockRow()"><i class="ti ti-plus"></i>Add block</button></div>
@@ -10337,6 +10425,28 @@ function initPopups(){ renderPopupsTable(); renderPlacementsTab(); renderGuardra
     </div>
 
     <!-- GUARDRAILS -->
+    <div class="tpnl" id="pop-tab-design">
+      <div class="csec2">
+        <div style="font-size:11.5px;color:#6b7280;margin-bottom:10px;padding:10px 12px;background:#f3f0ff;border:1px solid #c4b5fd;border-radius:8px">The card shape, dim level and CTA colour are already fixed by what's built and working — this tab only swaps the layout and the background dressing.</div>
+        <div class="csec2-h"><span class="csec2-t">Layout</span></div>
+        <select class="finp2" id="pop-layout-template" onchange="renderPopupPreview()" style="max-width:280px">
+          <option value="hero_and_content">Hero and content</option>
+          <option value="centred_card">Centred card (no image)</option>
+          <option value="versus_face_off">Versus / face-off</option>
+        </select>
+      </div>
+      <div class="csec2">
+        <div class="csec2-h"><span class="csec2-t">Theme</span><button class="ab2" onclick="closePopupDrw();navigateNew('popups');switchPopupPageTab('themes')" style="font-size:11px">Manage Themes</button></div>
+        <div class="fi2"><span class="fl2">Theme <span style="text-transform:none;font-weight:400">— background dressing only</span></span><select class="finp2" id="pop-theme" onchange="renderPopupPreview()"></select></div>
+        <div id="pop-theme-meta" style="font-size:11px;color:#9ca3af;margin-top:8px"></div>
+      </div>
+      <div class="csec2">
+        <div class="csec2-h"><span class="csec2-t">Live preview</span><span style="font-size:11px;color:#9ca3af">Approximate — not final render</span></div>
+        <div id="pop-preview-wrap" style="display:flex;justify-content:center;padding:12px 0"></div>
+        <div id="pop-preview-cta-note" style="font-size:11px;color:#9ca3af;text-align:center"></div>
+      </div>
+    </div>
+
     <div class="tpnl" id="pop-tab-guardrails">
       <div class="csec2">
         <div class="csec2-h"><span class="csec2-t">Justification — required to save</span></div>
